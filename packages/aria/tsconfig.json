@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.react.json",
+  "compilerOptions": {
+    "erasableSyntaxOnly": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["src"]
+}

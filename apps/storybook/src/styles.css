@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+@plugin 'tailwindcss-react-aria-components';
+@import '@skonkwerks/patina/aria.css';
+@import './theme.css';
+
+/*
+ * The token contract @skonkwerks/patina draws (see its aria.css), mapped to this theme's variables.
+ * `inline` keeps the reference to the variable, so a token follows the mode class on <html>.
+ */
+@theme inline {
+  --color-canvas: var(--patina-clr-canvas);
+  --color-canvas-foreground: var(--patina-clr-canvas-foreground);
+  --color-canvas-foreground-muted: var(--patina-clr-canvas-foreground-muted);
+  --color-canvas-border: var(--patina-clr-canvas-border);
+  --color-surface: var(--patina-clr-surface);
+  --color-surface-foreground: var(--patina-clr-surface-foreground);
+  --color-surface-foreground-muted: var(--patina-clr-surface-foreground-muted);
+  --color-surface-border: var(--patina-clr-surface-border);
+  --color-surface-hover: var(--patina-clr-surface-hover);
+  --color-overlay: var(--patina-clr-overlay);
+  --color-overlay-foreground: var(--patina-clr-overlay-foreground);
+  --color-overlay-foreground-muted: var(--patina-clr-overlay-foreground-muted);
+  --color-overlay-border: var(--patina-clr-overlay-border);
+  --color-overlay-hover: var(--patina-clr-overlay-hover);
+  --color-input: var(--patina-clr-input);
+  --color-input-foreground: var(--patina-clr-input-foreground);
+  --color-input-placeholder: var(--patina-clr-input-placeholder);
+  --color-input-border: var(--patina-clr-input-border);
+  --color-primary: var(--patina-clr-primary);
+  --color-primary-foreground: var(--patina-clr-primary-foreground);
+  --color-primary-hover: var(--patina-clr-primary-hover);
+  --color-neutral: var(--patina-clr-neutral);
+  --color-neutral-foreground: var(--patina-clr-neutral-foreground);
+  --color-neutral-hover: var(--patina-clr-neutral-hover);
+  --color-destructive: var(--patina-clr-destructive);
+  --color-destructive-foreground: var(--patina-clr-destructive-foreground);
+  --color-destructive-hover: var(--patina-clr-destructive-hover);
+  --color-destructive-tint: var(--patina-clr-destructive-tint);
+  --color-info: var(--patina-clr-info);
+  --color-info-foreground: var(--patina-clr-info-foreground);
+  --color-info-tint: var(--patina-clr-info-tint);
+  --color-success: var(--patina-clr-success);
+  --color-success-foreground: var(--patina-clr-success-foreground);
+  --color-success-tint: var(--patina-clr-success-tint);
+  --color-warning: var(--patina-clr-warning);
+  --color-warning-foreground: var(--patina-clr-warning-foreground);
+  --color-warning-tint: var(--patina-clr-warning-tint);
+  --color-focus-ring: var(--patina-clr-focus-ring);
+  --color-scrim: var(--patina-clr-scrim);
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-canvas-foreground);
+    -webkit-font-smoothing: antialiased;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.react.json",
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "erasableSyntaxOnly": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": [".storybook/*.ts", ".storybook/*.tsx"]
+}

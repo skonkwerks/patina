@@ -1,0 +1,19 @@
+# Private session notes and handoffs. This is a public repo, so they stay out of it.
+.sessions/
+
+# Dependencies and build output
+node_modules/
+dist/
+storybook-static/
+*.tsbuildinfo
+
+# Environment and local files
+.env
+.env.*
+!.env.example
+
+# OS and editor
+.DS_Store
+
+# The shared guidelines link (.documents/guidelines/general, made by `just setup`); Patina keeps no other .documents/ content.
+/.documents/

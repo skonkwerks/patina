@@ -1,0 +1,34 @@
+{
+  "name": "@skonkwerks/storybook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Storybook for patina's packages: every component's states, in light and dark",
+  "license": "MIT",
+  "scripts": {
+    "dev": "storybook dev -p 6006 --no-open",
+    "build": "storybook build -o storybook-static",
+    "check": "tsgo --noEmit"
+  },
+  "dependencies": {
+    "@skonkwerks/patina": "workspace:*",
+    "react": "19.2.8",
+    "react-aria-components": "^1.22.1",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^10.6.7",
+    "@storybook/addon-docs": "^10.6.7",
+    "@storybook/addon-themes": "^10.6.7",
+    "@storybook/react-vite": "^10.6.7",
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^26.6.6",
+    "@types/react": "19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.2.0",
+    "storybook": "^10.6.7",
+    "tailwindcss": "^4.3.5",
+    "tailwindcss-react-aria-components": "^2.2.0",
+    "vite": "^7.3.8"
+  }
+}

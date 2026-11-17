@@ -1,0 +1,157 @@
+/*
+ * Storybook's default theme: a palette and per-mode semantic colors.
+ *
+ * Palette: Catppuccin (https://catppuccin.com/palette), Latte for light mode and Mocha for dark mode.
+ * Palette variables carry no meaning and are used only in this file. The semantic --patina-clr-*
+ * variables name a role (the token contract in @skonkwerks/patina/aria.css) and are defined once per
+ * mode; styles.css exposes them to Tailwind as --color-* tokens. A second theme is another block
+ * that redefines the same --patina-clr-* variables, such as [data-theme='ocean'].
+ */
+:root {
+  --cat-latte-rosewater: #dc8a78;
+  --cat-latte-red: #d20f39;
+  --cat-latte-maroon: #e64553;
+  --cat-latte-peach: #fe640b;
+  --cat-latte-yellow: #df8e1d;
+  --cat-latte-green: #40a02b;
+  --cat-latte-teal: #179299;
+  --cat-latte-blue: #1e66f5;
+  --cat-latte-sapphire: #209fb5;
+  --cat-latte-lavender: #7287fd;
+  --cat-latte-mauve: #8839ef;
+  --cat-latte-pink: #ea76cb;
+  --cat-latte-text: #4c4f69;
+  --cat-latte-subtext1: #5c5f77;
+  --cat-latte-subtext0: #6c6f85;
+  --cat-latte-overlay2: #7c7f93;
+  --cat-latte-overlay1: #8c8fa1;
+  --cat-latte-overlay0: #9ca0b0;
+  --cat-latte-surface2: #acb0be;
+  --cat-latte-surface1: #bcc0cc;
+  --cat-latte-surface0: #ccd0da;
+  --cat-latte-base: #eff1f5;
+  --cat-latte-mantle: #e6e9ef;
+  --cat-latte-crust: #dce0e8;
+  --cat-latte-blue-dark: #1b5ee4;
+  --cat-latte-blue-darker: #154ebf;
+  --cat-latte-green-dark: #266718;
+  --cat-latte-peach-dark: #9b3a04;
+  --cat-latte-red-dark: #a6092b;
+  --cat-latte-lavender-dark: #4653a0;
+  --cat-latte-mauve-dark: #6d2cc1;
+  --cat-latte-pink-dark: #864174;
+  --cat-latte-sapphire-dark: #106270;
+  --cat-latte-yellow-dark: #7f4f0c;
+
+  --patina-clr-canvas: var(--cat-latte-mantle);
+  --patina-clr-canvas-foreground: var(--cat-latte-text);
+  --patina-clr-canvas-foreground-muted: var(--cat-latte-subtext1);
+  --patina-clr-canvas-border: var(--cat-latte-surface0);
+  --patina-clr-surface: var(--cat-latte-base);
+  --patina-clr-surface-foreground: var(--cat-latte-text);
+  --patina-clr-surface-foreground-muted: var(--cat-latte-subtext1);
+  --patina-clr-surface-border: var(--cat-latte-surface0);
+  --patina-clr-surface-hover: var(--cat-latte-mantle);
+  --patina-clr-overlay: var(--cat-latte-base);
+  --patina-clr-overlay-foreground: var(--cat-latte-text);
+  --patina-clr-overlay-foreground-muted: var(--cat-latte-subtext1);
+  --patina-clr-overlay-border: var(--cat-latte-surface1);
+  --patina-clr-overlay-hover: var(--cat-latte-mantle);
+  --patina-clr-input: var(--cat-latte-base);
+  --patina-clr-input-foreground: var(--cat-latte-text);
+  --patina-clr-input-placeholder: var(--cat-latte-subtext1);
+  --patina-clr-input-border: var(--cat-latte-surface1);
+  --patina-clr-primary: var(--cat-latte-blue-dark);
+  --patina-clr-primary-foreground: var(--cat-latte-base);
+  --patina-clr-primary-hover: var(--cat-latte-blue-darker);
+  --patina-clr-neutral: var(--cat-latte-surface0);
+  --patina-clr-neutral-foreground: var(--cat-latte-text);
+  --patina-clr-neutral-hover: var(--cat-latte-surface1);
+  --patina-clr-destructive: var(--cat-latte-red-dark);
+  --patina-clr-destructive-foreground: var(--cat-latte-base);
+  --patina-clr-destructive-hover: color-mix(
+    in oklab,
+    var(--cat-latte-red-dark) 85%,
+    black
+  );
+  --patina-clr-destructive-tint: var(--cat-latte-red);
+  --patina-clr-info: var(--cat-latte-blue-darker);
+  --patina-clr-info-foreground: var(--cat-latte-base);
+  --patina-clr-info-tint: var(--cat-latte-blue);
+  --patina-clr-success: var(--cat-latte-green-dark);
+  --patina-clr-success-foreground: var(--cat-latte-base);
+  --patina-clr-success-tint: var(--cat-latte-green);
+  --patina-clr-warning: var(--cat-latte-peach-dark);
+  --patina-clr-warning-foreground: var(--cat-latte-base);
+  --patina-clr-warning-tint: var(--cat-latte-peach);
+  --patina-clr-focus-ring: var(--cat-latte-blue);
+  --patina-clr-scrim: rgb(0 0 0 / 0.5);
+}
+
+.dark {
+  --cat-mocha-rosewater: #f5e0dc;
+  --cat-mocha-red: #f38ba8;
+  --cat-mocha-maroon: #eba0ac;
+  --cat-mocha-peach: #fab387;
+  --cat-mocha-yellow: #f9e2af;
+  --cat-mocha-green: #a6e3a1;
+  --cat-mocha-teal: #94e2d5;
+  --cat-mocha-blue: #89b4fa;
+  --cat-mocha-sapphire: #74c7ec;
+  --cat-mocha-lavender: #b4befe;
+  --cat-mocha-mauve: #cba6f7;
+  --cat-mocha-pink: #f5c2e7;
+  --cat-mocha-text: #cdd6f4;
+  --cat-mocha-subtext1: #bac2de;
+  --cat-mocha-subtext0: #a6adc8;
+  --cat-mocha-overlay2: #9399b2;
+  --cat-mocha-overlay1: #7f849c;
+  --cat-mocha-overlay0: #6c7086;
+  --cat-mocha-surface2: #585b70;
+  --cat-mocha-surface1: #45475a;
+  --cat-mocha-surface0: #313244;
+  --cat-mocha-base: #1e1e2e;
+  --cat-mocha-mantle: #181825;
+  --cat-mocha-crust: #11111b;
+  --cat-mocha-blue-light: #a5c4fb;
+
+  --patina-clr-canvas: var(--cat-mocha-crust);
+  --patina-clr-canvas-foreground: var(--cat-mocha-text);
+  --patina-clr-canvas-foreground-muted: var(--cat-mocha-subtext0);
+  --patina-clr-canvas-border: var(--cat-mocha-surface0);
+  --patina-clr-surface: var(--cat-mocha-base);
+  --patina-clr-surface-foreground: var(--cat-mocha-text);
+  --patina-clr-surface-foreground-muted: var(--cat-mocha-subtext0);
+  --patina-clr-surface-border: var(--cat-mocha-surface0);
+  --patina-clr-surface-hover: var(--cat-mocha-surface0);
+  --patina-clr-overlay: var(--cat-mocha-base);
+  --patina-clr-overlay-foreground: var(--cat-mocha-text);
+  --patina-clr-overlay-foreground-muted: var(--cat-mocha-subtext0);
+  --patina-clr-overlay-border: var(--cat-mocha-surface1);
+  --patina-clr-overlay-hover: var(--cat-mocha-surface0);
+  --patina-clr-input: var(--cat-mocha-mantle);
+  --patina-clr-input-foreground: var(--cat-mocha-text);
+  --patina-clr-input-placeholder: var(--cat-mocha-overlay1);
+  --patina-clr-input-border: var(--cat-mocha-surface1);
+  --patina-clr-primary: var(--cat-mocha-blue);
+  --patina-clr-primary-foreground: var(--cat-mocha-crust);
+  --patina-clr-primary-hover: var(--cat-mocha-blue-light);
+  --patina-clr-neutral: var(--cat-mocha-surface1);
+  --patina-clr-neutral-foreground: var(--cat-mocha-text);
+  --patina-clr-neutral-hover: var(--cat-mocha-surface2);
+  --patina-clr-destructive: var(--cat-mocha-maroon);
+  --patina-clr-destructive-foreground: var(--cat-mocha-crust);
+  --patina-clr-destructive-hover: var(--cat-mocha-red);
+  --patina-clr-destructive-tint: var(--cat-mocha-red);
+  --patina-clr-info: var(--cat-mocha-blue-light);
+  --patina-clr-info-foreground: var(--cat-mocha-crust);
+  --patina-clr-info-tint: var(--cat-mocha-blue);
+  --patina-clr-success: var(--cat-mocha-green);
+  --patina-clr-success-foreground: var(--cat-mocha-crust);
+  --patina-clr-success-tint: var(--cat-mocha-green);
+  --patina-clr-warning: var(--cat-mocha-peach);
+  --patina-clr-warning-foreground: var(--cat-mocha-crust);
+  --patina-clr-warning-tint: var(--cat-mocha-peach);
+  --patina-clr-focus-ring: var(--cat-mocha-blue);
+  --patina-clr-scrim: rgb(0 0 0 / 0.6);
+}
