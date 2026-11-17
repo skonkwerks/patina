@@ -305,7 +305,7 @@ const FileDropList = ({
   return (
     <div className='flex flex-col gap-3'>
       <GridList
-        aria-label={args['aria-label'] ?? 'Files'}
+        aria-label={args['aria-label']}
         emptyState={args.emptyState}
         fileDrop={fileDrop}
       >

@@ -9,27 +9,13 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from './focus.ts';
+import { fieldBoxStyles, fieldStyles } from './field.ts';
 import { useShownErrorFollowsValue } from './shownerror.ts';
 
-export const textFieldStyles = tv({
-  slots: {
-    root: 'flex flex-col gap-1',
-    labelRow: 'flex items-center gap-1',
-    label: 'text-surface-foreground text-sm font-medium',
-    description: 'text-surface-foreground-muted text-xs',
-    error: 'text-destructive text-xs',
-  },
-});
-
-/** The input itself, which carries the shared focus ring. */
+/** The input itself: the shared field box, one line tall. */
 export const textFieldInputStyles = tv({
-  extend: focusRing,
-  base: 'bg-input text-input-foreground border-input-border placeholder:text-input-placeholder h-8 rounded-md border px-3 text-sm',
-  variants: {
-    isInvalid: { true: 'border-destructive' },
-    isDisabled: { true: 'cursor-not-allowed opacity-50' },
-  },
+  extend: fieldBoxStyles,
+  base: 'placeholder:text-input-placeholder h-8 px-3',
 });
 
 export type TextFieldProps = Omit<AriaTextFieldProps, 'className'> & {
@@ -40,6 +26,7 @@ export type TextFieldProps = Omit<AriaTextFieldProps, 'className'> & {
   description?: string;
   /** The error to show under the field; also marks the field invalid. */
   errorMessage?: string;
+  /** An example value, never a label or an instruction. */
   placeholder?: string;
   className?: string;
 };
@@ -56,7 +43,6 @@ export const TextField = ({
 }: TextFieldProps) => {
   const field = useRef<HTMLDivElement>(null);
   useShownErrorFollowsValue(field, rest.value);
-  const styles = textFieldStyles();
   return (
     <AriaTextField
       ref={field}
@@ -64,27 +50,31 @@ export const TextField = ({
       // An explicit isInvalid makes React Aria skip `validate` and native constraints, so it is set
       // only for a caller's error.
       isInvalid={errorMessage === undefined ? rest.isInvalid : true}
-      className={styles.root({ className })}
+      className={fieldStyles().root({ className })}
     >
-      {label &&
-        (contextualHelp ? (
-          <div className={styles.labelRow()}>
-            <Label className={styles.label()}>{label}</Label>
-            {contextualHelp}
-          </div>
-        ) : (
-          <Label className={styles.label()}>{label}</Label>
-        ))}
-      <Input
-        placeholder={placeholder}
-        className={(renderProps) => textFieldInputStyles(renderProps)}
-      />
-      {description && (
-        <Text slot='description' className={styles.description()}>
-          {description}
-        </Text>
-      )}
-      <FieldError className={styles.error()}>{errorMessage}</FieldError>
+      {({ isDisabled }) => {
+        const parts = fieldStyles({ isDisabled });
+        return (
+          <>
+            {label && (
+              <div className={parts.labelRow()}>
+                <Label className={parts.label()}>{label}</Label>
+                {contextualHelp}
+              </div>
+            )}
+            <Input
+              placeholder={placeholder}
+              className={(renderProps) => textFieldInputStyles(renderProps)}
+            />
+            {description && (
+              <Text slot='description' className={parts.description()}>
+                {description}
+              </Text>
+            )}
+            <FieldError className={parts.error()}>{errorMessage}</FieldError>
+          </>
+        );
+      }}
     </AriaTextField>
   );
 };

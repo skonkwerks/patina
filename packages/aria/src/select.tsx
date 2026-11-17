@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import {
   Button,
   FieldError,
@@ -13,43 +14,35 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { Count } from './count.tsx';
-import { focusRing } from './focus.ts';
+import { fieldBoxStyles, fieldStyles } from './field.ts';
 import { IconChevronDown } from './icons.tsx';
-import { Popover } from './popover.tsx';
+import { overlayOptionStyles, Popover } from './popover.tsx';
 import { Spinner } from './spinner.tsx';
 
 export const selectStyles = tv({
   slots: {
-    root: 'group flex flex-col gap-1',
-    label: 'text-surface-foreground text-sm font-medium',
+    // `group` lets the trigger draw the invalid border React Aria marks on the field.
+    root: 'group',
     count: 'text-xs',
     value: 'placeholder-shown:text-input-placeholder truncate',
     chevron: 'h-4 w-4 shrink-0',
     pending: 'text-surface-foreground-muted flex items-center gap-1.5 text-xs',
-    description: 'text-surface-foreground-muted text-xs',
-    error: 'text-destructive text-xs',
     popover: 'max-h-72 w-(--trigger-width) overflow-auto p-1',
     listBox: 'outline-0',
   },
 });
 
-/** The trigger, which carries the shared focus ring. */
+/** The trigger: the shared field box, with the invalid border React Aria marks on the field. */
 export const selectTriggerStyles = tv({
-  extend: focusRing,
-  base: [
-    'bg-input text-input-foreground border-input-border flex h-8 items-center justify-between gap-2 rounded-md border px-3 text-sm',
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    'group-data-[invalid]:border-destructive',
-  ],
+  extend: fieldBoxStyles,
+  base: 'group-data-[invalid]:border-destructive flex h-8 items-center justify-between gap-2 px-3',
 });
 
+/** An option of the list: the shared overlay option, the chosen one in a heavier weight. */
 export const selectItemStyles = tv({
-  base: 'flex cursor-default items-center rounded px-2 py-1.5 text-sm outline-0 select-none',
+  extend: overlayOptionStyles,
   variants: {
-    isFocused: { true: 'bg-overlay-hover' },
     isSelected: { true: 'font-medium' },
-    // As every disabled control reads here: half as strong, and the cursor says it cannot be chosen.
-    isDisabled: { true: 'cursor-not-allowed opacity-50' },
   },
 });
 
@@ -70,15 +63,19 @@ export type SelectProps<T extends object> = Omit<
   /** Optional muted count beside the field label, formatted by the caller from the vocabulary. */
   count?: string;
   description?: string;
-  /** While the choices are still being read: `pendingText` and a spinner stand where the description does. */
-  isPending?: boolean;
-  /** What to say while `isPending`, such as "Loading regions". */
-  pendingText?: string;
   errorMessage?: string;
   items: Iterable<T>;
-  children: (item: T) => React.ReactNode;
+  children: (item: T) => ReactNode;
   className?: string;
-};
+} & (
+    | { isPending?: false; pendingText?: undefined }
+    | {
+        /** While the choices are still being read, `pendingText` and a spinner stand where the description does. */
+        isPending: boolean;
+        /** What to say while pending, such as "Loading regions". */
+        pendingText: string;
+      }
+  );
 
 /** A labeled single-choice dropdown: a trigger showing the chosen item and a list in a popover. */
 export const Select = <T extends object>({
@@ -100,39 +97,48 @@ export const Select = <T extends object>({
       // An explicit isInvalid makes React Aria skip `validate` and `isRequired`, so it is set only
       // for a caller's error.
       isInvalid={errorMessage === undefined ? rest.isInvalid : true}
-      className={styles.root({ className })}
+      className={fieldStyles().root({ className: styles.root({ className }) })}
     >
-      {label && (
-        <Label className={styles.label()}>
-          {label}
-          {count !== undefined && (
-            <Count text={count} className={styles.count()} />
-          )}
-        </Label>
-      )}
-      <Button className={(renderProps) => selectTriggerStyles(renderProps)}>
-        {/* With nothing chosen, React Aria shows the `placeholder` prop, or its own "Select an item". */}
-        <SelectValue className={styles.value()} />
-        <IconChevronDown className={styles.chevron()} aria-hidden />
-      </Button>
-      {isPending ? (
-        <Text slot='description' className={styles.pending()}>
-          <Spinner size='sm' />
-          {pendingText}
-        </Text>
-      ) : (
-        description && (
-          <Text slot='description' className={styles.description()}>
-            {description}
-          </Text>
-        )
-      )}
-      <FieldError className={styles.error()}>{errorMessage}</FieldError>
-      <Popover className={styles.popover()}>
-        <ListBox items={items} className={styles.listBox()}>
-          {children}
-        </ListBox>
-      </Popover>
+      {({ isDisabled }) => {
+        const parts = fieldStyles({ isDisabled });
+        return (
+          <>
+            {label && (
+              <Label className={parts.label()}>
+                {label}
+                {count !== undefined && (
+                  <Count text={count} className={styles.count()} />
+                )}
+              </Label>
+            )}
+            <Button
+              className={(renderProps) => selectTriggerStyles(renderProps)}
+            >
+              {/* With nothing chosen, React Aria shows the `placeholder` prop, or its own "Select an item". */}
+              <SelectValue className={styles.value()} />
+              <IconChevronDown className={styles.chevron()} aria-hidden />
+            </Button>
+            {isPending ? (
+              <Text slot='description' className={styles.pending()}>
+                <Spinner size='sm' />
+                {pendingText}
+              </Text>
+            ) : (
+              description && (
+                <Text slot='description' className={parts.description()}>
+                  {description}
+                </Text>
+              )
+            )}
+            <FieldError className={parts.error()}>{errorMessage}</FieldError>
+            <Popover className={styles.popover()}>
+              <ListBox items={items} className={styles.listBox()}>
+                {children}
+              </ListBox>
+            </Popover>
+          </>
+        );
+      }}
     </AriaSelect>
   );
 };

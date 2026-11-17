@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import type { Key } from 'react-aria-components';
 
-import { Select, SelectItem } from './select.tsx';
+import { Select, SelectItem, type SelectProps } from './select.tsx';
 
 type Option = { id: string; name: string; isDisabled?: boolean };
 
@@ -32,10 +32,10 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Select<Option>>;
+} satisfies Meta<SelectProps<Option>>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<SelectProps<Option>>;
 
 export const Default: Story = {};
 
@@ -82,7 +82,7 @@ export const WithoutVisibleLabel: Story = {
 };
 
 export const Controlled: Story = {
-  render: function Render(args) {
+  render: function Render(args: SelectProps<Option>) {
     const [value, setValue] = useState<Key | null>('us-west');
     return (
       <div className='flex flex-col gap-2'>

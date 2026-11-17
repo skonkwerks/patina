@@ -56,18 +56,18 @@ const StatusIcon = ({ status }: { status: ToastStatus }) => {
   }
 };
 
+export type ToastRegionProps = {
+  /** Placement overrides, such as a `right-*` that stands clear of a side panel. */
+  className?: string;
+};
+
 /**
  * The app's notification area, bottom right: the toasts in the queue, newest on top, each
  * closable. An app with a panel at the right edge moves the area beside it through `className`
  * (for example `right-[calc(var(--side-panel-width)+1rem)]`), so a toast never covers the panel's
  * buttons.
  */
-export const ToastRegion = ({
-  className,
-}: {
-  /** Placement overrides, such as a `right-*` that stands clear of a side panel. */
-  className?: string;
-}) => {
+export const ToastRegion = ({ className }: ToastRegionProps) => {
   return (
     // React Aria names the region ("N notifications") and each close button ("Close") itself.
     <AriaToastRegion

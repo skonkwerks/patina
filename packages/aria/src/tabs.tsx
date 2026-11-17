@@ -1,16 +1,16 @@
 import {
-  composeRenderProps,
   Tab as AriaTab,
   TabList as AriaTabList,
-  type TabListProps,
+  type TabListProps as AriaTabListProps,
   TabPanel as AriaTabPanel,
-  type TabPanelProps,
-  type TabProps,
+  type TabPanelProps as AriaTabPanelProps,
+  type TabProps as AriaTabProps,
   Tabs as AriaTabs,
-  type TabsProps,
+  type TabsProps as AriaTabsProps,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { DISABLED } from './disabled.ts';
 import { focusRing } from './focus.ts';
 
 export const tabsStyles = tv({ base: 'flex min-w-0 flex-col gap-4' });
@@ -28,7 +28,7 @@ export const tabStyles = tv({
       false:
         'text-canvas-foreground-muted hover:text-canvas-foreground border-transparent',
     },
-    isDisabled: { true: 'text-canvas-foreground-muted cursor-default' },
+    isDisabled: { true: DISABLED },
   },
 });
 
@@ -41,36 +41,32 @@ export const tabPanelStyles = tv({
   base: 'flex min-w-0 flex-col gap-4 data-[inert]:hidden',
 });
 
-// The wrappers take React Aria's own props, re-exported for callers. `className` may be a
-// function of the component's state there, so each wrapper composes its classes onto it with
-// `composeRenderProps` instead of joining strings.
-export type { TabListProps, TabPanelProps, TabProps, TabsProps };
+/** React Aria's props, with `className` for layout only. */
+export type TabsProps = Omit<AriaTabsProps, 'className'> & {
+  className?: string;
+};
+export type TabListProps<T extends object> = Omit<
+  AriaTabListProps<T>,
+  'className'
+> & { className?: string };
+export type TabProps = Omit<AriaTabProps, 'className'> & { className?: string };
+export type TabPanelProps = Omit<AriaTabPanelProps, 'className'> & {
+  className?: string;
+};
 
 export const Tabs = ({ className, ...props }: TabsProps) => (
-  <AriaTabs
-    {...props}
-    className={composeRenderProps(className, (cls) =>
-      tabsStyles({ className: cls }),
-    )}
-  />
+  <AriaTabs {...props} className={tabsStyles({ className })} />
 );
 export const TabList = <T extends object>({
   className,
   ...props
 }: TabListProps<T>) => (
-  <AriaTabList
-    {...props}
-    className={composeRenderProps(className, (cls) =>
-      tabListStyles({ className: cls }),
-    )}
-  />
+  <AriaTabList {...props} className={tabListStyles({ className })} />
 );
 export const Tab = ({ className, ...props }: TabProps) => (
   <AriaTab
     {...props}
-    className={composeRenderProps(className, (cls, state) =>
-      tabStyles({ ...state, className: cls }),
-    )}
+    className={(state) => tabStyles({ ...state, className })}
   />
 );
 /**
@@ -80,8 +76,6 @@ export const Tab = ({ className, ...props }: TabProps) => (
 export const TabPanel = ({ className, ...props }: TabPanelProps) => (
   <AriaTabPanel
     {...props}
-    className={composeRenderProps(className, (cls, state) =>
-      tabPanelStyles({ ...state, className: cls }),
-    )}
+    className={(state) => tabPanelStyles({ ...state, className })}
   />
 );

@@ -44,3 +44,28 @@ export const Controlled: Story = {
     );
   },
 };
+
+/**
+ * While its write is on its way: the spinner in the thumb, read-only, the focus kept, and the
+ * pending text in place of the description, so it is said in words.
+ */
+export const Pending: Story = {
+  args: {
+    isPending: true,
+    pendingText: 'Saving',
+    defaultSelected: true,
+    description: 'Use the dark theme on this device.',
+  },
+};
+
+/**
+ * Pending without a description, as a switch in a row usually is: the pending text is said to
+ * assistive technology but not shown, so the switch keeps its height while it saves.
+ */
+export const PendingWithoutDescription: Story = {
+  args: {
+    isPending: true,
+    pendingText: 'Saving',
+    defaultSelected: true,
+  },
+};

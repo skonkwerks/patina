@@ -11,9 +11,10 @@ export const gridListRowStyles = tv({
     root: 'flex min-w-0 flex-1 flex-col gap-2',
     main: 'flex min-h-8 min-w-0 items-center gap-3',
     text: 'flex min-w-0 flex-1 flex-col gap-1',
-    heading: 'flex min-w-0 flex-wrap items-center gap-2',
-    title: 'truncate font-medium',
-    description: 'text-surface-foreground-muted text-xs break-words',
+    // Every line of a row is one line, so a row keeps its height whatever its data says.
+    heading: 'flex min-w-0 items-center gap-2',
+    title: 'min-w-0 truncate font-medium',
+    description: 'text-surface-foreground-muted truncate text-xs',
     endContent: 'shrink-0 text-sm tabular-nums',
     actions: 'flex shrink-0 items-center gap-2',
     openIcon: 'size-4',
@@ -44,7 +45,11 @@ export type GridListRowProps = {
   metadata?: readonly InlineMetadataItem[];
   /** A second line of values, about what the unit holds now, such as a slot's node. */
   secondaryMetadata?: readonly InlineMetadataItem[];
-  /** A muted sentence under the values: a note, a reason, a description. */
+  /**
+   * One muted line under the values, cut to one line: what the unit waits for, or what it is doing
+   * now. Never why it is in its state: that reason goes behind a details control beside its badge
+   * (or on its own page), so a row keeps its height.
+   */
   description?: string;
   /** A value read at the right, before the actions, such as a price to compare. */
   endContent?: ReactNode;

@@ -36,9 +36,10 @@ export const Spinner = ({ label, size, className }: SpinnerProps) => (
     viewBox='0 0 24 24'
     fill='none'
     className={spinnerStyles({ size, className })}
-    {...(label === undefined
-      ? { 'aria-hidden': true }
-      : { role: 'img', 'aria-label': label })}
+    // Named, it is an image; without a name, decoration hidden from assistive technology.
+    role={label === undefined ? undefined : 'img'}
+    aria-label={label}
+    aria-hidden={label === undefined ? true : undefined}
   >
     <circle
       cx='12'

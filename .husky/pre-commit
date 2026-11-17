@@ -1,0 +1,11 @@
+# The commit gate. A commit is refused when any step fails; nothing here edits or stages a file.
+# Before every commit, the full validation pass runs `just ci-local`, which also runs every test, and then auto-sde; a push runs `just ci-local` again.
+
+# Type checking and both lint passes are whole-program, so they run over the working tree. With a
+# partially staged file, they check the working copy, not the staged one.
+pnpm check
+pnpm lint
+pnpm lint:es
+
+# Formatting is checked on the staged content itself, read from the index.
+node scripts/check-staged-format.mjs

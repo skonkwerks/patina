@@ -18,14 +18,18 @@ setup:
     fi
     mkdir -p .documents/guidelines
     ln -sfn "{{guidelines_dir}}" .documents/guidelines/general
+    # The story tests run every story in headless Chromium; Playwright keeps the browser in its own cache.
+    pnpm install
+    pnpm --filter @skonkwerks/storybook exec playwright install chromium
 
 # Fails when the shared guidelines are missing, so no session runs without the non-negotiable rules.
 check-guidelines:
     @test -f .documents/guidelines/general/core/conduct.md || { echo ".documents/guidelines/general is missing or broken: run just setup." >&2; exit 1; }
 
-# The automated half of the full validation pass before every commit: type check, lint, format check, and the Storybook build.
+# The automated half of the full validation pass before every commit (auto-sde is the other), and the gate before a push: type check, both lint passes, format check, and every test (the unit specs and every story in Chromium with its axe check, light theme).
 ci-local: check-guidelines
     pnpm check
     pnpm lint
+    pnpm lint:es
     pnpm format:check
-    pnpm build:storybook
+    pnpm test

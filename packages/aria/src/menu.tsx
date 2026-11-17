@@ -12,7 +12,7 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { IconCheck, IconChevronRight } from './icons.tsx';
-import { Popover } from './popover.tsx';
+import { overlayOptionStyles, Popover } from './popover.tsx';
 
 export const menuStyles = tv({
   slots: {
@@ -21,18 +21,21 @@ export const menuStyles = tv({
   },
 });
 
+/**
+ * A menu item: the shared overlay option (its `base` slot), destructive items in the destructive
+ * color, with the check of a selectable item and a submenu's indicator.
+ */
 export const menuItemStyles = tv({
+  extend: overlayOptionStyles,
   slots: {
-    root: 'text-overlay-foreground flex cursor-default items-center rounded px-2 py-1.5 text-sm outline-0 select-none',
-    check: 'mr-2 h-4 w-4 shrink-0',
+    check: 'h-4 w-4 shrink-0',
     // Held off a long label, at the item's end.
     submenuIndicator: 'ml-auto flex shrink-0 pl-3',
     submenuIcon: 'h-4 w-4',
   },
   variants: {
-    isDestructive: { true: { root: 'text-destructive' } },
-    isFocused: { true: { root: 'bg-overlay-hover' } },
-    isDisabled: { true: { root: 'cursor-not-allowed opacity-50' } },
+    // A string applies to the item itself, the `base` slot the overlay option defines.
+    isDestructive: { true: 'text-destructive' },
     isSelected: { false: { check: 'invisible' } },
   },
 });
@@ -41,9 +44,19 @@ export const menuSeparatorStyles = tv({ base: 'bg-overlay-border my-1 h-px' });
 
 export { MenuTrigger, SubmenuTrigger };
 
-export type MenuProps<T extends object> = Omit<AriaMenuProps<T>, 'className'>;
+/** How far a menu stands below its trigger, in pixels. */
+const MENU_OFFSET_PX = 4;
+/** How far a submenu overlaps the menu it opens from, so its first item is level with its opener. */
+const SUBMENU_OFFSET_PX = -2;
+const SUBMENU_CROSS_OFFSET_PX = -5;
 
-export type DropdownMenuProps<T extends object> = MenuProps<T> & {
+/** A `Submenu`'s props: React Aria's menu props; React Aria places it beside its item. */
+export type SubmenuProps<T extends object> = Omit<
+  AriaMenuProps<T>,
+  'className'
+>;
+
+export type MenuProps<T extends object> = SubmenuProps<T> & {
   /**
    * Where the menu opens relative to its trigger. React Aria flips it when there is no room.
    * Defaults to `bottom end`: under the trigger, aligned to its end edge.
@@ -59,10 +72,14 @@ export type DropdownMenuProps<T extends object> = MenuProps<T> & {
 export const Menu = <T extends object>({
   placement = 'bottom end',
   ...props
-}: DropdownMenuProps<T>) => {
+}: MenuProps<T>) => {
   const styles = menuStyles();
   return (
-    <Popover placement={placement} offset={4} className={styles.popover()}>
+    <Popover
+      placement={placement}
+      offset={MENU_OFFSET_PX}
+      className={styles.popover()}
+    >
       <AriaMenu {...props} className={styles.menu()} />
     </Popover>
   );
@@ -73,10 +90,14 @@ export const Menu = <T extends object>({
  * takes no placement; it overlaps the menu it opens from a little, its first item level with the
  * item that opened it.
  */
-export const Submenu = <T extends object>(props: MenuProps<T>) => {
+export const Submenu = <T extends object>(props: SubmenuProps<T>) => {
   const styles = menuStyles();
   return (
-    <Popover offset={-2} crossOffset={-5} className={styles.popover()}>
+    <Popover
+      offset={SUBMENU_OFFSET_PX}
+      crossOffset={SUBMENU_CROSS_OFFSET_PX}
+      className={styles.popover()}
+    >
       <AriaMenu {...props} className={styles.menu()} />
     </Popover>
   );
@@ -107,7 +128,7 @@ export const MenuItem = ({
       rest.textValue ?? (typeof children === 'string' ? children : undefined)
     }
     className={({ isFocused, isDisabled }) =>
-      menuItemStyles({ isDestructive, isFocused, isDisabled }).root()
+      menuItemStyles({ isDestructive, isFocused, isDisabled }).base()
     }
   >
     {({ isSelected, selectionMode, hasSubmenu }) => {

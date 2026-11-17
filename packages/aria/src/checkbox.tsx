@@ -11,34 +11,22 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { choiceControlStyles, fieldStyles } from './field.ts';
+import { focusRing } from './focus.ts';
 import { IconCheck } from './icons.tsx';
 
+/** A checkbox: the shared choice control with a square mark that fills and shows a check when on. */
 export const checkboxStyles = tv({
+  extend: choiceControlStyles,
   slots: {
-    root: 'flex flex-col',
-    // Positioned, so the hidden input React Aria puts inside the label stays over it.
-    button: 'group relative flex items-start gap-3 text-sm',
-    box: [
-      'border-surface-border bg-neutral group-selected:bg-primary mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border',
-      'group-focus-visible:outline-focus-ring group-focus-visible:outline-2 group-focus-visible:outline-offset-2',
-      'group-disabled:opacity-50',
-    ],
+    mark: 'border-surface-border bg-neutral group-selected:bg-primary w-5 justify-center rounded border',
     check:
       'text-primary-foreground group-selected:opacity-100 h-4 w-4 opacity-0',
-    label: 'text-surface-foreground font-medium',
-    // Indented to stand under the label: the mark's width and the gap after it.
-    description: 'text-surface-foreground-muted ms-8 text-xs',
   },
 });
 
-export const checkboxGroupStyles = tv({
-  slots: {
-    root: 'flex flex-col gap-2',
-    label: 'text-surface-foreground text-sm font-medium',
-    description: 'text-surface-foreground-muted text-xs',
-    error: 'text-destructive text-xs',
-  },
-});
+/** The group's own spacing between its checkboxes; its label and help are the shared field parts. */
+export const checkboxGroupStyles = tv({ base: 'gap-2' });
 
 export type CheckboxProps = Omit<
   CheckboxFieldProps,
@@ -46,6 +34,8 @@ export type CheckboxProps = Omit<
 > & {
   children: string;
   description?: string;
+  /** Shown under the checkbox when it is invalid, such as a required acknowledgement left unchecked. */
+  errorMessage?: string;
   className?: string;
 };
 
@@ -57,26 +47,50 @@ export type CheckboxProps = Omit<
 export const Checkbox = ({
   children,
   description,
+  errorMessage,
   className,
   ...rest
-}: CheckboxProps) => {
-  const styles = checkboxStyles();
-  return (
-    <CheckboxField {...rest} className={styles.root({ className })}>
-      <CheckboxButton className={styles.button()}>
-        <span className={styles.box()}>
-          <IconCheck aria-hidden className={styles.check()} strokeWidth={2.5} />
-        </span>
-        <span className={styles.label()}>{children}</span>
-      </CheckboxButton>
-      {description && (
-        <Text slot='description' className={styles.description()}>
-          {description}
-        </Text>
-      )}
-    </CheckboxField>
-  );
-};
+}: CheckboxProps) => (
+  <CheckboxField
+    {...rest}
+    // An explicit isInvalid makes React Aria skip `validate` and `isRequired`, so it is set only
+    // for a caller's error.
+    isInvalid={errorMessage === undefined ? rest.isInvalid : true}
+    className={checkboxStyles().root({ className })}
+  >
+    {({ isDisabled }) => {
+      const styles = checkboxStyles({ isDisabled });
+      return (
+        <>
+          <CheckboxButton className={styles.button()}>
+            {({ isFocusVisible }) => (
+              <>
+                <span
+                  className={styles.mark({
+                    className: focusRing({ isFocusVisible }),
+                  })}
+                >
+                  <IconCheck
+                    aria-hidden
+                    className={styles.check()}
+                    strokeWidth={2.5}
+                  />
+                </span>
+                <span className={styles.label()}>{children}</span>
+              </>
+            )}
+          </CheckboxButton>
+          {description && (
+            <Text slot='description' className={styles.description()}>
+              {description}
+            </Text>
+          )}
+          <FieldError className={styles.error()}>{errorMessage}</FieldError>
+        </>
+      );
+    }}
+  </CheckboxField>
+);
 
 export type CheckboxGroupProps = Omit<
   AriaCheckboxGroupProps,
@@ -91,7 +105,10 @@ export type CheckboxGroupProps = Omit<
   className?: string;
 };
 
-/** A labelled set of checkboxes whose selection is the list of the checked values. */
+/**
+ * A labelled set of checkboxes whose selection is the list of the checked values. While the group
+ * is disabled, its label and description are drawn disabled, and each checkbox draws its own.
+ */
 export const CheckboxGroup = ({
   label,
   description,
@@ -99,22 +116,30 @@ export const CheckboxGroup = ({
   children,
   className,
   ...rest
-}: CheckboxGroupProps) => {
-  const styles = checkboxGroupStyles();
-  return (
-    <AriaCheckboxGroup
-      {...rest}
-      isInvalid={errorMessage === undefined ? rest.isInvalid : true}
-      className={styles.root({ className })}
-    >
-      {label && <Label className={styles.label()}>{label}</Label>}
-      {description && (
-        <Text slot='description' className={styles.description()}>
-          {description}
-        </Text>
-      )}
-      {children}
-      <FieldError className={styles.error()}>{errorMessage}</FieldError>
-    </AriaCheckboxGroup>
-  );
-};
+}: CheckboxGroupProps) => (
+  <AriaCheckboxGroup
+    {...rest}
+    // An explicit isInvalid makes React Aria skip `validate` and `isRequired`, so it is set only
+    // for a caller's error.
+    isInvalid={errorMessage === undefined ? rest.isInvalid : true}
+    className={fieldStyles().root({
+      className: checkboxGroupStyles({ className }),
+    })}
+  >
+    {({ isDisabled }) => {
+      const parts = fieldStyles({ isDisabled });
+      return (
+        <>
+          {label && <Label className={parts.label()}>{label}</Label>}
+          {description && (
+            <Text slot='description' className={parts.description()}>
+              {description}
+            </Text>
+          )}
+          {children}
+          <FieldError className={parts.error()}>{errorMessage}</FieldError>
+        </>
+      );
+    }}
+  </AriaCheckboxGroup>
+);

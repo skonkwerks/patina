@@ -10,13 +10,15 @@
     "node": ">=24"
   },
   "scripts": {
-    "check": "pnpm -r run check",
-    "lint": "eslint --max-warnings=0 .",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "check": "pnpm -r run check && tsgo --noEmit",
+    "lint": "oxlint --type-aware .",
+    "lint:es": "eslint --max-warnings=0 .",
+    "format": "node scripts/format.mjs --write",
+    "format:check": "node scripts/format.mjs --check",
+    "test": "pnpm -r --workspace-concurrency=1 --if-present --no-bail run test",
     "storybook": "pnpm --filter @skonkwerks/storybook run dev",
-    "build:storybook": "pnpm --filter @skonkwerks/storybook run build",
-    "test": "pnpm -r --if-present run test"
+    "build:storybook": "pnpm --filter @skonkwerks/storybook run build"
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.8.1",
@@ -33,6 +35,9 @@
     "eslint-plugin-react-x": "^5.30.3",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "oxlint": "^1.93.0",
+    "oxlint-tsgolint": "^7.0.2007",
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "~6.0.3",

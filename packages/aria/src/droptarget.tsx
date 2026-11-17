@@ -8,11 +8,12 @@ export const dropTargetStyles = tv({
   },
 });
 
+export type DropTargetProps = Omit<DropZoneProps, 'className'> & {
+  className?: string;
+};
+
 /** Compact drop surface whose child supplies its accessible browse action. */
-export const DropTarget = ({
-  className,
-  ...props
-}: Omit<DropZoneProps, 'className'> & { className?: string }) => (
+export const DropTarget = ({ className, ...props }: DropTargetProps) => (
   <DropZone
     {...props}
     className={({ isDropTarget }) =>

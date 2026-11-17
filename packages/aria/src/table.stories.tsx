@@ -171,6 +171,17 @@ export const RefreshFailed: Story = {
 
 /** The end of a paged table while the next page is read. */
 export const LoadingMore: Story = {
+  parameters: {
+    a11y: {
+      config: {
+        // Exception to the story axe check (#2): React Aria's TableLoadMoreItem writes aria-level on
+        // its grid row after the wrapper's props, so no wrapper can remove it
+        // (https://github.com/skonkwerks/patina/issues/1). Only this rule, only this story; remove
+        // the override once a React Aria release fixes it.
+        rules: [{ id: 'aria-conditional-attr', enabled: false }],
+      },
+    },
+  },
   render: (args) => (
     <InvoiceTable
       {...args}

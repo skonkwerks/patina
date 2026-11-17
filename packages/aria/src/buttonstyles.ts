@@ -1,5 +1,6 @@
 import { tv, type VariantProps } from 'tailwind-variants';
 
+import { DISABLED } from './disabled.ts';
 import { focusRing } from './focus.ts';
 
 /**
@@ -23,7 +24,8 @@ export const buttonStyles = tv({
       solid: '',
       outline: 'border',
       ghost: 'bg-transparent',
-      link: 'bg-transparent underline-offset-4 hover:underline',
+      // Always underlined, as a text link is, since it stands in running text.
+      link: 'bg-transparent underline underline-offset-4 hover:decoration-2',
     },
     tone: { neutral: '', primary: '', destructive: '' },
     size: {
@@ -32,7 +34,7 @@ export const buttonStyles = tv({
       lg: 'h-9 gap-2 px-4 text-sm',
     },
     radius: { md: 'rounded-md', full: 'rounded-full' },
-    isDisabled: { true: 'cursor-not-allowed opacity-50', false: '' },
+    isDisabled: { true: DISABLED, false: '' },
     isPending: { true: 'cursor-progress', false: '' },
   },
   compoundVariants: [
@@ -154,7 +156,7 @@ export const buttonStyles = tv({
       isDisabled: true,
       isPending: false,
       variant: 'link',
-      class: 'hover:no-underline',
+      class: 'hover:decoration-auto',
     },
   ],
   defaultVariants: {

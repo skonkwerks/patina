@@ -7,6 +7,7 @@ import {
 } from 'react-aria-components';
 import { tv, type VariantProps } from 'tailwind-variants';
 
+import { DISABLED } from './disabled.ts';
 import { focusRing } from './focus.ts';
 
 /**
@@ -31,7 +32,7 @@ export const toggleStyles = tv({
       false: 'rounded-md',
     },
     isSelected: { true: 'z-10', false: '' },
-    isDisabled: { true: 'cursor-not-allowed opacity-50' },
+    isDisabled: { true: DISABLED },
   },
   compoundVariants: [
     {

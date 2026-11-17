@@ -3,8 +3,9 @@ import { tv } from 'tailwind-variants';
 
 export const inlineMetadataStyles = tv({
   slots: {
-    root: 'text-surface-foreground-muted flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1',
-    item: 'flex min-w-0 items-center gap-x-2',
+    // One line: a row keeps its height whatever its values say, so values that do not fit are cut.
+    root: 'text-surface-foreground-muted flex min-w-0 items-center gap-x-2 overflow-hidden whitespace-nowrap',
+    item: 'flex min-w-0 shrink items-center gap-x-2',
     value: 'min-w-0 truncate',
   },
   variants: {
@@ -29,7 +30,8 @@ export type InlineMetadataProps = {
 };
 
 /**
- * A line of muted metadata values under a row's name, separated by a spaced pipe, the one separator
+ * One line of muted metadata values under a row's title, never wrapping (each value is cut where
+ * it runs out of room), separated by a spaced pipe, the one separator
  * the guidelines allow between adjacent values. The values are a list, so assistive technology reads
  * them as separate items; the pipe is decorative and hidden from it.
  */

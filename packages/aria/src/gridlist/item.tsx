@@ -1,11 +1,11 @@
 import type { Ref } from 'react';
 import {
-  composeRenderProps,
   GridListItem as AriaGridListItem,
   type GridListItemProps as AriaGridListItemProps,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { DISABLED } from '../disabled.ts';
 import { focusRing } from '../focus.ts';
 
 export const gridListItemStyles = tv({
@@ -19,9 +19,7 @@ export const gridListItemStyles = tv({
     // contrast on them; an app should check text contrast on these two fills.
     isSelected: { false: '', true: 'bg-primary/10' },
     isHovered: { true: '', false: '' },
-    isDisabled: {
-      true: 'text-surface-foreground-muted forced-colors:text-[GrayText]',
-    },
+    isDisabled: { true: [DISABLED, 'forced-colors:text-[GrayText]'] },
   },
   // The hover comes from React Aria, which a row has only where a press does something, so a row
   // that does nothing never lights up.
@@ -31,7 +29,9 @@ export const gridListItemStyles = tv({
   ],
 });
 
-export type GridListItemProps = AriaGridListItemProps & {
+export type GridListItemProps = Omit<AriaGridListItemProps, 'className'> & {
+  /** Layout only. */
+  className?: string;
   ref?: Ref<HTMLDivElement>;
 };
 
@@ -49,9 +49,9 @@ export const GridListItem = ({
     textValue={
       textValue ?? (typeof children === 'string' ? children : undefined)
     }
-    className={composeRenderProps(className, (cls, renderProps) =>
-      gridListItemStyles({ ...renderProps, className: cls }),
-    )}
+    className={(renderProps) =>
+      gridListItemStyles({ ...renderProps, className })
+    }
   >
     {children}
   </AriaGridListItem>

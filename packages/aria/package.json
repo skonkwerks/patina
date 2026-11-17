@@ -19,12 +19,13 @@
     "./checkbox": "./src/checkbox.tsx",
     "./count": "./src/count.tsx",
     "./dialog": "./src/dialog.tsx",
+    "./disabled": "./src/disabled.ts",
     "./disclosure": "./src/disclosure.tsx",
     "./droppedfiles": "./src/droppedfiles.ts",
     "./droptarget": "./src/droptarget.tsx",
     "./dropzone": "./src/dropzone.tsx",
     "./emptystate": "./src/emptystate.tsx",
-    "./explaineddisabled": "./src/explaineddisabled.ts",
+    "./field": "./src/field.ts",
     "./filepicker": "./src/filepicker.tsx",
     "./filepickerbutton": "./src/filepickerbutton.tsx",
     "./filetrigger": "./src/filetrigger.tsx",
@@ -52,6 +53,8 @@
     "./table": "./src/table.tsx",
     "./tabs": "./src/tabs.tsx",
     "./textarea": "./src/textarea.tsx",
+    "./textareabase": "./src/textareabase.tsx",
+    "./textdroparea": "./src/textdroparea.tsx",
     "./textfield": "./src/textfield.tsx",
     "./toast": "./src/toast/index.ts",
     "./togglegroup": "./src/togglegroup.tsx",
@@ -65,10 +68,14 @@
     "aria.css",
     "README.md",
     "LICENSE",
-    "THIRDPARTY.md"
+    "THIRDPARTY.md",
+    "!src/**/*.spec.ts",
+    "!src/**/*.stories.tsx"
   ],
   "scripts": {
-    "check": "tsgo --noEmit"
+    "check": "tsgo --noEmit",
+    "lint": "oxlint --type-aware .",
+    "test": "vitest run"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -85,6 +92,7 @@
     "@types/react": "19.2.8",
     "react": "19.2.8",
     "react-aria-components": "^1.22.1",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "vitest": "^5.1.0"
   }
 }

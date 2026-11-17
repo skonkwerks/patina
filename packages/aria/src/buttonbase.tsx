@@ -7,7 +7,6 @@ import {
 } from 'react-aria-components';
 
 import { ButtonTooltip } from './buttontooltip.tsx';
-import { EXPLAINED_DISABLED } from './explaineddisabled.ts';
 import { Spinner, type SpinnerProps } from './spinner.tsx';
 
 export type ButtonBaseProps = Omit<AriaButtonProps, 'className'> & {
@@ -50,7 +49,20 @@ export const ButtonBase = ({
     <ButtonTooltip reason={reason} label={tooltip || undefined}>
       <AriaButton
         {...rest}
-        {...(explainsDisabled ? EXPLAINED_DISABLED : {})}
+        // A button disabled by its reason stays focusable, so its reason can be read on hover and
+        // focus and a press that brings it to this state keeps the focus; it is reported disabled to
+        // assistive technology, and its press and click do nothing. A React Aria trigger around it
+        // (a menu's, a dialog's, a file picker's) would still open on a press, so such a button
+        // stands outside any trigger. Its styles are told that it is disabled.
+        isDisabled={explainsDisabled ? false : rest.isDisabled}
+        aria-disabled={explainsDisabled ? true : rest['aria-disabled']}
+        type={explainsDisabled ? 'button' : rest.type}
+        onPress={explainsDisabled ? undefined : rest.onPress}
+        onPressStart={explainsDisabled ? undefined : rest.onPressStart}
+        onPressEnd={explainsDisabled ? undefined : rest.onPressEnd}
+        onPressUp={explainsDisabled ? undefined : rest.onPressUp}
+        onPressChange={explainsDisabled ? undefined : rest.onPressChange}
+        onClick={explainsDisabled ? undefined : rest.onClick}
         isPending={isPending}
         className={composeRenderProps(className, (cls, renderProps) =>
           styles({

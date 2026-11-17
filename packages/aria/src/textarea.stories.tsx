@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from './button.tsx';
 import { InfoButton } from './infobutton.tsx';
 import { TextArea } from './textarea.tsx';
+import { TextDropArea } from './textdroparea.tsx';
 
 const meta = {
   title: 'Aria/TextArea',
@@ -53,22 +54,20 @@ export const WithContextualHelpAndLabelActions: Story = {
   },
 };
 
-/** Opt-in text drops: drag plain text onto the field to insert it. */
+/** A `TextDropArea`: drag plain text onto the field to append it. A plain `TextArea` takes no drop. */
 export const WithTextDrop: Story = {
   render: function Render(args) {
     const [value, setValue] = useState('');
     return (
-      <TextArea
+      <TextDropArea
         {...args}
         value={value}
         onChange={setValue}
         description='Drop plain text here to append it.'
-        textDrop={{
-          type: 'text/plain',
-          onDrop: (text) => setValue((current) => current + text),
-          errorMessage: 'The dropped text could not be read.',
-          refusedMessage: 'Drop a single piece of plain text.',
-        }}
+        dropType='text/plain'
+        onTextDrop={(text) => setValue((current) => current + text)}
+        dropErrorMessage='The dropped text could not be read.'
+        dropRefusedMessage='Drop a single piece of plain text.'
       />
     );
   },

@@ -1,0 +1,293 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "oxc",
+    "import",
+    "promise",
+    "node",
+    "react"
+  ],
+  "categories": {
+    "correctness": "allow",
+    "suspicious": "allow",
+    "pedantic": "allow",
+    "perf": "allow",
+    "style": "allow",
+    "restriction": "allow",
+    "nursery": "allow"
+  },
+  "ignorePatterns": [
+    "**/{node_modules,dist,build,storybook-static}/**",
+    "**/*.min.js",
+    "**/.DS_Store",
+    ".scratch/**",
+    "**/*.gen.ts",
+    ".sessions/**",
+    ".documents/**"
+  ],
+  "rules": {},
+  "overrides": [
+    {
+      "files": ["**/*.{ts,tsx}", "./*.{mjs,cjs}", "./scripts/**/*.mjs"],
+      "rules": {
+        "curly": ["deny", "all"],
+        "for-direction": ["deny"],
+        "import/extensions": [
+          "deny",
+          "ignorePackages",
+          {
+            "ts": "always",
+            "tsx": "always",
+            "js": "never",
+            "jsx": "never"
+          }
+        ],
+        "import/no-duplicates": ["deny"],
+        "no-async-promise-executor": ["deny"],
+        "no-case-declarations": ["deny"],
+        "no-compare-neg-zero": ["deny"],
+        "no-cond-assign": ["deny", "except-parens"],
+        "no-constant-binary-expression": [
+          "deny",
+          {
+            "checkRelationalComparisons": false
+          }
+        ],
+        "no-constant-condition": [
+          "deny",
+          {
+            "checkLoops": "allExceptWhileTrue"
+          }
+        ],
+        "no-control-regex": ["deny"],
+        "no-debugger": ["deny"],
+        "no-delete-var": ["deny"],
+        "no-dupe-else-if": ["deny"],
+        "no-duplicate-case": ["deny"],
+        "no-empty": [
+          "deny",
+          {
+            "allowEmptyCatch": false
+          }
+        ],
+        "no-empty-character-class": ["deny"],
+        "no-empty-pattern": [
+          "deny",
+          {
+            "allowObjectPatternsAsParameters": false
+          }
+        ],
+        "no-empty-static-block": ["deny"],
+        "no-ex-assign": ["deny"],
+        "no-extra-boolean-cast": ["deny", {}],
+        "no-fallthrough": [
+          "deny",
+          {
+            "allowEmptyCase": false,
+            "reportUnusedFallthroughComment": false
+          }
+        ],
+        "no-global-assign": [
+          "deny",
+          {
+            "exceptions": []
+          }
+        ],
+        "no-invalid-regexp": ["deny", {}],
+        "no-irregular-whitespace": [
+          "deny",
+          {
+            "skipComments": false,
+            "skipJSXText": false,
+            "skipRegExps": false,
+            "skipStrings": true,
+            "skipTemplates": false
+          }
+        ],
+        "no-loss-of-precision": ["deny"],
+        "no-misleading-character-class": [
+          "deny",
+          {
+            "allowEscape": false
+          }
+        ],
+        "no-nonoctal-decimal-escape": ["deny"],
+        "no-prototype-builtins": ["deny"],
+        "no-regex-spaces": ["deny"],
+        "no-restricted-imports": [
+          "deny",
+          {
+            "patterns": [
+              "@skonkwerks/*/src/**",
+              "**/packages/*/src/**",
+              "**/apps/*/src/**"
+            ]
+          }
+        ],
+        "no-self-assign": [
+          "deny",
+          {
+            "props": true
+          }
+        ],
+        "no-shadow-restricted-names": [
+          "deny",
+          {
+            "reportGlobalThis": true
+          }
+        ],
+        "no-sparse-arrays": ["deny"],
+        "no-unassigned-vars": ["deny"],
+        "no-unsafe-finally": ["deny"],
+        "no-unsafe-optional-chaining": [
+          "deny",
+          {
+            "disallowArithmeticOperators": false
+          }
+        ],
+        "no-unused-labels": ["deny"],
+        "no-unused-private-class-members": ["deny"],
+        "no-useless-assignment": ["deny"],
+        "no-useless-backreference": ["deny"],
+        "no-useless-catch": ["deny"],
+        "no-useless-escape": [
+          "deny",
+          {
+            "allowRegexCharacters": []
+          }
+        ],
+        "no-var": ["deny"],
+        "prefer-arrow-callback": [
+          "deny",
+          {
+            "allowNamedFunctions": false,
+            "allowUnboundThis": true
+          }
+        ],
+        "prefer-const": [
+          "deny",
+          {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+          }
+        ],
+        "prefer-rest-params": ["deny"],
+        "prefer-spread": ["deny"],
+        "preserve-caught-error": "deny",
+        "react/exhaustive-deps": ["deny"],
+        "react/jsx-key": ["deny"],
+        "react/jsx-no-target-blank": ["deny"],
+        "react/jsx-no-useless-fragment": ["deny"],
+        "react/no-children-prop": ["deny"],
+        "react/rules-of-hooks": ["deny"],
+        "require-yield": ["deny"],
+        "typescript/await-thenable": ["deny"],
+        "typescript/ban-ts-comment": ["deny"],
+        "typescript/consistent-type-assertions": [
+          "deny",
+          {
+            "assertionStyle": "never"
+          }
+        ],
+        "typescript/consistent-type-imports": [
+          "deny",
+          {
+            "prefer": "type-imports",
+            "disallowTypeAnnotations": false
+          }
+        ],
+        "typescript/no-array-constructor": ["deny"],
+        "typescript/no-array-delete": ["deny"],
+        "typescript/no-base-to-string": ["deny"],
+        "typescript/no-duplicate-enum-values": ["deny"],
+        "typescript/no-duplicate-type-constituents": ["deny"],
+        "typescript/no-empty-object-type": ["deny"],
+        "typescript/no-explicit-any": ["deny"],
+        "typescript/no-extra-non-null-assertion": ["deny"],
+        "typescript/no-floating-promises": ["deny"],
+        "typescript/no-for-in-array": ["deny"],
+        "typescript/no-implied-eval": ["deny"],
+        "typescript/no-misused-new": ["deny"],
+        "typescript/no-misused-promises": ["deny"],
+        "typescript/no-namespace": ["deny"],
+        "typescript/no-non-null-asserted-optional-chain": ["deny"],
+        "typescript/no-redundant-type-constituents": ["deny"],
+        "typescript/no-require-imports": ["deny"],
+        "typescript/no-this-alias": ["deny"],
+        "typescript/no-unnecessary-type-assertion": ["deny"],
+        "typescript/no-unnecessary-type-constraint": ["deny"],
+        "typescript/no-unsafe-argument": ["deny"],
+        "typescript/no-unsafe-assignment": ["deny"],
+        "typescript/no-unsafe-call": ["deny"],
+        "typescript/no-unsafe-declaration-merging": ["deny"],
+        "typescript/no-unsafe-enum-comparison": ["deny"],
+        "typescript/no-unsafe-function-type": ["deny"],
+        "typescript/no-unsafe-member-access": ["deny"],
+        "typescript/no-unsafe-return": ["deny"],
+        "typescript/no-unsafe-unary-minus": ["deny"],
+        "typescript/no-unused-expressions": [
+          "deny",
+          {
+            "allowShortCircuit": false,
+            "allowTaggedTemplates": false,
+            "allowTernary": false
+          }
+        ],
+        "typescript/no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "args": "after-used",
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_",
+            "destructuredArrayIgnorePattern": "^_"
+          }
+        ],
+        "typescript/no-wrapper-object-types": ["deny"],
+        "typescript/only-throw-error": ["deny"],
+        "typescript/prefer-as-const": ["deny"],
+        "typescript/prefer-namespace-keyword": ["deny"],
+        "typescript/prefer-promise-reject-errors": ["deny"],
+        "typescript/require-await": ["deny"],
+        "typescript/restrict-plus-operands": ["deny"],
+        "typescript/restrict-template-expressions": ["deny"],
+        "typescript/triple-slash-reference": ["deny"],
+        "typescript/unbound-method": ["deny"],
+        "use-isnan": [
+          "deny",
+          {
+            "enforceForIndexOf": false,
+            "enforceForSwitchCase": true
+          }
+        ],
+        "valid-typeof": [
+          "deny",
+          {
+            "requireStringLiterals": false
+          }
+        ]
+      }
+    },
+    {
+      "files": ["./*.cjs"],
+      "rules": {
+        "typescript/no-require-imports": "allow"
+      }
+    },
+    {
+      "files": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts"],
+      "rules": {
+        "typescript/no-explicit-any": "allow",
+        "typescript/no-unsafe-argument": "allow",
+        "typescript/no-unsafe-assignment": "allow",
+        "typescript/no-unsafe-call": "allow",
+        "typescript/no-unsafe-member-access": "allow",
+        "typescript/no-unsafe-return": "allow",
+        "typescript/require-await": "allow"
+      }
+    }
+  ]
+}

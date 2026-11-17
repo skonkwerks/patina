@@ -1,5 +1,5 @@
-import comments from '@eslint-community/eslint-plugin-eslint-comments';
 import js from '@eslint/js';
+import comments from '@eslint-community/eslint-plugin-eslint-comments';
 import prettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import-x';
 import reactDom from 'eslint-plugin-react-dom';
@@ -11,7 +11,8 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 /*
- * The lint pass (`pnpm lint`). Warnings fail the run (`--max-warnings=0`). The shared lint rules
+ * The full ESLint pass (`pnpm lint:es`); oxlint (`pnpm lint`) is the fast pass. Warnings fail the run
+ * (`--max-warnings=0`). The shared lint rules
  * for a React project, without the application-only ones (TanStack, i18n), plus the aria package's
  * import rule.
  */
@@ -29,7 +30,15 @@ const importSortGroups = [
 const ignores = [
   '**/{node_modules,dist,build,storybook-static}/**',
   '.sessions/**',
-  '.documents/guidelines/general/**',
+  '.documents/**',
+  '.scratch/**',
+];
+
+/** Import patterns that reach into another workspace's source (by package name or by a relative path). A workspace's own `./src` is not matched. */
+const crossWorkspaceSource = [
+  '@skonkwerks/*/src/**',
+  '**/packages/*/src/**',
+  '**/apps/*/src/**',
 ];
 
 /** ARIA widget roles that React Aria Components implement; on a plain element they mean a hand-rolled control. */
@@ -97,6 +106,10 @@ const ariaImports = (extra = []) => {
     {
       patterns: [
         {
+          group: crossWorkspaceSource,
+          message: "A workspace never reaches into another workspace's source.",
+        },
+        {
           // Any package other than these; relative imports stay inside the package.
           regex: `^(?!\\.)(?!(${allowed.map((name) => name.replace('/', '\\/')).join('|')})(/.*)?$)`,
           message:
@@ -108,17 +121,11 @@ const ariaImports = (extra = []) => {
   ];
 };
 
+/** The rules every file holds, the root's scripts included. */
 /** @type {import('eslint').Linter.RulesRecord} */
-const rules = {
+const baseRules = {
   // First, so that the rules below win over the formatting rules eslint-config-prettier turns off.
   ...prettier.rules,
-  ...reactHooks.configs.recommended.rules,
-  ...reactX.configs['recommended-typescript'].rules,
-  ...reactDom.configs.recommended.rules,
-  'react-refresh/only-export-components': [
-    'error',
-    { allowConstantExport: true },
-  ],
   '@typescript-eslint/no-unused-vars': [
     'error',
     {
@@ -139,7 +146,6 @@ const rules = {
     'error',
     { prefer: 'type-imports', disallowTypeAnnotations: false },
   ],
-  '@typescript-eslint/no-unnecessary-condition': 'error',
   'import-x/no-duplicates': 'error',
   // Relative imports carry their .ts or .tsx extension; the repository defines no path aliases.
   'import-x/extensions': [
@@ -148,12 +154,17 @@ const rules = {
     { ts: 'always', tsx: 'always', js: 'never', jsx: 'never' },
   ],
   'import-x/no-unresolved': 'error',
-  'no-restricted-imports': ['error', { paths: [noReactFC] }],
+  'no-restricted-imports': [
+    'error',
+    { patterns: crossWorkspaceSource, paths: [noReactFC] },
+  ],
   // A suppression says why, after `--`.
   '@eslint-community/eslint-comments/require-description': 'error',
   curly: ['error', 'all'],
   'prefer-arrow-callback': ['error', { allowNamedFunctions: false }],
   'no-console': ['error', { allow: ['warn', 'error'] }],
+  // A workspace imports another by its package name, never by a relative path into it.
+  'import-x/no-relative-packages': 'error',
   'no-restricted-syntax': [
     'error',
     {
@@ -179,6 +190,21 @@ const rules = {
   ],
   'simple-import-sort/imports': ['error', { groups: importSortGroups }],
   'simple-import-sort/exports': 'error',
+};
+
+/** The React workspaces' rules on top of the base. */
+/** @type {import('eslint').Linter.RulesRecord} */
+const rules = {
+  ...baseRules,
+  ...reactHooks.configs.recommended.rules,
+  ...reactX.configs['recommended-typescript'].rules,
+  ...reactDom.configs.recommended.rules,
+  'react-refresh/only-export-components': [
+    'error',
+    { allowConstantExport: true },
+  ],
+  // Enforced together with noUncheckedIndexedAccess, which every React workspace's tsconfig sets.
+  '@typescript-eslint/no-unnecessary-condition': 'error',
 };
 
 /**
@@ -229,16 +255,52 @@ export default tseslint.config([
   { ignores },
 
   ...workspace('packages/aria'),
-  ...workspace('apps/storybook', ['apps/storybook/.storybook/*.{ts,tsx}']),
+  ...workspace('apps/storybook', [
+    'apps/storybook/.storybook/*.{ts,tsx}',
+    'apps/storybook/vitest.config.ts',
+  ]),
+
+  // The root's scripts and configuration, which Node runs as they are written: the same base rules
+  // as a workspace's code, typed through their JSDoc by the root tsconfig.json (`checkJs`).
+  {
+    files: ['*.mjs', 'scripts/**/*.mjs'],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommendedTypeChecked,
+    ],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      globals: globals.node,
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    plugins: {
+      '@eslint-community/eslint-comments': comments,
+      'import-x': importPlugin,
+      'simple-import-sort': simpleImportSort,
+    },
+    settings: {
+      'import-x/resolver': {
+        typescript: { project: './tsconfig.json', alwaysTryTypes: true },
+        node: { extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'] },
+      },
+    },
+    // Scripts report to the terminal: the console is their output (typescript/style.md).
+    rules: { ...baseRules, 'no-console': 'off' },
+  },
 
   // The aria hard rule (packages/aria/README.md).
   {
     files: ['packages/aria/src/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': ariaImports(),
-      // A component file also exports its `{component}Styles`, so an app can extend the look
-      // without forking the component. That costs only a full reload instead of a hot update when
-      // the file is edited in development.
+      // The carve-out: a React Aria wrapper exports its `{component}Styles` beside it, so an app can
+      // extend the look without forking it; every other component keeps its styles in a separate
+      // file. Wrappers are not yet in a folder of their own, so for now the carve-out covers the
+      // whole package; it narrows to the wrappers' folder when they are sorted into one.
       'react-refresh/only-export-components': 'off',
     },
   },
@@ -249,6 +311,11 @@ export default tseslint.config([
       'no-restricted-imports': ariaImports(['clsx', 'tailwind-merge']),
     },
   },
+  // Specs are not shipped to apps; they may also use Vitest.
+  {
+    files: ['packages/aria/src/**/*.spec.ts'],
+    rules: { 'no-restricted-imports': ariaImports(['vitest']) },
+  },
   // Stories are not shipped to apps; they may also use Storybook's types.
   {
     files: ['packages/aria/src/**/*.stories.tsx'],
@@ -256,6 +323,20 @@ export default tseslint.config([
       'no-restricted-imports': ariaImports(['@storybook/react-vite']),
       // A story file exports its stories and its meta, which is what Storybook expects.
       'react-refresh/only-export-components': 'off',
+    },
+  },
+  // Test files relax `any`, the unsafe family, and `require-await`, as in oxlint; the no-cast rule
+  // still applies.
+  {
+    files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/require-await': 'off',
     },
   },
 ]);

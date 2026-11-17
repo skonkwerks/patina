@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import type { Selection } from 'react-aria-components';
 
 import { MultiSelect, type MultiSelectOption } from './multiselect.tsx';
 
@@ -12,14 +13,14 @@ const tags: MultiSelectOption[] = [
   { id: 'support', label: 'Support' },
 ];
 
-/** The trigger's text: the caller's summary of what is chosen. */
-const summarize = (selected: readonly string[]): string => {
-  if (selected.length === 0) {
+/** The trigger's text: the caller's summary of what is chosen, derived from the selection. */
+const summarize = (selected: Selection): string => {
+  const names = tags
+    .filter((tag) => selected === 'all' || selected.has(tag.id))
+    .map((tag) => tag.label);
+  if (names.length === 0) {
     return 'Any tag';
   }
-  const names = tags
-    .filter((tag) => selected.includes(tag.id))
-    .map((tag) => tag.label);
   return names.length <= 2 ? names.join(', ') : `${names.length} tags`;
 };
 
@@ -27,23 +28,25 @@ const meta = {
   title: 'Aria/MultiSelect',
   component: MultiSelect,
   args: {
-    'aria-label': 'Tags',
+    label: 'Tags',
     summary: 'Any tag',
     searchLabel: 'Search tags',
     noMatchesLabel: 'No tags match',
     clearLabel: 'Clear',
+    clearDisabledReason: 'Nothing is chosen',
     options: tags,
-    selected: [],
-    onChange: () => undefined,
+    selectedKeys: new Set<string>(),
+    onSelectionChange: () => undefined,
   },
   render: function Render(args) {
-    const [selected, setSelected] = useState<string[]>([...args.selected]);
+    // The selection React Aria gives is stored and passed back as it is.
+    const [selected, setSelected] = useState<Selection>(args.selectedKeys);
     return (
       <MultiSelect
         {...args}
-        selected={selected}
+        selectedKeys={selected}
         summary={summarize(selected)}
-        onChange={setSelected}
+        onSelectionChange={setSelected}
       />
     );
   },
@@ -52,19 +55,27 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Nothing chosen: Clear, under the list, says why it cannot be pressed. */
 export const Empty: Story = {};
 
-/** Something chosen: the summary names it, and Clear shows under the list. */
+/** Something chosen: the summary names it. */
 export const WithSelection: Story = {
-  args: { selected: ['design', 'research'] },
+  args: { selectedKeys: new Set(['design', 'research']) },
 };
 
 /** More chosen than the summary names one by one. */
 export const ManySelected: Story = {
-  args: { selected: ['design', 'engineering', 'sales', 'support'] },
+  args: {
+    selectedKeys: new Set(['design', 'engineering', 'sales', 'support']),
+  },
+};
+
+/** No visible label, as in a toolbar: the field is named by `aria-label`. */
+export const WithoutVisibleLabel: Story = {
+  args: { label: undefined, 'aria-label': 'Tags' },
 };
 
 /** Locked, such as while a write that uses the choice is pending. */
 export const Disabled: Story = {
-  args: { selected: ['design'], isDisabled: true },
+  args: { selectedKeys: new Set(['design']), isDisabled: true },
 };

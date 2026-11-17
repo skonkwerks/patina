@@ -79,7 +79,7 @@ Every component follows these rules. Familiar names come first: React Aria's own
 - **Statuses:** `info`, `success`, `warning`, and `destructive` for errors. Each has `-foreground` and `-tint`.
 - **Other:** `focus-ring`, `scrim`.
 - **Danger is always `destructive`:** the token, the Button `tone` and `MenuItem`'s `isDestructive` all use it. It's never called `error` or `danger`.
-- **Disabled is one rule everywhere:** `opacity-50` and `cursor-not-allowed`. There's no `-disabled` token.
+- **Disabled is one rule everywhere:** `opacity-50` and `cursor-not-allowed`, defined once as `DISABLED` in `src/disabled.ts` and given as the `true` value of each component's `isDisabled` variant. It is applied to the control and its label, part by part, never to a container around faded parts (two fades would compound). Text that is not the label of a disabled control (a description, an error, a slider's value) keeps its contrast. One exception: a slider's label also keeps its contrast, because it names the thumb's input through `aria-labelledby` rather than `for`, so the automated contrast check cannot tell it belongs to a disabled control; the slider's rail and thumb show that it is disabled. There's no `-disabled` token.
 
 `aria.css` lists the full contract.
 
@@ -102,7 +102,7 @@ Every button-like component (`Button`, `IconButton`, `LinkButton`, `Toggle`, `Ic
 
 ### Props
 
-- **Booleans** start with `is`, `has` or `allows`, as in React Aria: `isPending`, `isDisabled`, `isDismissable`, `hasTooltip`, `hasActionSpace`, `allowsWrapping`. Never a bare adjective (`small`, `ghost`) or a verb phrase (`holdsWork`).
+- **Booleans** start with `is`, `has` or `allows`, as in React Aria: `isPending`, `isDisabled`, `isDismissable`, `hasTooltip`, `hasActionSpace`, `hasValueOutput`, `allowsWrapping`. Never a bare adjective (`small`, `ghost`) or a verb phrase (`holdsWork`).
 - **Pending:** `isPending` plus `pendingText` everywhere. There's no `loadingText` and no string `pending`.
 - **Text:**
   - Fields: `label`, `description`, `errorMessage`, `placeholder`, and `contextualHelp` for a help control next to the label.

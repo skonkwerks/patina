@@ -14,11 +14,15 @@ The naming spec is in [packages/aria/README.md](packages/aria/README.md#naming-s
 ## Commands
 
 ```sh
+just setup            # link the shared guidelines, install Playwright's Chromium for the story tests
 pnpm install
-pnpm storybook         # Storybook at http://localhost:6006
-pnpm check             # type-check every package
-pnpm lint              # ESLint, including the aria dependency rule
-pnpm format            # Prettier
+pnpm storybook        # Storybook at http://localhost:6006
+pnpm check            # type-check every workspace and the root scripts
+pnpm lint             # oxlint, the fast lint pass
+pnpm lint:es          # ESLint, the full pass, including the aria dependency rule
+pnpm format           # Prettier, on the project's file types
+pnpm test             # unit specs, and every story in Chromium with the axe accessibility check
+just ci-local         # all of the above, in order: the gate before every commit
 ```
 
 ## License

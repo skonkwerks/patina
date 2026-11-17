@@ -1,12 +1,12 @@
 import type { ReactNode, Ref } from 'react';
 import {
-  composeRenderProps,
   GridList as AriaGridList,
   type GridListProps as AriaGridListProps,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { EmptyState, type EmptyStateProps } from '../emptystate.tsx';
+import { focusRing } from '../focus.ts';
 import { PendingStatus } from '../spinner.tsx';
 import type { FileDrop } from '../usefiledrop.ts';
 
@@ -18,9 +18,13 @@ export const gridListFrameStyles = tv({
   },
 });
 
-/** The grid itself. */
+/**
+ * The grid itself. It carries the shared focus ring for when it holds the focus itself, which it
+ * does while it is empty; otherwise the focus is on an item.
+ */
 export const gridListStyles = tv({
-  base: 'bg-surface rounded-lg p-0 outline-0',
+  extend: focusRing,
+  base: 'bg-surface rounded-lg p-0',
   variants: {
     // A list that takes files has a dashed frame while it takes them. The frame is two pixels
     // whether or not the drop is enabled, so enabling it never moves the items.
@@ -55,26 +59,31 @@ const fileDropVariant = (fileDrop: FileDrop | undefined) => {
   return fileDrop.isDisabled ? 'disabled' : 'enabled';
 };
 
-export type GridListProps<T extends object> = AriaGridListProps<T> &
-  // RAC forwards this native Stately option but omits it from its public props.
-  // Repeated clicks must publish a new range anchor even when the keys match.
-  {
-    /**
-     * Publish a selection change even when the selected keys are the same, so repeated clicks
-     * move a range anchor. React Stately's option, typed here so the package needs no import of it.
-     */
-    allowDuplicateSelectionEvents?: boolean;
-    /** What the list shows when it loaded and has no items: the `EmptyState` control's props. */
-    emptyState: EmptyStateProps;
-    /**
-     * A failed load or refresh, shown above the list: the app renders the notice (such as a
-     * `LoadFailure` with a retry), since an error notice is not a React Aria wrapper. With no items the body stays
-     * empty instead of claiming there is nothing; with cached items they stay on screen.
-     */
-    error?: ReactNode;
-    /** React 19 ref prop: the grid element, such as for a caller that scrolls it. */
-    ref?: Ref<HTMLDivElement>;
-  } & (
+export type GridListProps<T extends object> = Omit<
+  AriaGridListProps<T>,
+  'className'
+> & {
+  /** Layout only: the grid's own classes. */
+  className?: string;
+  /** What the list holds; every list has an accessible name. */
+  'aria-label': string;
+  /**
+   * Publish a selection change even when the selected keys are the same, so repeated clicks move a
+   * range anchor. React Aria forwards this React Stately option but leaves it out of its public
+   * props, so it is typed here, and the package needs no import of React Stately.
+   */
+  allowDuplicateSelectionEvents?: boolean;
+  /** What the list shows when it loaded and has no items: the `EmptyState` control's props. */
+  emptyState: EmptyStateProps;
+  /**
+   * A failed load or refresh, shown above the list: the app renders the notice (such as a
+   * `LoadFailure` with a retry), since an error notice is not a React Aria wrapper. With no items the body stays
+   * empty instead of claiming there is nothing; with cached items they stay on screen.
+   */
+  error?: ReactNode;
+  /** React 19 ref prop: the grid element, such as for a caller that scrolls it. */
+  ref?: Ref<HTMLDivElement>;
+} & (
     | { isPending?: false; pendingText?: undefined }
     | {
         /** While the first load is in flight, the list shows `pendingText` instead of the empty state. */
@@ -121,21 +130,30 @@ export const GridList = <T extends object>({
       {error}
       <AriaGridList
         {...props}
-        {...(fileDrop ? { dragAndDropHooks: fileDrop.hooks } : {})}
-        className={composeRenderProps(props.className, (cls, renderProps) =>
+        dragAndDropHooks={fileDrop ? fileDrop.hooks : props.dragAndDropHooks}
+        className={(renderProps) =>
           gridListStyles({
             fileDrop: fileDropVariant(fileDrop),
             isDropTarget: renderProps.isDropTarget,
-            className: cls,
-          }),
-        )}
-        renderEmptyState={() =>
-          // The props give the text whenever the list is pending; destructuring loses that pairing.
-          isPending && pendingText !== undefined ? (
-            <PendingStatus text={pendingText} className={frame.pending()} />
-          ) : error ? null : (
-            <EmptyState {...emptyState} />
-          )
+            isFocusVisible: renderProps.isFocusVisible,
+            className: props.className,
+          })
+        }
+        // After a failed load the body has no empty state at all, so React Aria renders no empty row;
+        // the failure above the list says why.
+        renderEmptyState={
+          error
+            ? undefined
+            : () =>
+                // The props give the text whenever the list is pending; destructuring loses that pairing.
+                isPending && pendingText !== undefined ? (
+                  <PendingStatus
+                    text={pendingText}
+                    className={frame.pending()}
+                  />
+                ) : (
+                  <EmptyState {...emptyState} />
+                )
         }
       >
         {children}

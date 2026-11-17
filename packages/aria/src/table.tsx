@@ -200,19 +200,21 @@ export const TableBody = <T extends object>(props: TableBodyProps<T>) => {
   return (
     <AriaTableBody
       {...props}
-      renderEmptyState={() => {
-        if (status === null || status.hasFailed) {
-          return null;
-        }
-        return status.pendingText === undefined ? (
-          <EmptyState {...status.emptyState} />
-        ) : (
-          <PendingStatus
-            text={status.pendingText}
-            className={tableFrameStyles().pending()}
-          />
-        );
-      }}
+      // After a failed read the body has no empty state at all: React Aria then renders no empty row,
+      // where an empty one would be an empty row header, and the failure above the table says why.
+      renderEmptyState={
+        status === null || status.hasFailed
+          ? undefined
+          : () =>
+              status.pendingText === undefined ? (
+                <EmptyState {...status.emptyState} />
+              ) : (
+                <PendingStatus
+                  text={status.pendingText}
+                  className={tableFrameStyles().pending()}
+                />
+              )
+      }
     />
   );
 };

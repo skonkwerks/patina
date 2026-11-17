@@ -4,9 +4,9 @@ import type { Selection } from 'react-aria-components';
 
 import { Button } from './button.tsx';
 import {
-  type DropdownMenuProps,
   Menu,
   MenuItem,
+  type MenuProps,
   MenuSeparator,
   MenuTrigger,
   Submenu,
@@ -23,7 +23,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-type DemoProps = DropdownMenuProps<object>;
+type DemoProps = MenuProps<object>;
 
 const ActionMenu = (args: DemoProps) => {
   const [chosen, setChosen] = useState<string>();

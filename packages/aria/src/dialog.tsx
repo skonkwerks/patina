@@ -1,6 +1,5 @@
 import { createContext, type ReactNode, use } from 'react';
 import {
-  composeRenderProps,
   Dialog as AriaDialog,
   type DialogProps as AriaDialogProps,
   Heading,
@@ -101,8 +100,10 @@ const DismissDisabledContext = createContext(false);
 
 export type DialogModalProps = Omit<
   ModalOverlayProps,
-  'isKeyboardDismissDisabled' | 'isDismissable'
+  'isKeyboardDismissDisabled' | 'isDismissable' | 'className'
 > & {
+  /** The dialog's size: its width class, when the default does not fit. */
+  className?: string;
   /**
    * While true, nothing dismisses the dialog: not Escape, not the scrim, not the close control, not `DialogCancel`.
    * Set it while a write started from the dialog is pending, so its outcome always lands in the dialog.
@@ -136,11 +137,7 @@ export const DialogModal = ({
       className={styles.overlay()}
     >
       {/* The children (a Dialog) go inside the Modal, not the overlay; the overlay is the scrim. */}
-      <Modal
-        className={composeRenderProps(className, (cls) =>
-          styles.modal({ className: cls }),
-        )}
-      >
+      <Modal className={styles.modal({ className })}>
         {(renderProps) => (
           <DismissDisabledContext value={isDismissDisabled}>
             {typeof children === 'function' ? children(renderProps) : children}
@@ -155,7 +152,9 @@ export const DialogModal = ({
  * The dialog's Cancel button: it closes the dialog, and it is disabled whenever the dialog may not be
  * dismissed, under the same rule as Escape and the close control.
  */
-export const DialogCancel = (props: Omit<ButtonProps, 'slot'>) => {
+export type DialogCancelProps = Omit<ButtonProps, 'slot'>;
+
+export const DialogCancel = (props: DialogCancelProps) => {
   const isDismissDisabled = use(DismissDisabledContext);
   return (
     <Button

@@ -1,5 +1,6 @@
 import { tv } from 'tailwind-variants';
 
+import { DISABLED } from '../disabled.ts';
 import { focusRing } from '../focus.ts';
 
 /**
@@ -19,9 +20,7 @@ export const gridListTileStateStyles = tv({
     isHovered: { true: '' },
     // The tile being dragged fades, so where it will land reads against where it was.
     isDragging: { true: 'opacity-40' },
-    isDisabled: {
-      true: 'text-surface-foreground-muted forced-colors:text-[GrayText]',
-    },
+    isDisabled: { true: [DISABLED, 'forced-colors:text-[GrayText]'] },
   },
   // A selected tile under the pointer keeps a selected fill, as a list's row does; the two fills are
   // the ones an app checks the tile's text contrast on.

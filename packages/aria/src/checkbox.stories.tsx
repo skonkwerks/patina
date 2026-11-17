@@ -31,6 +31,15 @@ export const Required: Story = {
   args: { children: 'I agree to the terms', isRequired: true },
 };
 
+/** Invalid: the error stands under the label, as a field's does, such as a required box left unchecked. */
+export const WithError: Story = {
+  args: {
+    children: 'I agree to the terms',
+    isRequired: true,
+    errorMessage: 'Agree to the terms to continue.',
+  },
+};
+
 /** Controlled from outside: the parent holds the value. */
 export const Controlled: Story = {
   render: function Render(args) {

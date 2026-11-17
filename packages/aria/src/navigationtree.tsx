@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react';
 import {
-  composeRenderProps,
   Link as AriaLink,
   NavigationTree as AriaNavigationTree,
   NavigationTreeHeader as AriaNavigationTreeHeader,
   NavigationTreeItem as AriaNavigationTreeItem,
   NavigationTreeItemContent as AriaNavigationTreeItemContent,
   type NavigationTreeItemProps as AriaNavigationTreeItemProps,
-  type NavigationTreeProps,
+  type NavigationTreeProps as AriaNavigationTreeProps,
   NavigationTreeSection as AriaNavigationTreeSection,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
@@ -16,6 +15,14 @@ import { focusRing } from './focus.ts';
 import { Tooltip, TooltipTrigger } from './tooltip.tsx';
 
 export const navigationTreeStyles = tv({ base: 'flex flex-col outline-0' });
+
+export type NavigationTreeProps<T extends object> = Omit<
+  AriaNavigationTreeProps<T>,
+  'className'
+> & {
+  /** Layout only. */
+  className?: string;
+};
 
 /**
  * Navigation through a set of destinations. React Aria supplies the tree semantics, arrow-key
@@ -29,9 +36,7 @@ export const NavigationTree = <T extends object>({
 }: NavigationTreeProps<T>) => (
   <AriaNavigationTree
     {...props}
-    className={composeRenderProps(className, (cls) =>
-      navigationTreeStyles({ className: cls }),
-    )}
+    className={navigationTreeStyles({ className })}
   />
 );
 
@@ -39,7 +44,7 @@ export const NavigationTree = <T extends object>({
 // hovered. Each state sets its own border color, so no base class competes with it.
 export const navigationTreeLinkStyles = tv({
   extend: focusRing,
-  base: 'relative flex min-w-0 flex-1 cursor-pointer items-center gap-2 border-r-2 px-4 py-2 text-[0.9375rem]/[1.375rem] font-medium -outline-offset-2 transition-colors',
+  base: 'relative flex min-w-0 flex-1 cursor-pointer items-center gap-2 border-r-2 px-4 py-2 text-sm font-medium -outline-offset-2 transition-colors',
   variants: {
     isActive: {
       true: 'border-primary text-surface-foreground',
@@ -117,6 +122,11 @@ export const NavigationTreeLink = ({
   </AriaNavigationTreeItem>
 );
 
+export type NavigationTreeSectionProps = {
+  id: string;
+  children: ReactNode;
+};
+
 /**
  * A group of destinations under a `NavigationTreeHeader`, which names the group to assistive
  * technology. A group after the first is set off from the one above by a line, which stays on the
@@ -125,14 +135,17 @@ export const NavigationTreeLink = ({
 export const NavigationTreeSection = ({
   id,
   children,
-}: {
-  id: string;
-  children: ReactNode;
-}) => (
+}: NavigationTreeSectionProps) => (
   <AriaNavigationTreeSection id={id} className={navigationTreeSectionStyles()}>
     {children}
   </AriaNavigationTreeSection>
 );
+
+export type NavigationTreeHeaderProps = {
+  children: ReactNode;
+  /** Visually hidden on the collapsed rail; it still names its group. */
+  isHidden?: boolean;
+};
 
 /**
  * A group's header: small, muted text over its destinations. On the collapsed rail it is visually
@@ -141,10 +154,7 @@ export const NavigationTreeSection = ({
 export const NavigationTreeHeader = ({
   children,
   isHidden = false,
-}: {
-  children: ReactNode;
-  isHidden?: boolean;
-}) => (
+}: NavigationTreeHeaderProps) => (
   <AriaNavigationTreeHeader
     className={navigationTreeHeaderStyles({ isHidden })}
   >

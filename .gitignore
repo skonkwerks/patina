@@ -17,3 +17,7 @@ storybook-static/
 
 # The shared guidelines link (.documents/guidelines/general, made by `just setup`); Patina keeps no other .documents/ content.
 /.documents/
+
+# The root agent instruction files (AGENTS.md and its CLAUDE.md shim) are local to this machine.
+/AGENTS.md
+/CLAUDE.md

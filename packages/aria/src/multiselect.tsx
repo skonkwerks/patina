@@ -1,28 +1,30 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import {
   Button as AriaButton,
   Dialog as AriaDialog,
   DialogTrigger,
+  type Key,
+  Label,
   ListBox,
   ListBoxItem,
+  type Selection,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { Button } from './button.tsx';
+import { fieldBoxStyles, fieldStyles } from './field.ts';
 import { focusRing } from './focus.ts';
 import { IconCheck, IconChevronDown } from './icons.tsx';
-import { Popover } from './popover.tsx';
+import { overlayOptionStyles, Popover } from './popover.tsx';
 import { SearchField } from './searchfield.tsx';
 
 export const multiSelectStyles = tv({
   slots: {
-    triggerLabel: 'sr-only',
     summary: 'min-w-0 flex-1 truncate text-left',
     chevron: 'h-4 w-4 shrink-0',
     popover: 'w-72 p-2',
     dialog: 'flex flex-col gap-2 outline-0',
     noMatches: 'text-overlay-foreground-muted px-2 py-1.5 text-sm',
-    listBox: 'max-h-64 overflow-auto outline-0',
     checkFrame: 'flex h-4 w-4 items-center justify-center',
     check: 'h-3.5 w-3.5',
     optionLabel: 'min-w-0 flex-1 truncate',
@@ -30,36 +32,64 @@ export const multiSelectStyles = tv({
   },
 });
 
-/** The trigger, which carries the shared focus ring. */
+/** The trigger: the shared field box, as wide as its summary up to a limit. */
 export const multiSelectTriggerStyles = tv({
-  extend: focusRing,
-  base: 'bg-input text-input-foreground border-input-border hover:bg-surface-hover inline-flex h-8 max-w-64 cursor-pointer items-center gap-2 rounded-md border px-3 text-sm disabled:cursor-default disabled:opacity-50',
+  extend: fieldBoxStyles,
+  base: 'hover:bg-surface-hover inline-flex h-8 max-w-64 cursor-pointer items-center gap-2 px-3',
 });
 
+/**
+ * The list of options. It carries the shared focus ring for when it holds the focus itself, which
+ * it does when the search matches nothing; otherwise the focus is on an option.
+ */
+export const multiSelectListBoxStyles = tv({
+  extend: focusRing,
+  base: 'max-h-64 overflow-auto rounded',
+});
+
+/** An option of the list: the shared overlay option, the chosen ones in a heavier weight. */
 export const multiSelectOptionStyles = tv({
-  base: 'flex cursor-default items-center gap-2 rounded px-2 py-1.5 text-sm outline-0 select-none',
+  extend: overlayOptionStyles,
   variants: {
-    isFocused: { true: 'bg-overlay-hover' },
     isSelected: { true: 'font-medium' },
   },
 });
 
 export type MultiSelectOption = { id: string; label: string };
 
-export type MultiSelectProps = {
-  /** The name of the field, such as "Tags": the accessible name of the list and the start of the trigger's. */
-  'aria-label': string;
+export type MultiSelectProps = (
+  | {
+      /** The field's visible label, such as "Tags": it names the trigger and the list. */
+      label: string;
+      'aria-label'?: undefined;
+    }
+  | {
+      label?: undefined;
+      /** The field's name without a visible label, for a field in a toolbar. */
+      'aria-label': string;
+    }
+) & {
   /** What the closed trigger shows: the caller's summary of the choice, or of an empty one. */
   summary: string;
-  /** The placeholder of the search field inside. */
+  /** The accessible name of the search field inside. */
   searchLabel: string;
   /** What the list says when the search matches no option. */
   noMatchesLabel: string;
-  /** The name of the button under the list that empties the choice, shown while something is chosen. */
+  /** The name of the button under the list that empties the choice. */
   clearLabel: string;
+  /** Why Clear cannot be pressed while nothing is chosen, such as "Nothing is chosen". */
+  clearDisabledReason: string;
   options: readonly MultiSelectOption[];
-  selected: readonly string[];
-  onChange: (selected: string[]) => void;
+  /**
+   * The chosen options' ids, as React Aria's `Selection`. The object `onSelectionChange` gives is
+   * stored and passed back unchanged, so React Aria keeps its range anchor; arrays for actions or the
+   * summary are derived from it separately. `onSelectionChange` never gives `'all'`: select all
+   * gives an explicit set of every option's id, or, under a search, the earlier choice plus the
+   * options shown, so an option the search hides is never chosen by it. A caller's `'all'` is read as
+   * every option's id.
+   */
+  selectedKeys: Selection;
+  onSelectionChange: (keys: Selection) => void;
   /** Whether the choice is locked, such as while a write that uses it is pending. */
   isDisabled?: boolean;
   className?: string;
@@ -67,106 +97,137 @@ export type MultiSelectProps = {
 
 /**
  * Choose any number of options from a list that can be searched: a button that says what is chosen,
- * opening a popover with a search field over a multiple-selection list, and under the list, while
- * something is chosen, Clear, which empties the choice with one press.
+ * opening a popover with a search field over a multiple-selection list, and Clear under the list,
+ * which empties the choice with one press. Clear is always there, so pressing it never takes the
+ * focus away: while nothing is chosen, it says why it cannot be pressed. The search only narrows
+ * what the list shows; the choice is the caller's, unchanged.
  */
 export const MultiSelect = ({
+  label,
   summary,
   searchLabel,
   noMatchesLabel,
   clearLabel,
+  clearDisabledReason,
   options,
-  selected,
-  onChange,
+  selectedKeys,
+  onSelectionChange,
   isDisabled = false,
   className,
-  ...rest
+  'aria-label': ariaLabel,
 }: MultiSelectProps) => {
   const [query, setQuery] = useState('');
+  const labelId = useId();
+  const nameId = useId();
+  const summaryId = useId();
   const shown = options.filter((option) =>
     option.label.toLowerCase().includes(query.trim().toLowerCase()),
   );
+  // The list is always given an explicit set, never 'all': React Stately turns 'all' into the keys of
+  // the collection it holds, which is only the options the search shows, so unchoosing one option
+  // after select all would silently unchoose every hidden one. A select-all selection carries no
+  // range anchor, so building these sets loses nothing React Aria keeps.
+  const chosen: Set<Key> =
+    selectedKeys === 'all'
+      ? new Set<Key>(options.map((option) => option.id))
+      : selectedKeys;
+  const isEmpty = chosen.size === 0;
+  const changeSelection = (keys: Selection) => {
+    if (keys !== 'all') {
+      onSelectionChange(keys);
+      return;
+    }
+    // Select all chooses every option, or under a search only what the search shows, added to the
+    // earlier choice: an option the search hides is never acted on.
+    const added = shown.length < options.length ? shown : options;
+    onSelectionChange(
+      new Set<Key>([...chosen, ...added.map((option) => option.id)]),
+    );
+  };
+  const name = label ?? ariaLabel;
   const styles = multiSelectStyles();
+  const parts = fieldStyles({ isDisabled });
   return (
-    <DialogTrigger>
-      {/* The trigger's accessible name is the field name, read first, then the visible summary. */}
-      <AriaButton
-        isDisabled={isDisabled}
-        className={(renderProps) =>
-          multiSelectTriggerStyles({ ...renderProps, className })
-        }
-      >
-        <span className={styles.triggerLabel()}>{rest['aria-label']}</span>
-        <span className={styles.summary()}>{summary}</span>
-        <IconChevronDown className={styles.chevron()} aria-hidden />
-      </AriaButton>
-      <Popover className={styles.popover()}>
-        <AriaDialog aria-label={rest['aria-label']} className={styles.dialog()}>
-          <SearchField
-            aria-label={searchLabel}
-            placeholder={searchLabel}
-            value={query}
-            onChange={setQuery}
-            autoFocus
-          />
-          <ListBox
-            aria-label={rest['aria-label']}
-            selectionMode='multiple'
-            // Escape closes the popover, keeping the choice; by default the list would clear it first.
-            escapeKeyBehavior='none'
-            selectedKeys={new Set(selected)}
-            onSelectionChange={(keys) => {
-              // Select all covers only the options the search shows; hidden ones keep their state.
-              onChange(
-                keys === 'all'
-                  ? [
-                      ...new Set([
-                        ...selected,
-                        ...shown.map((option) => option.id),
-                      ]),
-                    ]
-                  : [...keys].map(String),
-              );
-            }}
-            renderEmptyState={() => (
-              <p className={styles.noMatches()}>{noMatchesLabel}</p>
-            )}
-            items={shown}
-            className={styles.listBox()}
-          >
-            {(option) => (
-              <ListBoxItem
-                id={option.id}
-                textValue={option.label}
-                className={({ isFocused, isSelected }) =>
-                  multiSelectOptionStyles({ isFocused, isSelected })
-                }
-              >
-                {({ isSelected }) => (
-                  <>
-                    <span className={styles.checkFrame()}>
-                      {isSelected && (
-                        <IconCheck aria-hidden className={styles.check()} />
-                      )}
-                    </span>
-                    <span className={styles.optionLabel()}>{option.label}</span>
-                  </>
-                )}
-              </ListBoxItem>
-            )}
-          </ListBox>
-          {selected.length > 0 && (
+    <div className={parts.root({ className })}>
+      {label !== undefined && (
+        <Label id={labelId} className={parts.label()}>
+          {label}
+        </Label>
+      )}
+      <DialogTrigger>
+        {/* The trigger's accessible name is the field's name, read first, then the visible summary. */}
+        <AriaButton
+          isDisabled={isDisabled}
+          aria-labelledby={`${label === undefined ? nameId : labelId} ${summaryId}`}
+          className={(renderProps) => multiSelectTriggerStyles(renderProps)}
+        >
+          {label === undefined && (
+            <span id={nameId} hidden>
+              {ariaLabel}
+            </span>
+          )}
+          <span id={summaryId} className={styles.summary()}>
+            {summary}
+          </span>
+          <IconChevronDown className={styles.chevron()} aria-hidden />
+        </AriaButton>
+        <Popover className={styles.popover()}>
+          <AriaDialog aria-label={name} className={styles.dialog()}>
+            <SearchField
+              aria-label={searchLabel}
+              value={query}
+              onChange={setQuery}
+              autoFocus
+            />
+            <ListBox
+              aria-label={name}
+              selectionMode='multiple'
+              // Escape closes the popover, keeping the choice; by default the list would clear it first.
+              escapeKeyBehavior='none'
+              selectedKeys={chosen}
+              onSelectionChange={changeSelection}
+              renderEmptyState={() => (
+                <p className={styles.noMatches()}>{noMatchesLabel}</p>
+              )}
+              items={shown}
+              className={(renderProps) => multiSelectListBoxStyles(renderProps)}
+            >
+              {(option) => (
+                <ListBoxItem
+                  id={option.id}
+                  textValue={option.label}
+                  className={({ isFocused, isSelected }) =>
+                    multiSelectOptionStyles({ isFocused, isSelected })
+                  }
+                >
+                  {({ isSelected }) => (
+                    <>
+                      <span className={styles.checkFrame()}>
+                        {isSelected && (
+                          <IconCheck aria-hidden className={styles.check()} />
+                        )}
+                      </span>
+                      <span className={styles.optionLabel()}>
+                        {option.label}
+                      </span>
+                    </>
+                  )}
+                </ListBoxItem>
+              )}
+            </ListBox>
             <Button
               variant='ghost'
               size='sm'
               className={styles.clear()}
-              onPress={() => onChange([])}
+              disabledReason={isEmpty ? clearDisabledReason : undefined}
+              // A deliberate reset is the one place a new selection is made here.
+              onPress={() => onSelectionChange(new Set())}
             >
               {clearLabel}
             </Button>
-          )}
-        </AriaDialog>
-      </Popover>
-    </DialogTrigger>
+          </AriaDialog>
+        </Popover>
+      </DialogTrigger>
+    </div>
   );
 };

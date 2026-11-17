@@ -1,11 +1,10 @@
 import {
   Breadcrumb as AriaBreadcrumb,
-  type BreadcrumbProps,
+  type BreadcrumbProps as AriaBreadcrumbProps,
   Breadcrumbs as AriaBreadcrumbs,
-  type BreadcrumbsProps,
-  composeRenderProps,
+  type BreadcrumbsProps as AriaBreadcrumbsProps,
   Link as AriaLink,
-  type LinkProps,
+  type LinkProps as AriaLinkProps,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
@@ -24,7 +23,7 @@ export const breadcrumbStyles = tv({
 
 export const breadcrumbLinkStyles = tv({
   extend: focusRing,
-  base: 'min-w-0 rounded-sm break-words lowercase underline-offset-4',
+  base: 'min-w-0 rounded-sm break-words underline-offset-4',
   variants: {
     isCurrent: {
       true: 'text-canvas-foreground-muted cursor-default font-normal',
@@ -32,6 +31,15 @@ export const breadcrumbLinkStyles = tv({
     },
   },
 });
+
+export type BreadcrumbsProps<T extends object> = Omit<
+  AriaBreadcrumbsProps<T>,
+  'className'
+> & {
+  /** Layout only: width, margins, and placement. */
+  className?: string;
+};
+
 /** Shared hierarchy presentation. React Aria supplies list, current-page, and link semantics. */
 export const Breadcrumbs = <T extends object>({
   className,
@@ -39,6 +47,13 @@ export const Breadcrumbs = <T extends object>({
 }: BreadcrumbsProps<T>) => (
   <AriaBreadcrumbs {...props} className={breadcrumbsStyles({ className })} />
 );
+
+export type BreadcrumbProps = Omit<AriaBreadcrumbProps, 'className'> & {
+  /** Layout only. */
+  className?: string;
+};
+
+/** One crumb: its link, then the separator, which the last crumb hides. */
 export const Breadcrumb = ({
   className,
   children,
@@ -46,12 +61,7 @@ export const Breadcrumb = ({
 }: BreadcrumbProps) => {
   const styles = breadcrumbStyles();
   return (
-    <AriaBreadcrumb
-      {...props}
-      className={composeRenderProps(className, (cls) =>
-        styles.root({ className: cls }),
-      )}
-    >
+    <AriaBreadcrumb {...props} className={styles.root({ className })}>
       {(state) => (
         <>
           {typeof children === 'function' ? children(state) : children}
@@ -63,12 +73,22 @@ export const Breadcrumb = ({
     </AriaBreadcrumb>
   );
 };
-/** React Aria owns current-page semantics and delegates navigation to its router provider. */
-export const BreadcrumbLink = ({ className, ...props }: LinkProps) => (
+
+export type BreadcrumbLinkProps = Omit<AriaLinkProps, 'className'> & {
+  /** Layout only. */
+  className?: string;
+};
+
+/**
+ * A crumb's link, its text as given (sentence case from the vocabulary, product nouns kept). React
+ * Aria owns current-page semantics and delegates navigation to its router provider.
+ */
+export const BreadcrumbLink = ({
+  className,
+  ...props
+}: BreadcrumbLinkProps) => (
   <AriaLink
     {...props}
-    className={composeRenderProps(className, (cls, state) =>
-      breadcrumbLinkStyles({ ...state, className: cls }),
-    )}
+    className={(state) => breadcrumbLinkStyles({ ...state, className })}
   />
 );

@@ -32,14 +32,14 @@ export const WithoutVisibleLabel: Story = {
   args: { label: undefined, 'aria-label': 'Volume' },
 };
 
-/** `showValue` puts the current value at the end of the label row. */
-export const ShowValue: Story = { args: { showValue: true } };
+/** `hasValueOutput` puts the current value at the end of the label row. */
+export const WithValueOutput: Story = { args: { hasValueOutput: true } };
 
 /** The value is formatted for the user's locale with `formatOptions`, here as a percent. */
-export const ShowValueAsPercent: Story = {
+export const WithValueOutputAsPercent: Story = {
   args: {
     label: 'Opacity',
-    showValue: true,
+    hasValueOutput: true,
     minValue: 0,
     maxValue: 1,
     step: 0.01,
@@ -48,10 +48,12 @@ export const ShowValueAsPercent: Story = {
   },
 };
 
-/** Controlled: the caller holds `value`, and the slider shows it with `showValue`. */
+/** Controlled: the caller holds `value`, and the slider shows it with `hasValueOutput`. */
 export const Controlled: Story = {
   render: function Render(args) {
     const [value, setValue] = useState(60);
-    return <Slider {...args} showValue value={value} onChange={setValue} />;
+    return (
+      <Slider {...args} hasValueOutput value={value} onChange={setValue} />
+    );
   },
 };
