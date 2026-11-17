@@ -11,10 +11,11 @@
   },
   "scripts": {
     "prepare": "husky",
-    "check": "pnpm -r run check && tsgo --noEmit",
+    "check": "node scripts/exports.mjs --check && pnpm -r run check && tsgo --noEmit",
+    "exports": "node scripts/exports.mjs --write",
     "lint": "oxlint --type-aware .",
     "lint:es": "eslint --max-warnings=0 .",
-    "lint:fix": "eslint --config eslint.autofix.config.mjs --fix packages/aria apps/storybook && node scripts/format.mjs --write",
+    "lint:fix": "eslint --config eslint.autofix.config.mjs --fix packages/patina apps/storybook && node scripts/format.mjs --write",
     "format": "node scripts/format.mjs --write",
     "format:check": "node scripts/format.mjs --check",
     "test": "pnpm -r --workspace-concurrency=1 --if-present --no-bail run test",

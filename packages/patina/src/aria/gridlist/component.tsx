@@ -1,0 +1,163 @@
+import type { ReactNode, Ref } from 'react';
+import {
+  GridList as AriaGridList,
+  type GridListProps as AriaGridListProps,
+} from 'react-aria-components';
+import { tv } from 'tailwind-variants';
+
+import { EmptyState, type EmptyStateProps } from '../../emptystate/index.ts';
+import { focusRing } from '../../internal/focus.ts';
+import { PendingStatus } from '../../spinner/index.ts';
+import type { FileDrop } from '../draganddrop/index.ts';
+
+/** The frame around the grid: where the error notice stands, and the pending status inside the grid. */
+export const gridListFrameStyles = tv({
+  slots: {
+    root: 'flex min-h-0 flex-col gap-3',
+    pending: 'text-surface-foreground-muted p-4',
+  },
+});
+
+/**
+ * The grid itself. It carries the shared focus ring for when it holds the focus itself, which it
+ * does while it is empty; otherwise the focus is on an item.
+ */
+export const gridListStyles = tv({
+  extend: focusRing,
+  base: 'bg-surface rounded-lg p-0',
+  variants: {
+    // A list that takes files has a dashed frame while it takes them. The frame is two pixels
+    // whether or not the drop is enabled, so enabling it never moves the items.
+    fileDrop: {
+      none: 'border-surface-border border',
+      enabled: 'border-surface-border border-2 border-dashed',
+      disabled: 'border-surface-border border-2',
+    },
+    isDropTarget: { true: '', false: '' },
+  },
+  compoundVariants: [
+    {
+      fileDrop: 'enabled',
+      isDropTarget: true,
+      class: 'border-primary bg-primary/10',
+    },
+    // A list whose whole frame is the drop target (dragged items over its empty space, such as
+    // results dropped onto the candidates) is ringed; a drop between items draws the insertion
+    // line instead.
+    {
+      fileDrop: 'none',
+      isDropTarget: true,
+      class: 'border-primary ring-primary ring-1',
+    },
+  ],
+});
+
+const fileDropVariant = (fileDrop: FileDrop | undefined) => {
+  if (!fileDrop) {
+    return 'none';
+  }
+  return fileDrop.isDisabled ? 'disabled' : 'enabled';
+};
+
+export type GridListProps<T extends object> = Omit<
+  AriaGridListProps<T>,
+  'className'
+> & {
+  /** Layout only: the grid's own classes. */
+  className?: string;
+  /** What the list holds; every list has an accessible name. */
+  'aria-label': string;
+  /**
+   * Publish a selection change even when the selected keys are the same, so repeated clicks move a
+   * range anchor. React Aria forwards this React Stately option but leaves it out of its public
+   * props, so it is typed here, and the package needs no import of React Stately.
+   */
+  allowDuplicateSelectionEvents?: boolean;
+  /** What the list shows when it loaded and has no items: the `EmptyState` control's props. */
+  emptyState: EmptyStateProps;
+  /**
+   * A failed load or refresh, shown above the list: the app renders the notice (such as a
+   * `LoadFailure` with a retry), since an error notice is not a React Aria wrapper. With no items the body stays
+   * empty instead of claiming there is nothing; with cached items they stay on screen.
+   */
+  error?: ReactNode;
+  /** React 19 ref prop: the grid element, such as for a caller that scrolls it. */
+  ref?: Ref<HTMLDivElement>;
+} & (
+    | { isPending?: false; pendingText?: undefined }
+    | {
+        /** While the first load is in flight, the list shows `pendingText` instead of the empty state. */
+        isPending: boolean;
+        pendingText: string;
+      }
+  ) &
+  (
+    | { fileDrop?: undefined }
+    | {
+        /**
+         * Files dropped on the list as a whole, from `useFileDrop`, in place of `dragAndDropHooks`.
+         * The list keeps the drop's hooks while it is disabled, and draws the dashed frame of a list
+         * that takes files only while it is enabled.
+         */
+        fileDrop: FileDrop;
+        dragAndDropHooks?: undefined;
+      }
+  );
+
+/**
+ * The project's list of units: React Aria grid semantics (one Tab stop, arrow keys between items,
+ * selection when enabled) with token styling. Items are `GridListItem`s, usually one file each. The
+ * list is always rendered; loading and empty are states of its body, and a failed load or refresh
+ * shows above it, so its frame never changes. Empty is shown only after a load that succeeded with
+ * no items. A list given `fileDrop` takes files dropped on it, with the frame that says so.
+ * `className` styles the grid itself; size and place the whole control from its parent.
+ */
+export const GridList = <T extends object>({
+  children,
+  emptyState,
+  error,
+  isPending = false,
+  pendingText,
+  fileDrop,
+  ...props
+}: GridListProps<T>) => {
+  const frame = gridListFrameStyles();
+  return (
+    <div className={frame.root()}>
+      {/* A failed load shows above the list in every case: over an empty body after a failed first
+        load, and over the cached items after a failed refresh, which stay usable. Retry is outside
+        the grid, so it is an ordinary Tab stop. */}
+      {error}
+      <AriaGridList
+        {...props}
+        dragAndDropHooks={fileDrop ? fileDrop.hooks : props.dragAndDropHooks}
+        className={(renderProps) =>
+          gridListStyles({
+            fileDrop: fileDropVariant(fileDrop),
+            isDropTarget: renderProps.isDropTarget,
+            isFocusVisible: renderProps.isFocusVisible,
+            className: props.className,
+          })
+        }
+        // After a failed load the body has no empty state at all, so React Aria renders no empty row;
+        // the failure above the list says why.
+        renderEmptyState={
+          error
+            ? undefined
+            : () =>
+                // The props give the text whenever the list is pending; destructuring loses that pairing.
+                isPending && pendingText !== undefined ? (
+                  <PendingStatus
+                    text={pendingText}
+                    className={frame.pending()}
+                  />
+                ) : (
+                  <EmptyState {...emptyState} />
+                )
+        }
+      >
+        {children}
+      </AriaGridList>
+    </div>
+  );
+};

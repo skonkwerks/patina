@@ -88,6 +88,32 @@ const noReactFC = {
     'Type the props explicitly instead of using React.FC or FunctionComponent.',
 };
 
+const patinaSrc = './packages/patina/src';
+
+/**
+ * The package's tiers as import zones: for each tier, the folders it may not import from. A core
+ * family is any folder at the root of src/ other than internal/, aria/ and composites/.
+ * @type {{ target: string | string[], from: string | string[], except?: string[], message: string }[]}
+ */
+const tierZones = [
+  {
+    target: `${patinaSrc}/internal`,
+    from: patinaSrc,
+    except: ['./internal'],
+    message: 'internal/ imports only internal/.',
+  },
+  {
+    target: [`${patinaSrc}/!(internal|aria|composites)/**`],
+    from: [`${patinaSrc}/aria`, `${patinaSrc}/composites`],
+    message: 'A core component imports only internal/ and other core families.',
+  },
+  {
+    target: `${patinaSrc}/aria`,
+    from: `${patinaSrc}/composites`,
+    message: 'A React Aria wrapper never imports a composite.',
+  },
+];
+
 /** Every plugin a React workspace's rules (and so a suppression) can name; the autofix configuration registers them too. */
 export const reactPlugins = {
   '@eslint-community/eslint-comments': comments,
@@ -125,7 +151,7 @@ const ariaImports = (extra = []) => {
           // Any package other than these; relative imports stay inside the package.
           regex: `^(?!\\.)(?!(${allowed.map((name) => name.replace('/', '\\/')).join('|')})(/.*)?$)`,
           message:
-            '@skonkwerks/patina imports only React, React Aria Components, tailwind-variants, Tabler icons and its own files (cn in util.ts adds clsx and tailwind-merge). See packages/aria/README.md.',
+            '@skonkwerks/patina imports only React, React Aria Components, tailwind-variants, Tabler icons and its own files (cn in internal/cn.ts adds clsx and tailwind-merge). See packages/patina/README.md.',
         },
       ],
       paths: [noReactFC],
@@ -243,6 +269,9 @@ const workspace = (name, files = [`${name}/**/*.{ts,tsx}`]) => [
     },
     plugins: reactPlugins,
     settings: {
+      // import-x builds its dependency graph only from files with these extensions; without them,
+      // rules that follow imports (no-cycle) see no TypeScript file at all.
+      'import-x/extensions': ['.ts', '.tsx'],
       'import-x/resolver': {
         typescript: {
           project: `./${name}/tsconfig.json`,
@@ -258,7 +287,7 @@ const workspace = (name, files = [`${name}/**/*.{ts,tsx}`]) => [
 export default tseslint.config([
   { ignores },
 
-  ...workspace('packages/aria'),
+  ...workspace('packages/patina'),
   ...workspace('apps/storybook', [
     'apps/storybook/.storybook/*.{ts,tsx}',
     'apps/storybook/vitest.config.ts',
@@ -296,37 +325,45 @@ export default tseslint.config([
     rules: { ...baseRules, 'no-console': 'off' },
   },
 
-  // The aria hard rule (packages/aria/README.md).
+  // The aria hard rule (packages/patina/README.md).
   {
-    files: ['packages/aria/src/**/*.{ts,tsx}'],
+    files: ['packages/patina/src/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': ariaImports(),
-      // The carve-out: a React Aria wrapper exports its `{component}Styles` beside it, so an app can
-      // extend the look without forking it; every other component keeps its styles in a separate
-      // file. Wrappers are not yet in a folder of their own, so for now the carve-out covers the
-      // whole package; it narrows to the wrappers' folder when they are sorted into one.
-      'react-refresh/only-export-components': 'off',
+      // The tiers (packages/patina/README.md#layout): internal/ imports only internal/; a core family
+      // at the root of src/ adds the other core families; aria/ adds aria/; composites/ may import
+      // anything in the package. A tier never reaches up into one above it.
+      'import-x/no-restricted-paths': ['error', { zones: tierZones }],
+      'import-x/no-cycle': 'error',
     },
   },
-  // util.ts holds cn, the one place clsx and tailwind-merge are used.
+  // A React Aria wrapper exports its `{component}Styles` beside it, so an app can extend the look
+  // without forking it; every other component keeps its styles in its family's styles.ts.
   {
-    files: ['packages/aria/src/util.ts'],
+    files: ['packages/patina/src/aria/**/*.{ts,tsx}'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
+  // internal/cn.ts holds cn, the one place clsx and tailwind-merge are used.
+  {
+    files: ['packages/patina/src/internal/cn.ts'],
     rules: {
       'no-restricted-imports': ariaImports(['clsx', 'tailwind-merge']),
     },
   },
   // Specs are not shipped to apps; they may also use Vitest.
   {
-    files: ['packages/aria/src/**/*.spec.ts'],
+    files: ['packages/patina/src/**/*.spec.ts'],
     rules: { 'no-restricted-imports': ariaImports(['vitest']) },
   },
   // Stories are not shipped to apps; they may also use Storybook's types.
   {
-    files: ['packages/aria/src/**/*.stories.tsx'],
+    files: ['packages/patina/src/**/*.stories.tsx'],
     rules: {
       'no-restricted-imports': ariaImports(['@storybook/react-vite']),
       // A story file exports its stories and its meta, which is what Storybook expects.
       'react-refresh/only-export-components': 'off',
+      // A story documents composition, so it may show any tier's components together.
+      'import-x/no-restricted-paths': 'off',
     },
   },
   // Test files relax `any`, the unsafe family, and `require-await`, as in oxlint; the no-cast rule

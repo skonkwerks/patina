@@ -3,7 +3,7 @@
  *
  * Palette: Catppuccin (https://catppuccin.com/palette), Latte for light mode and Mocha for dark mode.
  * Palette variables carry no meaning and are used only in this file. The semantic --patina-clr-*
- * variables name a role (the token contract in @skonkwerks/patina/aria.css) and are defined once per
+ * variables name a role (the token contract in @skonkwerks/patina/patina.css) and are defined once per
  * mode; styles.css exposes them to Tailwind as --color-* tokens. A second theme is another block
  * that redefines the same --patina-clr-* variables, such as [data-theme='ocean'].
  */

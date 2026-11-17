@@ -27,7 +27,6 @@
     ".sessions/**",
     ".documents/**"
   ],
-  "rules": {},
   "overrides": [
     {
       "files": ["**/*.{ts,tsx}", "./*.{mjs,cjs}", "./scripts/**/*.mjs"],
@@ -44,6 +43,7 @@
             "jsx": "never"
           }
         ],
+        "import/no-cycle": "deny",
         "import/no-duplicates": ["deny"],
         "no-async-promise-executor": ["deny"],
         "no-case-declarations": ["deny"],

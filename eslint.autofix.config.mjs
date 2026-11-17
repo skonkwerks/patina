@@ -12,7 +12,7 @@ import { ignores, importSortGroups, reactPlugins } from './eslint.config.mjs';
 export default [
   { ignores },
   {
-    files: ['packages/aria/**/*.{ts,tsx}', 'apps/storybook/**/*.{ts,tsx}'],
+    files: ['packages/patina/**/*.{ts,tsx}', 'apps/storybook/**/*.{ts,tsx}'],
     linterOptions: { reportUnusedDisableDirectives: 'off' },
     languageOptions: { parser: tseslint.parser },
     plugins: {

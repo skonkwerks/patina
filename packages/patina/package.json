@@ -1,0 +1,88 @@
+{
+  "name": "@skonkwerks/patina",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Styled wrappers around React Aria Components, themed with Tailwind tokens. Depends only on React, React Aria Components, Tabler icons, clsx, tailwind-merge and tailwind-variants.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    "./actionmenu": "./src/composites/actionmenu/index.ts",
+    "./breadcrumbs": "./src/aria/breadcrumbs/index.ts",
+    "./button": "./src/aria/button/index.ts",
+    "./checkbox": "./src/aria/checkbox/index.ts",
+    "./count": "./src/count/index.ts",
+    "./dialog": "./src/aria/dialog/index.ts",
+    "./disclosure": "./src/aria/disclosure/index.ts",
+    "./draganddrop": "./src/aria/draganddrop/index.ts",
+    "./droptarget": "./src/aria/droptarget/index.ts",
+    "./dropzone": "./src/composites/dropzone/index.ts",
+    "./emptystate": "./src/emptystate/index.ts",
+    "./filepicker": "./src/composites/filepicker/index.ts",
+    "./filetrigger": "./src/aria/filetrigger/index.ts",
+    "./form": "./src/aria/form/index.ts",
+    "./gridlist": "./src/aria/gridlist/index.ts",
+    "./gridlistrow": "./src/composites/gridlistrow/index.ts",
+    "./iconbutton": "./src/aria/iconbutton/index.ts",
+    "./infobutton": "./src/composites/infobutton/index.ts",
+    "./inlinemetadata": "./src/inlinemetadata/index.ts",
+    "./link": "./src/aria/link/index.ts",
+    "./menu": "./src/aria/menu/index.ts",
+    "./multiselect": "./src/composites/multiselect/index.ts",
+    "./navigationtree": "./src/aria/navigationtree/index.ts",
+    "./numberfield": "./src/aria/numberfield/index.ts",
+    "./patina.css": "./patina.css",
+    "./popover": "./src/aria/popover/index.ts",
+    "./progressbar": "./src/aria/progressbar/index.ts",
+    "./radiogroup": "./src/aria/radiogroup/index.ts",
+    "./rowtile": "./src/rowtile/index.ts",
+    "./searchfield": "./src/aria/searchfield/index.ts",
+    "./select": "./src/aria/select/index.ts",
+    "./slider": "./src/aria/slider/index.ts",
+    "./spinner": "./src/spinner/index.ts",
+    "./switch": "./src/aria/switch/index.ts",
+    "./table": "./src/aria/table/index.ts",
+    "./tabs": "./src/aria/tabs/index.ts",
+    "./textarea": "./src/aria/textarea/index.ts",
+    "./textdroparea": "./src/composites/textdroparea/index.ts",
+    "./textfield": "./src/aria/textfield/index.ts",
+    "./toast": "./src/aria/toast/index.ts",
+    "./togglegroup": "./src/aria/togglegroup/index.ts",
+    "./tooltip": "./src/aria/tooltip/index.ts"
+  },
+  "files": [
+    "src",
+    "patina.css",
+    "README.md",
+    "LICENSE",
+    "!src/**/*.spec.ts",
+    "!src/**/*.stories.tsx"
+  ],
+  "scripts": {
+    "check": "tsgo --noEmit",
+    "lint": "oxlint --type-aware .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0",
+    "tailwind-variants": "^3.3.1"
+  },
+  "peerDependencies": {
+    "@tabler/icons-react": "^3.52.0",
+    "react": "^19.2.0",
+    "react-aria-components": "^1.22.1",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@storybook/react-vite": "^10.6.7",
+    "@tabler/icons-react": "^3.52.0",
+    "@types/react": "19.2.8",
+    "react": "19.2.8",
+    "react-aria-components": "^1.22.1",
+    "tailwindcss": "^4.3.3",
+    "vitest": "^5.1.0"
+  }
+}
