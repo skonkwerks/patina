@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
 
 import { Button } from './button.tsx';
@@ -10,7 +11,6 @@ import {
   DialogTrigger,
 } from './dialog.tsx';
 import { IconButton } from './iconbutton.tsx';
-import { IconInfoCircle } from './icons.tsx';
 
 const meta = {
   title: 'Aria/Dialog',

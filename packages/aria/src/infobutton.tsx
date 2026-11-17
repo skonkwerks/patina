@@ -1,7 +1,7 @@
+import { IconInfoCircle } from '@tabler/icons-react';
 import { tv } from 'tailwind-variants';
 
 import { IconButton, type IconButtonProps } from './iconbutton.tsx';
-import { IconInfoCircle } from './icons.tsx';
 
 export const infoButtonStyles = tv({
   slots: { icon: 'h-4 w-4' },

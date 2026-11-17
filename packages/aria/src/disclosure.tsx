@@ -1,3 +1,4 @@
+import { IconChevronRight } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 import {
   Button,
@@ -10,7 +11,6 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { focusRing } from './focus.ts';
-import { IconChevronRight } from './icons.tsx';
 
 export const disclosureStyles = tv({
   slots: {

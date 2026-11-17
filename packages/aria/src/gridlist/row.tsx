@@ -1,8 +1,8 @@
+import { IconChevronRight } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 import { tv } from 'tailwind-variants';
 
 import { IconButton } from '../iconbutton.tsx';
-import { IconChevronRight } from '../icons.tsx';
 import { InlineMetadata, type InlineMetadataItem } from '../inlinemetadata.tsx';
 import { GridListItem } from './item.tsx';
 

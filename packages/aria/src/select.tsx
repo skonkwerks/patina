@@ -1,3 +1,4 @@
+import { IconChevronDown } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 import {
   Button,
@@ -15,7 +16,6 @@ import { tv } from 'tailwind-variants';
 
 import { Count } from './count.tsx';
 import { fieldBoxStyles, fieldStyles } from './field.ts';
-import { IconChevronDown } from './icons.tsx';
 import { overlayOptionStyles, Popover } from './popover.tsx';
 import { Spinner } from './spinner.tsx';
 

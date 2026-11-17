@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { IconDownload, IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
 import type { Selection } from 'react-aria-components';
 
 import { ActionMenu } from '../actionmenu.tsx';
 import { Button } from '../button.tsx';
-import { IconDownload, IconInfoCircle } from '../icons.tsx';
 import { MenuItem, MenuSeparator } from '../menu.tsx';
 import { useFileDrop } from '../usefiledrop.ts';
 import { GridList, type GridListProps } from './component.tsx';

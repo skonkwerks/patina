@@ -1,9 +1,9 @@
+import { IconDotsVertical } from '@tabler/icons-react';
 import { type ReactNode, useRef } from 'react';
 import type { Key } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { IconButton } from './iconbutton.tsx';
-import { IconDotsVertical } from './icons.tsx';
 import { Menu, MenuTrigger } from './menu.tsx';
 
 export const actionMenuStyles = tv({ slots: { icon: 'h-4 w-4' } });

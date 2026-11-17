@@ -7,24 +7,24 @@ Styled wrappers around [React Aria Components](https://react-spectrum.adobe.com/
 The wrappers import only:
 
 - `react` and `react-aria-components` (peer dependencies)
+- `@tabler/icons-react` (peer dependency), for the icons the components draw, under Tabler's own names (`IconCheck`, `IconX`)
 - `tailwind-variants`
 - `cn` from `util.ts`, which is the only place `clsx` and `tailwind-merge` are used
 - the package's own files
 
-Nothing else, including no icon library, no animation library and nothing from the sibling `@skonkwerks/patina-*` packages. Two things enforce the rule:
+Nothing else, including no other icon library, no animation library and nothing from the sibling `@skonkwerks/patina-*` packages. Two things enforce the rule:
 
 1. **pnpm's strict resolution.** `package.json` lists only those dependencies, so any other import fails to resolve.
 2. **ESLint.** A `no-restricted-imports` rule in the root `eslint.config.mjs` reports any other import in `packages/aria/src`. Stories may also import Storybook's types.
 
-What the wrappers need from outside is drawn in, not imported:
+What the wrappers need beyond that is drawn in, not imported:
 
-- **Icons:** the few icons the wrappers draw are inline SVG in `src/icons.tsx` (copied from Tabler Icons, MIT; see `THIRDPARTY.md`). An app uses whatever icon library it likes for its own icons.
 - **Spinner:** `Spinner` and `PendingStatus` in `src/spinner.tsx` are plain SVG.
 - **Error notices:** `Table` and `GridList` take `error` as a `ReactNode`. The app renders its own notice (for example a `LoadFailure` with a retry button).
 
 ## Using it in an app
 
-1. Add the dependency. While the package is private, install it through the workspace or a local link:
+1. Add the dependency, with its peer dependencies (`react`, `react-aria-components`, `@tabler/icons-react`, `tailwindcss`). While the package is private, install it through the workspace or a local link:
 
    ```json
    "@skonkwerks/patina": "link:../patina/packages/aria"
@@ -35,7 +35,14 @@ What the wrappers need from outside is drawn in, not imported:
    ```ts
    // vite.config.ts
    export default defineConfig({
-     resolve: { dedupe: ['react', 'react-dom', 'react-aria-components'] },
+     resolve: {
+       dedupe: [
+         'react',
+         'react-dom',
+         'react-aria-components',
+         '@tabler/icons-react',
+       ],
+     },
    });
    ```
 

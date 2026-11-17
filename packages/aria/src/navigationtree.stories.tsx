@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { IconDownload, IconInfoCircle, IconSearch } from '@tabler/icons-react';
 import { useState } from 'react';
 import { RouterProvider } from 'react-aria-components';
 
-import { IconDownload, IconInfoCircle, IconSearch } from './icons.tsx';
 import {
   NavigationTree,
   NavigationTreeHeader,

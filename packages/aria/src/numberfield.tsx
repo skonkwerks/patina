@@ -1,3 +1,4 @@
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { useRef } from 'react';
 import {
   Button as AriaButton,
@@ -14,7 +15,6 @@ import { tv } from 'tailwind-variants';
 
 import { fieldBoxStyles, fieldStyles } from './field.ts';
 import { iconButtonStyles } from './iconbutton.tsx';
-import { IconChevronDown, IconChevronUp } from './icons.tsx';
 import { useShownErrorFollowsValue } from './shownerror.ts';
 
 export const numberFieldStyles = tv({

@@ -14,6 +14,7 @@
     "check": "pnpm -r run check && tsgo --noEmit",
     "lint": "oxlint --type-aware .",
     "lint:es": "eslint --max-warnings=0 .",
+    "lint:fix": "eslint --config eslint.autofix.config.mjs --fix packages/aria apps/storybook && node scripts/format.mjs --write",
     "format": "node scripts/format.mjs --write",
     "format:check": "node scripts/format.mjs --check",
     "test": "pnpm -r --workspace-concurrency=1 --if-present --no-bail run test",

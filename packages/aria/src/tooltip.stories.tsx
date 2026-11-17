@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { IconDownload } from '@tabler/icons-react';
 
 import { Button } from './button.tsx';
 import { IconButton } from './iconbutton.tsx';
-import { IconDownload } from './icons.tsx';
 import { Link } from './link.tsx';
 import { Tooltip, TooltipTrigger } from './tooltip.tsx';
 

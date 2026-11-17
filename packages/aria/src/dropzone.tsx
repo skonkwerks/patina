@@ -1,10 +1,10 @@
+import { IconDownload } from '@tabler/icons-react';
 import { DropZone as AriaDropZone, Text } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { DISABLED } from './disabled.ts';
 import { type DropFailureReason, readDroppedFiles } from './droppedfiles.ts';
 import { FilePickerButton } from './filepickerbutton.tsx';
-import { IconDownload } from './icons.tsx';
 
 /**
  * The zone's frame is dashed while it takes files and solid while it does not, as a grid list's

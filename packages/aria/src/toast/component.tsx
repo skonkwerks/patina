@@ -1,3 +1,4 @@
+import { IconCheck, IconInfoCircle, IconX } from '@tabler/icons-react';
 import {
   Button as AriaButton,
   Text,
@@ -9,7 +10,6 @@ import { tv } from 'tailwind-variants';
 
 import { focusRing } from '../focus.ts';
 import { iconButtonStyles } from '../iconbutton.tsx';
-import { IconCheck, IconInfoCircle, IconX } from '../icons.tsx';
 import { toastQueue, type ToastStatus } from './queue.ts';
 
 export const toastRegionStyles = tv({

@@ -1,3 +1,4 @@
+import { IconCheck } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 import {
   CheckboxButton,
@@ -13,7 +14,6 @@ import { tv } from 'tailwind-variants';
 
 import { choiceControlStyles, fieldStyles } from './field.ts';
 import { focusRing } from './focus.ts';
-import { IconCheck } from './icons.tsx';
 
 /** A checkbox: the shared choice control with a square mark that fills and shows a check when on. */
 export const checkboxStyles = tv({

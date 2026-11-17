@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { IconCheck, IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
 import type { Key } from 'react-aria-components';
 
-import { IconCheck, IconInfoCircle } from './icons.tsx';
 import { IconToggle, Toggle, ToggleGroup } from './togglegroup.tsx';
 
 const meta = {

@@ -1,3 +1,4 @@
+import { IconX } from '@tabler/icons-react';
 import { createContext, type ReactNode, use } from 'react';
 import {
   Dialog as AriaDialog,
@@ -11,7 +12,6 @@ import { tv } from 'tailwind-variants';
 
 import { Button, type ButtonProps } from './button.tsx';
 import { IconButton } from './iconbutton.tsx';
-import { IconX } from './icons.tsx';
 
 export const dialogStyles = tv({
   slots: {

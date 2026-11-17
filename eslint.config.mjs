@@ -18,7 +18,7 @@ import tseslint from 'typescript-eslint';
  */
 
 /** Import groups: side effects, Node built-ins, packages, workspace packages, relative paths. */
-const importSortGroups = [
+export const importSortGroups = [
   ['^\\u0000'],
   ['^node:'],
   ['^@?\\w'],
@@ -27,7 +27,7 @@ const importSortGroups = [
 ];
 
 /** Paths lint never touches. */
-const ignores = [
+export const ignores = [
   '**/{node_modules,dist,build,storybook-static}/**',
   '.sessions/**',
   '.documents/**',
@@ -88,9 +88,20 @@ const noReactFC = {
     'Type the props explicitly instead of using React.FC or FunctionComponent.',
 };
 
+/** Every plugin a React workspace's rules (and so a suppression) can name; the autofix configuration registers them too. */
+export const reactPlugins = {
+  '@eslint-community/eslint-comments': comments,
+  'import-x': importPlugin,
+  'simple-import-sort': simpleImportSort,
+  'react-hooks': reactHooks,
+  'react-refresh': reactRefresh,
+  'react-x': reactX,
+  'react-dom': reactDom,
+};
+
 /**
- * The aria hard rule: a wrapper imports React, React Aria Components, tailwind-variants and the
- * package's own files, and nothing else. `extra` adds the packages one kind of file may also use.
+ * The aria hard rule: a wrapper imports React, React Aria Components, Tabler icons,
+ * tailwind-variants and the package's own files, and nothing else. `extra` adds the packages one kind of file may also use.
  * @param {string[]} extra
  * @returns {import('eslint').Linter.RuleEntry}
  */
@@ -99,6 +110,7 @@ const ariaImports = (extra = []) => {
     'react',
     'react-aria-components',
     'tailwind-variants',
+    '@tabler/icons-react',
     ...extra,
   ];
   return [
@@ -113,7 +125,7 @@ const ariaImports = (extra = []) => {
           // Any package other than these; relative imports stay inside the package.
           regex: `^(?!\\.)(?!(${allowed.map((name) => name.replace('/', '\\/')).join('|')})(/.*)?$)`,
           message:
-            '@skonkwerks/patina imports only React, React Aria Components, tailwind-variants and its own files (cn in util.ts adds clsx and tailwind-merge). See packages/aria/README.md.',
+            '@skonkwerks/patina imports only React, React Aria Components, tailwind-variants, Tabler icons and its own files (cn in util.ts adds clsx and tailwind-merge). See packages/aria/README.md.',
         },
       ],
       paths: [noReactFC],
@@ -229,15 +241,7 @@ const workspace = (name, files = [`${name}/**/*.{ts,tsx}`]) => [
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    plugins: {
-      '@eslint-community/eslint-comments': comments,
-      'import-x': importPlugin,
-      'simple-import-sort': simpleImportSort,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-      'react-x': reactX,
-      'react-dom': reactDom,
-    },
+    plugins: reactPlugins,
     settings: {
       'import-x/resolver': {
         typescript: {

@@ -1,3 +1,4 @@
+import { IconSearch, IconX } from '@tabler/icons-react';
 import {
   Button as AriaButton,
   Group,
@@ -10,7 +11,6 @@ import { tv } from 'tailwind-variants';
 
 import { fieldBoxStyles, fieldStyles } from './field.ts';
 import { focusRing } from './focus.ts';
-import { IconSearch, IconX } from './icons.tsx';
 
 export const searchFieldStyles = tv({
   slots: {

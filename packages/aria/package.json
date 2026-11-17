@@ -2,7 +2,7 @@
   "name": "@skonkwerks/patina",
   "version": "0.1.0",
   "private": true,
-  "description": "Styled wrappers around React Aria Components, themed with Tailwind tokens. Depends only on React, React Aria Components, clsx, tailwind-merge and tailwind-variants.",
+  "description": "Styled wrappers around React Aria Components, themed with Tailwind tokens. Depends only on React, React Aria Components, Tabler icons, clsx, tailwind-merge and tailwind-variants.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -33,7 +33,6 @@
     "./form": "./src/form.tsx",
     "./gridlist": "./src/gridlist/index.ts",
     "./iconbutton": "./src/iconbutton.tsx",
-    "./icons": "./src/icons.tsx",
     "./infobutton": "./src/infobutton.tsx",
     "./inlinemetadata": "./src/inlinemetadata.tsx",
     "./link": "./src/link.tsx",
@@ -68,7 +67,6 @@
     "aria.css",
     "README.md",
     "LICENSE",
-    "THIRDPARTY.md",
     "!src/**/*.spec.ts",
     "!src/**/*.stories.tsx"
   ],
@@ -83,12 +81,14 @@
     "tailwind-variants": "^3.3.1"
   },
   "peerDependencies": {
+    "@tabler/icons-react": "^3.52.0",
     "react": "^19.2.0",
     "react-aria-components": "^1.22.1",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.6.7",
+    "@tabler/icons-react": "^3.52.0",
     "@types/react": "19.2.8",
     "react": "19.2.8",
     "react-aria-components": "^1.22.1",

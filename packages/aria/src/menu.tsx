@@ -1,3 +1,4 @@
+import { IconCheck, IconChevronRight } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 import {
   Menu as AriaMenu,
@@ -11,7 +12,6 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { IconCheck, IconChevronRight } from './icons.tsx';
 import { overlayOptionStyles, Popover } from './popover.tsx';
 
 export const menuStyles = tv({

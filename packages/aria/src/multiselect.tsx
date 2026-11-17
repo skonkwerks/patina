@@ -1,3 +1,4 @@
+import { IconCheck, IconChevronDown } from '@tabler/icons-react';
 import { useId, useState } from 'react';
 import {
   Button as AriaButton,
@@ -14,7 +15,6 @@ import { tv } from 'tailwind-variants';
 import { Button } from './button.tsx';
 import { fieldBoxStyles, fieldStyles } from './field.ts';
 import { focusRing } from './focus.ts';
-import { IconCheck, IconChevronDown } from './icons.tsx';
 import { overlayOptionStyles, Popover } from './popover.tsx';
 import { SearchField } from './searchfield.tsx';
 
