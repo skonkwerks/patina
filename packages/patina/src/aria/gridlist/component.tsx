@@ -77,8 +77,9 @@ export type GridListProps<T extends object> = Omit<
   /** What the list shows when it loaded and has no items: the `EmptyState` control's props. */
   emptyState: EmptyStateProps;
   /**
-   * A failed load or refresh, shown above the list: the app renders the notice (such as a
-   * `LoadFailure` with a retry), since an error notice is not a React Aria wrapper. With no items the body stays
+   * A failed load or refresh, shown above the list: a node, because a wrapper cannot import a
+   * composite, so the app passes the notice, such as `LoadFailure` from
+   * `@skonkwerks/patina/loadstatus`. With no items the body stays
    * empty instead of claiming there is nothing; with cached items they stay on screen.
    */
   error?: ReactNode;

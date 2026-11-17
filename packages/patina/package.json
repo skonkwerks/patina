@@ -10,6 +10,7 @@
   ],
   "exports": {
     "./actionmenu": "./src/composites/actionmenu/index.ts",
+    "./alert": "./src/composites/alert/index.ts",
     "./breadcrumbs": "./src/aria/breadcrumbs/index.ts",
     "./button": "./src/aria/button/index.ts",
     "./checkbox": "./src/aria/checkbox/index.ts",
@@ -33,6 +34,7 @@
     "./infobutton": "./src/composites/infobutton/index.ts",
     "./inlinemetadata": "./src/inlinemetadata/index.ts",
     "./link": "./src/aria/link/index.ts",
+    "./loadstatus": "./src/composites/loadstatus/index.ts",
     "./mediastrip": "./src/aria/mediastrip/index.ts",
     "./menu": "./src/aria/menu/index.ts",
     "./multiselect": "./src/composites/multiselect/index.ts",
@@ -49,6 +51,9 @@
     "./select": "./src/aria/select/index.ts",
     "./slider": "./src/aria/slider/index.ts",
     "./spinner": "./src/spinner/index.ts",
+    "./splitbutton": "./src/composites/splitbutton/index.ts",
+    "./statedetails": "./src/composites/statedetails/index.ts",
+    "./stepper": "./src/composites/stepper/index.ts",
     "./switch": "./src/aria/switch/index.ts",
     "./table": "./src/aria/table/index.ts",
     "./tabs": "./src/aria/tabs/index.ts",
@@ -91,6 +96,7 @@
     "motion": "^14.14.0",
     "react": "19.2.8",
     "react-aria-components": "^1.22.1",
+    "storybook": "^10.6.7",
     "tailwindcss": "^4.3.3",
     "vitest": "^5.1.0"
   }

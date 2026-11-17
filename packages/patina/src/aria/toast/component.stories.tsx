@@ -18,9 +18,7 @@ export const Default: Story = {
     <>
       <div className='flex flex-wrap gap-3'>
         <Button
-          onPress={() =>
-            showToast({ title: 'Project saved', status: 'success' })
-          }
+          onPress={() => showToast({ title: 'Project saved', tone: 'success' })}
         >
           Show success
         </Button>
@@ -29,7 +27,7 @@ export const Default: Story = {
             showToast({
               title: 'Export started',
               description: 'You will get an email when the file is ready.',
-              status: 'info',
+              tone: 'info',
             })
           }
         >
@@ -38,7 +36,7 @@ export const Default: Story = {
         <Button
           onPress={() => {
             for (const n of [1, 2, 3, 4]) {
-              showToast({ title: `Upload ${n} finished`, status: 'success' });
+              showToast({ title: `Upload ${n} finished`, tone: 'success' });
             }
           }}
         >

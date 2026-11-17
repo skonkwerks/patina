@@ -17,12 +17,12 @@ export const toastRegionStyles = tv({
   base: 'pointer-events-none fixed right-4 bottom-4 z-[100] flex w-96 max-w-[calc(100vw-2rem)] flex-col gap-2 transition-[right] duration-200 motion-reduce:transition-none',
 });
 
-/** One toast's frame, which carries the shared focus ring and its status's border. */
+/** One toast's frame, which carries the shared focus ring and its tone's border. */
 export const toastStyles = tv({
   extend: focusRing,
   base: 'bg-overlay text-overlay-foreground pointer-events-auto grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-3 rounded-lg border p-3 shadow-lg',
   variants: {
-    status: {
+    tone: {
       info: 'border-info-tint/40',
       success: 'border-success-tint/40',
     },
@@ -40,7 +40,7 @@ export const toastContentStyles = tv({
     closeIcon: 'h-4 w-4',
   },
   variants: {
-    status: {
+    tone: {
       info: { icon: 'text-info' },
       success: { icon: 'text-success' },
     },
@@ -66,15 +66,15 @@ export const ToastRegion = ({ className }: ToastRegionProps) => {
       className={toastRegionStyles({ className })}
     >
       {({ toast }) => {
-        const status = toast.content.status ?? 'info';
-        const styles = toastContentStyles({ status });
+        const tone = toast.content.tone ?? 'info';
+        const styles = toastContentStyles({ tone });
         return (
           <AriaToast
             toast={toast}
-            className={(renderProps) => toastStyles({ ...renderProps, status })}
+            className={(renderProps) => toastStyles({ ...renderProps, tone })}
           >
             <div aria-hidden className={styles.iconFrame()}>
-              <StatusIcon status={status} className={styles.icon()} />
+              <StatusIcon tone={tone} className={styles.icon()} />
             </div>
             <AriaToastContent className={styles.content()}>
               <Text slot='title' className={styles.title()}>

@@ -1,15 +1,19 @@
 import { UNSTABLE_ToastQueue as ToastQueue } from 'react-aria-components';
 
+import type { StatusTone } from '../../internal/statustone.ts';
+
 /**
- * Toasts announce outcomes that need no action: a success, or information. A failure is never a
- * toast; it stays beside the control that started it or in its dialog.
+ * The tones a toast takes: a success, or information. Toasts announce outcomes that need no action;
+ * a failure or a warning is never a toast, but stays beside the control that started it or in its
+ * dialog, so the other tones of `StatusTone` are left out.
  */
-export type ToastStatus = 'info' | 'success';
+export type ToastTone = Extract<StatusTone, 'info' | 'success'>;
 
 export type ToastContent = {
   title: string;
   description?: string;
-  status?: ToastStatus;
+  /** `info` (the default) or `success`. */
+  tone?: ToastTone;
 };
 
 /** How many toasts show at once; the rest wait in the queue. */

@@ -41,7 +41,7 @@ export const InheritsColor: Story = {
       <span className='text-primary'>
         <Spinner {...args} size='lg' />
       </span>
-      <span className='text-destructive'>
+      <span className='text-error'>
         <Spinner {...args} size='lg' />
       </span>
       <span className='text-success'>

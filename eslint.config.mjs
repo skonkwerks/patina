@@ -360,7 +360,10 @@ export default tseslint.config([
   {
     files: ['packages/patina/src/**/*.stories.tsx'],
     rules: {
-      'no-restricted-imports': ariaImports(['@storybook/react-vite']),
+      'no-restricted-imports': ariaImports([
+        '@storybook/react-vite',
+        'storybook',
+      ]),
       // A story file exports its stories and its meta, which is what Storybook expects.
       'react-refresh/only-export-components': 'off',
       // A story documents composition, so it may show any tier's components together.

@@ -4,7 +4,7 @@ import { chipStyles } from './styles.ts';
 export type ChipProps = {
   /** The label: a state or a category, in words. A chip is text only (no icon or logo), and its color never stands without its words. */
   children: string;
-  /** What the label means: an outcome (`success`, `warning`, `destructive`), activity (`info`), or a plain category (`neutral`, the default). */
+  /** What the label means: an outcome (`success`, `warning`, `error`), activity (`info`), or a plain category (`neutral`, the default). */
   tone?: StatusTone;
   /** Layout only, such as a margin. */
   className?: string;

@@ -158,12 +158,12 @@ export const InlineLink: Story = {
   render: () => (
     <p className='text-canvas-foreground text-sm'>
       The import failed.{' '}
-      <Button variant='link' tone='destructive'>
-        See what went wrong
+      <Button variant='link' tone='primary'>
+        Try again
       </Button>{' '}
       or{' '}
-      <Button variant='link' tone='primary'>
-        try again
+      <Button variant='link' tone='destructive'>
+        discard the import
       </Button>
       .
     </p>

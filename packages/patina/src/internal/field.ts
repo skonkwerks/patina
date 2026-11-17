@@ -21,7 +21,7 @@ export const fieldStyles = tv({
     labelRow: 'flex items-center gap-1',
     label: 'text-surface-foreground text-sm font-medium',
     description: 'text-surface-foreground-muted text-xs',
-    error: 'text-destructive text-xs',
+    error: 'text-error text-xs',
   },
   variants: {
     isDisabled: { true: { label: DISABLED } },
@@ -38,7 +38,7 @@ export const fieldBoxStyles = tv({
   extend: focusRing,
   base: 'bg-input text-input-foreground border-input-border rounded-md border text-sm',
   variants: {
-    isInvalid: { true: 'border-destructive' },
+    isInvalid: { true: 'border-error' },
     isDisabled: { true: DISABLED },
   },
 });
@@ -61,7 +61,7 @@ export const choiceControlStyles = tv({
     mark: 'mt-0.5 flex h-5 shrink-0 items-center',
     label: 'text-surface-foreground font-medium',
     description: 'text-surface-foreground-muted col-start-2 text-xs',
-    error: 'text-destructive col-start-2 text-xs',
+    error: 'text-error col-start-2 text-xs',
   },
   variants: {
     isDisabled: { true: { button: DISABLED } },

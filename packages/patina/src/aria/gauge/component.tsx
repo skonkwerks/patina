@@ -38,7 +38,7 @@ export const gaugeStyles = tv({
       info: { fill: 'stroke-info' },
       success: { fill: 'stroke-success' },
       warning: { fill: 'stroke-warning' },
-      destructive: { fill: 'stroke-destructive' },
+      error: { fill: 'stroke-error' },
     },
   },
 });

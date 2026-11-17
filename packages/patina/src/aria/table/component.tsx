@@ -31,8 +31,9 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
   /** What the table shows when its read succeeded and it has no rows: the `EmptyState` control's props. */
   emptyState: EmptyStateProps;
   /**
-   * A failed read or refresh, shown above the table: the app renders the notice (such as a
-   * `LoadFailure` with a retry), since an error notice is not a React Aria wrapper. With no rows the body stays
+   * A failed read or refresh, shown above the table: a node, because a wrapper cannot import a
+   * composite, so the app passes the notice, such as `LoadFailure` from
+   * `@skonkwerks/patina/loadstatus`. With no rows the body stays
    * empty instead of claiming there is nothing; with rows already read they stay on screen.
    */
   error?: ReactNode;

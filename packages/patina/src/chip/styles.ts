@@ -14,7 +14,7 @@ export const chipStyles = tv({
       info: 'bg-info-tint/15 text-info border-transparent',
       success: 'bg-success-tint/15 text-success border-transparent',
       warning: 'bg-warning-tint/15 text-warning border-transparent',
-      destructive: 'bg-destructive-tint/15 text-destructive border-transparent',
+      error: 'bg-error-tint/15 text-error border-transparent',
     },
   },
   defaultVariants: { tone: 'neutral' },

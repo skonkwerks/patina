@@ -7,7 +7,7 @@ const tones = [
   'info',
   'success',
   'warning',
-  'destructive',
+  'error',
 ] as const satisfies readonly StatusTone[];
 
 const meta = {
@@ -31,7 +31,7 @@ export const Tones: Story = {
       <Chip tone='info'>Running</Chip>
       <Chip tone='success'>Published</Chip>
       <Chip tone='warning'>Expiring soon</Chip>
-      <Chip tone='destructive'>Failed</Chip>
+      <Chip tone='error'>Failed</Chip>
     </div>
   ),
 };

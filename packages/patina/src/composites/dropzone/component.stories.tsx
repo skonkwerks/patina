@@ -34,7 +34,7 @@ const DropZoneWithResult = (args: DropZoneProps) => {
         onDropError={setFailure}
       />
       {failure && (
-        <p role='alert' className='text-destructive text-sm'>
+        <p role='alert' className='text-error text-sm'>
           The drop gave no files: {failure}
         </p>
       )}

@@ -33,7 +33,7 @@ export const selectStyles = tv({
 /** The trigger: the shared field box, with the invalid border React Aria marks on the field. */
 export const selectTriggerStyles = tv({
   extend: fieldBoxStyles,
-  base: 'group-data-[invalid]:border-destructive flex h-8 items-center justify-between gap-2 px-3',
+  base: 'group-data-[invalid]:border-error flex h-8 items-center justify-between gap-2 px-3',
 });
 
 /**

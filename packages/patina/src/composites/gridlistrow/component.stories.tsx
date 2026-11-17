@@ -136,7 +136,7 @@ export const FullRow: Story = {
         endContent='86 KB'
         metadata={[{ id: 'kind', value: 'Spreadsheet' }]}
       >
-        <p role='alert' className='text-destructive text-xs'>
+        <p role='alert' className='text-error text-xs'>
           The last upload failed.
         </p>
       </GridListRow>
@@ -204,7 +204,7 @@ export const BeforeLoadingMore: Story = {
 const errorNotice = (
   <p
     role='alert'
-    className='bg-surface border-destructive text-destructive rounded-lg border p-3 text-sm'
+    className='bg-surface border-error text-error rounded-lg border p-3 text-sm'
   >
     The files could not be refreshed. Check your connection and try again.
   </p>

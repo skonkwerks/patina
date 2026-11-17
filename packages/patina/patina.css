@@ -22,7 +22,8 @@
  *   overlay  overlay-foreground  overlay-foreground-muted  overlay-border  overlay-hover   (popovers, menus, dialogs)
  *   input    input-foreground    input-placeholder         input-border
  *
- *   Actions
+ *   Actions: what a button or a menu item does. `destructive` is an action that will destroy
+ *   something (Delete), never a status.
  *   primary      primary-foreground      primary-hover
  *   neutral      neutral-foreground      neutral-hover
  *   destructive  destructive-foreground  destructive-hover  destructive-tint
@@ -32,7 +33,7 @@
  *   info     info-foreground     info-tint
  *   success  success-foreground  success-tint
  *   warning  warning-foreground  warning-tint
- *   (destructive doubles as the error status)
+ *   error    error-foreground    error-tint       (something that went wrong: a failure, an invalid field)
  *
  *   Other
  *   focus-ring   the one keyboard focus ring

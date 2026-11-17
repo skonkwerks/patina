@@ -45,6 +45,9 @@
   --color-warning: var(--patina-clr-warning);
   --color-warning-foreground: var(--patina-clr-warning-foreground);
   --color-warning-tint: var(--patina-clr-warning-tint);
+  --color-error: var(--patina-clr-error);
+  --color-error-foreground: var(--patina-clr-error-foreground);
+  --color-error-tint: var(--patina-clr-error-tint);
   --color-focus-ring: var(--patina-clr-focus-ring);
   --color-scrim: var(--patina-clr-scrim);
 

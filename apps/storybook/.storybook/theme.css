@@ -84,6 +84,10 @@
   --patina-clr-warning: var(--cat-latte-peach-dark);
   --patina-clr-warning-foreground: var(--cat-latte-base);
   --patina-clr-warning-tint: var(--cat-latte-peach);
+  /* A status that went wrong: the same reds as the destructive action, under a status name. */
+  --patina-clr-error: var(--cat-latte-red-dark);
+  --patina-clr-error-foreground: var(--cat-latte-base);
+  --patina-clr-error-tint: var(--cat-latte-red);
   --patina-clr-focus-ring: var(--cat-latte-blue);
   --patina-clr-scrim: rgb(0 0 0 / 0.5);
 }
@@ -152,6 +156,9 @@
   --patina-clr-warning: var(--cat-mocha-peach);
   --patina-clr-warning-foreground: var(--cat-mocha-crust);
   --patina-clr-warning-tint: var(--cat-mocha-peach);
+  --patina-clr-error: var(--cat-mocha-maroon);
+  --patina-clr-error-foreground: var(--cat-mocha-crust);
+  --patina-clr-error-tint: var(--cat-mocha-red);
   --patina-clr-focus-ring: var(--cat-mocha-blue);
   --patina-clr-scrim: rgb(0 0 0 / 0.6);
 }

@@ -86,7 +86,7 @@ const InvoiceTable = ({
 const errorNotice = (
   <p
     role='alert'
-    className='bg-surface border-destructive text-destructive rounded-lg border p-3 text-sm'
+    className='bg-surface border-error text-error rounded-lg border p-3 text-sm'
   >
     The invoices could not be read. Check your connection and try again.
   </p>

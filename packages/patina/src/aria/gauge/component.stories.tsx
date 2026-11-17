@@ -23,7 +23,7 @@ export const Tones: Story = {
       <Gauge label='Load' value={42} tone='info' />
       <Gauge label='Healthy' value={65} tone='success' />
       <Gauge label='Busy' value={84} tone='warning' />
-      <Gauge label='Full' value={97} tone='destructive' />
+      <Gauge label='Full' value={97} tone='error' />
     </div>
   ),
 };
