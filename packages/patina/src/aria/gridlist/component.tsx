@@ -9,6 +9,7 @@ import { EmptyState, type EmptyStateProps } from '../../emptystate/index.ts';
 import { focusRing } from '../../internal/focus.ts';
 import { PendingStatus } from '../../spinner/index.ts';
 import type { FileDrop } from '../draganddrop/index.ts';
+import { renderGridListDropIndicator } from './dropindicator.tsx';
 
 /** The frame around the grid: where the error notice stands, and the pending status inside the grid. */
 export const gridListFrameStyles = tv({
@@ -42,8 +43,8 @@ export const gridListStyles = tv({
       class: 'border-primary bg-primary/10',
     },
     // A list whose whole frame is the drop target (dragged items over its empty space, such as
-    // results dropped onto the candidates) is ringed; a drop between items draws the insertion
-    // line instead.
+    // results dropped onto the candidates) is ringed; a drop between items draws the shared
+    // insertion line instead (`renderGridListDropIndicator`).
     {
       fileDrop: 'none',
       isDropTarget: true,
@@ -122,6 +123,14 @@ export const GridList = <T extends object>({
   ...props
 }: GridListProps<T>) => {
   const frame = gridListFrameStyles();
+  const hooks = fileDrop ? fileDrop.hooks : props.dragAndDropHooks;
+  // Every reorderable or droppable list draws the shared insertion line, unless its hooks bring a
+  // drop indicator of their own, so no caller can forget the visible insertion target. A plain
+  // object each render: React Aria calls the hooks' functions and never compares the object.
+  const dragAndDropHooks =
+    hooks && !hooks.renderDropIndicator
+      ? { ...hooks, renderDropIndicator: renderGridListDropIndicator }
+      : hooks;
   return (
     <div className={frame.root()}>
       {/* A failed load shows above the list in every case: over an empty body after a failed first
@@ -130,7 +139,7 @@ export const GridList = <T extends object>({
       {error}
       <AriaGridList
         {...props}
-        dragAndDropHooks={fileDrop ? fileDrop.hooks : props.dragAndDropHooks}
+        dragAndDropHooks={dragAndDropHooks}
         className={(renderProps) =>
           gridListStyles({
             fileDrop: fileDropVariant(fileDrop),

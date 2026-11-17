@@ -26,7 +26,7 @@ export type GridListTileProps = Omit<
 
 /**
  * One unit of a `GridList` laid out as a grid (`layout='grid'`): a bordered tile whose content the
- * caller lays out. An image tile with a caption belongs to a media composite; this is for any other
+ * caller lays out. An image tile with a caption is a `MediaStripItem`; this is for any other
  * unit, such as a GPU or an evaluation image. `style` passes through, so a tile can be placed in a CSS
  * grid by its own position.
  */

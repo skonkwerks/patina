@@ -21,3 +21,6 @@ storybook-static/
 # The root agent instruction files (AGENTS.md and its CLAUDE.md shim) are local to this machine.
 /AGENTS.md
 /CLAUDE.md
+
+# Storybook writes a debug log, with machine paths, when a run fails.
+debug-storybook.log

@@ -42,6 +42,49 @@
 /* Tailwind scans the wrappers for the classes they use. */
 @source './src';
 
+/*
+ * A scroll area whose scrollbar stays visible, where content past the edge would otherwise go
+ * unnoticed: macOS hides a scrollbar until it is scrolled unless the page styles it. Only the WebKit
+ * scrollbar parts are set, which Chromium-based browsers and Safari draw while neither
+ * `scrollbar-width` nor `scrollbar-color` is set on the element. Firefox ignores them and keeps its
+ * own scrollbar, which on macOS is an overlay hidden until the area is scrolled. Used by a
+ * `MediaStrip` laid out as one row, and available to an app for its own sideways scrollers.
+ *
+ * The thumb is the surface's muted text color at 80%, so it stands out from the surface as an
+ * interface component should (3:1): in Storybook's default theme about 3.6:1 in light and 5.2:1 in
+ * dark. An app's own theme decides its ratio.
+ */
+@utility scrollbar-visible {
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: color-mix(
+      in oklab,
+      var(--color-surface-foreground-muted) 80%,
+      transparent
+    );
+  }
+}
+
+/*
+ * Where a reordered item will land, for the shared insertion line (`gridListRowDropLine`,
+ * `gridListTileDropLine`). `GridListDropIndicator` marks React Aria's drop indicator rows with
+ * `drop-before` or `drop-after`; React Aria sets `data-drop-target` on the targeted one.
+ *
+ * - `drop-before-target`: the item right after a targeted "before" indicator, or after it and one
+ *   of React Aria's own hidden rows, which it renders before each item that takes drops onto it
+ *   during a keyboard drag. Items carry `data-key`; indicator rows never do.
+ * - `drop-after-target`: the last item, when the "after" indicator after it is the target.
+ */
+@custom-variant drop-before-target (&:is(.drop-before[data-drop-target] + *, .drop-before[data-drop-target] + [role=row]:not([data-key]) + *));
+@custom-variant drop-after-target (&:has(+ .drop-after[data-drop-target]));
+
 @layer base {
   /* An element with a border width and no border color draws a surface line. */
   *,
