@@ -16,11 +16,13 @@ type Story = StoryObj<typeof meta>;
 /** Decoration beside text that already says it is working: hidden from assistive technology. */
 export const Decorative: Story = {};
 
-/** Standing on its own, with a label as its accessible name. */
-export const Labeled: Story = { args: { label: 'Loading', size: 'lg' } };
+/** Standing on its own, with an `aria-label` as its accessible name. */
+export const Labeled: Story = { args: { 'aria-label': 'Loading', size: 'lg' } };
 
 /** Larger than `lg`, for a spinner that stands alone on a page: size it with `className`. */
-export const Large: Story = { args: { label: 'Loading', className: 'size-8' } };
+export const Large: Story = {
+  args: { 'aria-label': 'Loading', className: 'size-8' },
+};
 
 export const AllSizes: Story = {
   render: (args) => (

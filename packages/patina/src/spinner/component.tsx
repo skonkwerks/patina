@@ -8,7 +8,7 @@ export type SpinnerProps = VariantProps<typeof spinnerStyles> & {
    * spinner is decoration beside text that already says so (a pending button's label) and is hidden
    * from assistive technology.
    */
-  label?: string;
+  'aria-label'?: string;
   /** Extra classes, such as `size-8` for a spinner that stands alone on a page. */
   className?: string;
 };
@@ -18,15 +18,19 @@ export type SpinnerProps = VariantProps<typeof spinnerStyles> & {
  * turning on it, in the color of the text it stands in. It stands still for a person who asked for
  * less motion.
  */
-export const Spinner = ({ label, size, className }: SpinnerProps) => (
+export const Spinner = ({
+  'aria-label': ariaLabel,
+  size,
+  className,
+}: SpinnerProps) => (
   <svg
     viewBox='0 0 24 24'
     fill='none'
     className={spinnerStyles({ size, className })}
     // Named, it is an image; without a name, decoration hidden from assistive technology.
-    role={label === undefined ? undefined : 'img'}
-    aria-label={label}
-    aria-hidden={label === undefined ? true : undefined}
+    role={ariaLabel === undefined ? undefined : 'img'}
+    aria-label={ariaLabel}
+    aria-hidden={ariaLabel === undefined ? true : undefined}
   >
     <circle
       cx='12'
