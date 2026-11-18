@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconDownload, IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
 import type { Selection } from 'react-aria-components';
+import { expect } from 'storybook/test';
 
 import {
   GridList,
@@ -97,6 +98,13 @@ const docRows = (rows: readonly Doc[]) =>
 /** Rows in the one row layout: media, title, metadata, an end value and the action menu. */
 export const Rows: Story = {
   render: (args) => <GridList {...args}>{docRows(docs)}</GridList>,
+  play: async ({ canvasElement }) => {
+    // A long title is cut with an ellipsis; no hover tooltip holds the rest, since nothing is
+    // available on hover only. The row's accessible name is the whole title.
+    await expect(
+      canvasElement.querySelector('[role="row"] [title]'),
+    ).toBeNull();
+  },
 };
 
 /** Every part a row can have: badges, two metadata lines, a description, the open chevron and a child below. */

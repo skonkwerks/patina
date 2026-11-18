@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconPhoto } from '@tabler/icons-react';
+import { expect } from 'storybook/test';
 
 import { Button } from '../aria/button/index.js';
 import { Chip } from '../chip/index.js';
@@ -68,5 +69,46 @@ export const LongTitle: Story = {
     title:
       'Quarterly review of every supplier contract that renews before the end of the year',
     actions: <Button>Export</Button>,
+  },
+};
+
+const LONG_DESCRIPTION =
+  'Jobs submitted by applications, with their state, their owner and when each was last run';
+
+/**
+ * Actions that crowd the title's column: the description stays on one line, cut with an ellipsis.
+ * No hover tooltip holds the rest, since nothing is available on hover only; the description is
+ * one short phrase, and instructions belong in the page's help.
+ */
+export const LongDescription: Story = {
+  args: {
+    title: 'Jobs',
+    description: LONG_DESCRIPTION,
+    actions: (
+      <>
+        <Button>Filter</Button>
+        <Button>Export</Button>
+      </>
+    ),
+  },
+  decorators: [
+    (Story) => (
+      <div className='max-w-sm'>
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvas }) => {
+    const description = canvas.getByText(LONG_DESCRIPTION);
+    const style = getComputedStyle(description);
+    // One line: no taller than its line, and its text runs past its width.
+    await expect(
+      description.getBoundingClientRect().height,
+    ).toBeLessThanOrEqual(Number.parseFloat(style.lineHeight) + 1);
+    await expect(description.scrollWidth).toBeGreaterThan(
+      description.clientWidth,
+    );
+    await expect(style.textOverflow).toBe('ellipsis');
+    await expect(description).not.toHaveAttribute('title');
   },
 };

@@ -22,7 +22,7 @@ export type HeaderProps = {
   title: string;
   /** A count after the title in muted text, formatted by the caller, such as `(3)`. Give it once the number is known. */
   count?: string;
-  /** One short phrase under the title. Instructions belong in the page's help, not here. */
+  /** One short phrase under the title, on one line, cut at its end. Instructions belong in the page's help, not here. */
   description?: string;
   /** Artwork before the title and description, in a square as tall as both. */
   media?: ReactNode;

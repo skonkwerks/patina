@@ -20,7 +20,9 @@ export const headerStyles = tv({
     count: 'text-canvas-foreground-muted font-normal',
     info: 'flex items-center',
     badges: 'ms-1 flex shrink-0 items-center gap-1',
-    description: 'text-canvas-foreground-muted text-sm',
+    // One line, cut with an ellipsis where the actions leave the title's column narrow. No hover
+    // `title` holds the rest: nothing is available on hover only (`ux/accessibility.md`).
+    description: 'text-canvas-foreground-muted truncate text-sm',
     actions: 'flex shrink-0 flex-wrap items-center gap-2',
   },
   variants: {

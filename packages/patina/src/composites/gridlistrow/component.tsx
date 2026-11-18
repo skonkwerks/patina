@@ -87,9 +87,7 @@ export const GridListRow = ({
           {media}
           <div className={styles.text()}>
             <div className={styles.heading()}>
-              <span className={styles.title()} title={title}>
-                {title}
-              </span>
+              <span className={styles.title()}>{title}</span>
               {badges}
             </div>
             {metadata && metadata.length > 0 && (
