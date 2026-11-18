@@ -17,7 +17,9 @@ export const dialogStyles = tv({
       'bg-overlay border-overlay-border text-overlay-foreground w-full max-w-md border shadow-xl outline-0',
     dialog: 'flex flex-col outline-0',
     header: 'flex shrink-0 items-start justify-between gap-3',
-    body: 'flex flex-col gap-4',
+    // The rest of the dialog's height under the header, when the dialog has a set height (the modal
+    // drawer, or a viewer whose call site sets one); as high as its content otherwise.
+    body: 'flex min-h-0 flex-1 flex-col gap-4',
     heading: 'min-w-0',
     titleRow: 'flex items-center gap-2',
     title: 'text-overlay-foreground text-lg font-semibold',
@@ -41,7 +43,7 @@ export const dialogStyles = tv({
           'flex h-full max-h-full flex-col overflow-hidden border-y-0 border-e-0',
         dialog: 'min-h-0 flex-1',
         header: 'border-overlay-border border-b p-5',
-        body: 'min-h-0 flex-1 overflow-y-auto p-5',
+        body: 'overflow-y-auto p-5',
       },
     },
   },

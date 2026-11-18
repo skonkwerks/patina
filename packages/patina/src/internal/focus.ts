@@ -10,3 +10,13 @@ export const focusRing = tv({
     },
   },
 });
+
+/**
+ * The same ring on an element that has no React Aria render state to say when the keyboard
+ * focuses it (a plain element that takes the focus, or React Aria's `Dialog`): the browser's own
+ * `:focus-visible` shows it, for keyboard focus only.
+ */
+export const focusVisibleRing = tv({
+  extend: focusRing,
+  base: 'outline-0 focus-visible:outline-2',
+});

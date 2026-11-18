@@ -1,6 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 import { iconButtonStyles } from '../../aria/iconbutton/index.ts';
+import { focusVisibleRing } from '../../internal/focus.ts';
 
 /**
  * The details control: a small ghost icon button whose icon is drawn in the state's tone, and keeps
@@ -32,9 +33,11 @@ export const stateDetailsStyles = tv({
 
 /**
  * The words' dialog takes the focus when it opens (it holds no control), so it draws the shared
- * focus ring's color and width for a keyboard user instead of removing its outline. React Aria's
- * `Dialog` has no focus render state, so the browser's `:focus-visible` decides when it shows.
+ * focus ring for a keyboard user instead of removing its outline. React Aria's `Dialog` has no
+ * focus render state, so it takes the ring's form for such an element (`focusVisibleRing`), which
+ * the browser's `:focus-visible` shows.
  */
 export const stateDetailsDialogStyles = tv({
-  base: 'outline-focus-ring rounded-sm text-sm leading-6 break-words outline-0 outline-offset-2 focus-visible:outline-2 forced-colors:outline-[Highlight]',
+  extend: focusVisibleRing,
+  base: 'rounded-sm text-sm leading-6 break-words',
 });
