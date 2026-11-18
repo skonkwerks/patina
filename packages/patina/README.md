@@ -203,7 +203,7 @@ Every button-like component (`Button`, `IconButton`, `LinkButton`, `Toggle`, `Ic
   - Containers (dialogs, sections, rows, empty states): `title` and `description`.
   - An accessible name with no visible text: `aria-label`.
   - Localized text for an inner control: `{control}Label` (`closeLabel`, `clearLabel`, `searchLabel`).
-- **Slots (ReactNode props)** are named by meaning, and plural for groups: `actions`, `badges`, `media`, `endContent`, `headerContent`, `info` (the info control beside a field's label or a `Header`'s title), `errorText` (a `Form`'s rejected submit).
+- **Slots (ReactNode props)** are named by meaning, and plural for groups: `actions`, `badges`, `media`, `endContent`, `headerContent`, `info` (the info control beside a field's label or a `Header`'s title), `errorText` (the outcome of the last write, directly above the action row: its failure, or that a request whose answer was lost is kept; in a `Form`, a `Confirmation` and an `AlertDialog`).
 - **Errors in a collection:** `error`, a ReactNode the app renders.
 
 ### Styles

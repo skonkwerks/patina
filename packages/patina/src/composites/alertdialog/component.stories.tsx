@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
 import { Button } from '../../aria/button/index.js';
@@ -9,6 +9,7 @@ import {
   LIVE_ANNOUNCER_CLEAR_MS,
   LIVE_ANNOUNCER_MESSAGE,
 } from '../../internal/liveannouncer.testing.js';
+import { Alert } from '../alert/index.js';
 import { AlertDialog, Confirmation } from './index.js';
 
 /** How long the story's write runs before it answers. */
@@ -17,19 +18,41 @@ const WRITE_MS = 600;
 type DeleteProjectProps = {
   /** The write fails, as when the server refuses it. */
   isRefused?: boolean;
+  /**
+   * The first write finds the project changed since the question opened (a conflict), and the
+   * notice says so in a second paragraph: confirming again goes ahead with it as it is now.
+   */
+  isChangedSinceOpened?: boolean;
+  /** The question opens on a request kept from before, whose answer was lost: a warning, no failure. */
+  isKept?: boolean;
 };
 
 /**
  * A Delete control and its confirmation. Yes starts a write that answers after a moment, succeeds
  * or is refused, and a status line under the control says what happened.
  */
-const DeleteProject = ({ isRefused = false }: DeleteProjectProps) => {
+const DeleteProject = ({
+  isRefused = false,
+  isChangedSinceOpened = false,
+  isKept = false,
+}: DeleteProjectProps) => {
   const [isPending, setIsPending] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [notice, setNotice] = useState<ReactNode>();
+  const [hasConflicted, setHasConflicted] = useState(false);
   const [status, setStatus] = useState('Not deleted');
+  const keptNotice = (
+    <Alert tone='warning'>
+      This deletion was requested before and its answer was lost. It is kept,
+      and Yes sends it again unchanged.
+    </Alert>
+  );
   return (
     <div className='flex flex-col items-start gap-2'>
-      <DialogTrigger onOpenChange={() => setErrorMessage(undefined)}>
+      <DialogTrigger
+        onOpenChange={() => {
+          setNotice(isKept ? keptNotice : undefined);
+        }}
+      >
         <Button tone='destructive'>Delete</Button>
         <AlertDialog
           title='Quarterly report'
@@ -38,15 +61,29 @@ const DeleteProject = ({ isRefused = false }: DeleteProjectProps) => {
           actionLabel='Yes'
           tone='destructive'
           isPending={isPending}
-          errorMessage={errorMessage}
+          errorText={notice}
           onAction={(close) => {
             setIsPending(true);
-            setErrorMessage(undefined);
+            setNotice(undefined);
             setTimeout(() => {
               setIsPending(false);
               if (isRefused) {
-                setErrorMessage(
-                  'The project could not be deleted: it is shared with another team.',
+                setNotice(
+                  <Alert tone='error'>
+                    The project could not be deleted: it is shared with another
+                    team.
+                  </Alert>,
+                );
+              } else if (isChangedSinceOpened && !hasConflicted) {
+                setHasConflicted(true);
+                setNotice(
+                  <Alert tone='error'>
+                    <p>The project could not be deleted: it changed.</p>
+                    <p>
+                      It changed since this confirmation opened. Confirm again
+                      to go ahead with it as it is now.
+                    </p>
+                  </Alert>,
                 );
               } else {
                 setStatus('Deleted');
@@ -184,6 +221,61 @@ export const Refused: Story = {
       await expect(trigger).toHaveFocus();
     });
     await expect(canvas.getByRole('status')).toHaveTextContent('Not deleted');
+    await announcerCleared(canvasElement.ownerDocument);
+  },
+};
+
+/**
+ * A notice of more than one paragraph: after a conflict, the failure and what the next press does.
+ * The app passes its own notice as `errorText`; confirming again goes ahead.
+ */
+export const ChangedSinceOpened: Story = {
+  args: { isChangedSinceOpened: true },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete' }));
+    const dialog = await page.findByRole('alertdialog');
+    const yes = within(dialog).getByRole('button', { name: 'Yes' });
+    await userEvent.click(yes);
+
+    const notice = await within(dialog).findByRole('alert');
+    await expect(notice).toHaveTextContent(
+      'The project could not be deleted: it changed.',
+    );
+    await expect(notice).toHaveTextContent(
+      'Confirm again to go ahead with it as it is now.',
+    );
+    // Above the action row, so the row never moves under the pointer.
+    await expect(
+      notice.compareDocumentPosition(yes) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+
+    await userEvent.click(yes);
+    await waitFor(async () => {
+      await expect(page.queryByRole('alertdialog')).not.toBeInTheDocument();
+    });
+    await expect(canvas.getByRole('status')).toHaveTextContent('Deleted');
+    await announcerCleared(canvasElement.ownerDocument);
+  },
+};
+
+/**
+ * Not every notice is a failure: the question opens on a request kept from before, whose answer
+ * was lost, with a warning that Yes sends it again unchanged.
+ */
+export const KeptRequest: Story = {
+  args: { isKept: true },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete' }));
+    const dialog = await page.findByRole('alertdialog');
+    await expect(within(dialog).getByRole('alert')).toHaveTextContent(
+      'It is kept, and Yes sends it again unchanged.',
+    );
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Yes' }));
+    await waitFor(async () => {
+      await expect(page.queryByRole('alertdialog')).not.toBeInTheDocument();
+    });
     await announcerCleared(canvasElement.ownerDocument);
   },
 };

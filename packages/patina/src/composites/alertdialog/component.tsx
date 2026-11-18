@@ -23,14 +23,14 @@ export type AlertDialogProps = Omit<ConfirmationProps, 'onAction'> &
      * Confirms: starts the write, and is given `close`, which the caller calls once the write has
      * succeeded (an action with no write calls it at once), with `isOpenerRemoved` when that success
      * removed the control that opened the dialog. On a failure the dialog stays open with
-     * `errorMessage`, so the outcome lands where the person confirmed.
+     * `errorText`, so the outcome lands where the person confirmed.
      */
     onAction: (close: (options?: AlertDialogCloseOptions) => void) => void;
   };
 
 /**
  * A confirmation in a modal of its own: React Aria's alert dialog, named by its title and described
- * by its question, with the write's failure and Cancel and the action. While `isPending`, nothing
+ * by its question, with the write's outcome and Cancel and the action. While `isPending`, nothing
  * dismisses it (not Escape, the scrim, the close control or Cancel), so the write's outcome always
  * lands in it. Put it in a `DialogTrigger` beside the control that opens it, or open it from state
  * with `isOpen` and `onOpenChange`; the focus returns to the opener when it closes.

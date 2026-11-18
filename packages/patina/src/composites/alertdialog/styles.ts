@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 /**
- * A confirmation's parts inside its dialog: the question, then the write's failure when there is
+ * A confirmation's parts inside its dialog: the question, then the write's outcome when there is
  * one, then the action row, right-aligned with Cancel first and the action last.
  */
 export const confirmationStyles = tv({

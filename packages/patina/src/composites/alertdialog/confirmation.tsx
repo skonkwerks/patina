@@ -3,7 +3,6 @@ import { Text } from 'react-aria-components';
 
 import { Button } from '../../aria/button/index.js';
 import { DialogCancel, useIsDismissDisabled } from '../../aria/dialog/index.js';
-import { Alert } from '../alert/index.js';
 import { confirmationStyles } from './styles.js';
 
 export type ConfirmationProps = {
@@ -22,13 +21,21 @@ export type ConfirmationProps = {
   tone: 'destructive' | 'primary';
   /** Confirms: starts the write. */
   onAction: () => void;
-  /** Why the last confirmed write failed, shown as an error notice above the buttons; confirming again retries it. */
-  errorMessage?: string;
+  /**
+   * The outcome of the last confirmed write, directly above the action row, as `Form`'s
+   * `errorText`: a node, so the app passes its own notice, such as an error `Alert` saying why the
+   * write failed (with a second paragraph on what confirming again does, after a conflict), or a
+   * warning `Alert` that a request whose answer was lost is kept to be sent again. It stays until
+   * the app clears it, so the action row never moves under the pointer; confirming again retries
+   * the write. The confirmation adds no live region of its own: the notice announces itself, as an
+   * `Alert` does.
+   */
+  errorText?: ReactNode;
 };
 
 /**
  * The confirmation itself, the piece every confirmation is made of: the question, the write's
- * failure, and Cancel and the action in the dialog's action row. `AlertDialog` is this piece in a
+ * outcome, and Cancel and the action in the dialog's action row. `AlertDialog` is this piece in a
  * modal of its own; a dialog that goes on in the same modal once the person has confirmed, such as
  * one that then shows a new secret where the question stood, renders this piece inside its own
  * `Dialog`.
@@ -43,7 +50,7 @@ export const Confirmation = ({
   actionLabel,
   tone,
   onAction,
-  errorMessage,
+  errorText,
 }: ConfirmationProps) => {
   const isPending = useIsDismissDisabled();
   const styles = confirmationStyles();
@@ -53,7 +60,7 @@ export const Confirmation = ({
       <Text slot='description' elementType='p' className={styles.question()}>
         {children}
       </Text>
-      {errorMessage && <Alert tone='error'>{errorMessage}</Alert>}
+      {errorText}
       <div className={styles.actions()}>
         <DialogCancel autoFocus={tone === 'destructive'}>
           {cancelLabel}
