@@ -39,3 +39,40 @@ export const contrastRatio = (first: string, second: string) => {
 
 /** The non-text contrast an interface component's edge needs against what it stands on. */
 export const NON_TEXT_CONTRAST = 3;
+
+/** A computed color in one shadow layer, such as `rgb(1, 2, 3)` or `rgba(0, 0, 0, 0)`. */
+const SHADOW_COLOR = /rgba?\([^)]*\)/;
+
+/**
+ * The color of a ring drawn as a box shadow (Tailwind's `ring` and `inset-ring`): the one shadow
+ * layer with a spread and a color that is not transparent. Tailwind keeps its other layers, empty,
+ * in the same shadow.
+ */
+const ringColor = (boxShadow: string) => {
+  // Layers are separated by commas outside parentheses: "rgb(1, 2, 3) 0px 0px 0px 1px inset, …".
+  for (const layer of boxShadow.split(/,(?![^(]*\))/)) {
+    const color = SHADOW_COLOR.exec(layer)?.[0];
+    const lengths = layer.replace(SHADOW_COLOR, '').match(/-?[\d.]+px/g) ?? [];
+    const spread = Number.parseFloat(lengths[3] ?? '0');
+    if (color !== undefined && spread !== 0 && !color.endsWith(', 0)')) {
+      return color;
+    }
+  }
+  throw new Error(`No ring in the box shadow: ${boxShadow}`);
+};
+
+/**
+ * The color a control's edge is drawn in, as the browser draws it, read by the utility that draws
+ * it: a fill (`bg-control-border`, a slider's rail), a ring (`ring-control-border` or
+ * `inset-ring-control-border`, a color swatch's or a color track's edge), or a border (the rest).
+ */
+export const edgeColor = (edge: HTMLElement) => {
+  const style = getComputedStyle(edge);
+  if (edge.className.includes('bg-control-border')) {
+    return style.backgroundColor;
+  }
+  if (edge.className.includes('ring-control-border')) {
+    return ringColor(style.boxShadow);
+  }
+  return style.borderTopColor;
+};

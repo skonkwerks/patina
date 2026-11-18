@@ -16,6 +16,7 @@
     "./button": "./src/aria/button/index.ts",
     "./checkbox": "./src/aria/checkbox/index.ts",
     "./chip": "./src/chip/index.ts",
+    "./color": "./src/aria/color/index.ts",
     "./count": "./src/count/index.ts",
     "./dialog": "./src/aria/dialog/index.ts",
     "./disclosure": "./src/aria/disclosure/index.ts",

@@ -6,8 +6,9 @@ import { focusRing } from './focus.ts';
 /**
  * The parts every field draws around its control, defined once: the column, the label (with an
  * optional help control beside it), the description, and the error. `TextField`, `TextArea`,
- * `NumberField`, `SearchField`, `Select`, `MultiSelect`, `CheckboxGroup`, `RadioGroup`, and `Slider`
- * use these slots, so their labels and help text cannot drift apart.
+ * `NumberField`, `SearchField`, `Select`, `MultiSelect`, `CheckboxGroup`, `RadioGroup`, `Slider`,
+ * `ColorField`, `ColorSlider`, and `ColorPicker` use these slots, so their labels and help text
+ * cannot drift apart.
  *
  * A disabled field is drawn disabled part by part: its label here, its box in `fieldBoxStyles`. No
  * container is faded, because a faded container around a faded part would compound the two (a
@@ -30,7 +31,8 @@ export const fieldStyles = tv({
 
 /**
  * The input box, defined once: the text field's input, the text area, the number field's box, the
- * select's and the multi-select's trigger, and the search field's box. Each component extends it
+ * select's, the multi-select's and the color picker's trigger, the search field's box, and the
+ * color field's input (through the text field's). Each component extends it
  * with its own height and padding. It carries the shared focus ring, and the invalid and disabled
  * states from React Aria's render state.
  */
