@@ -15,8 +15,9 @@ export const PAGE_HEADING_ATTRIBUTE = 'data-page-heading';
  *
  * Not from inside a modal. While a modal is open, React Aria keeps the page inert, so the heading
  * cannot take the focus: a confirmation whose write removed its opener (a row deleted through its
- * menu's confirmation) can move the focus only once the dialog has gone, and the caller gives it
- * then. The side panel does this itself for a modal opened from its content: its content closes
+ * menu's confirmation) can move the focus only once the dialog has gone. `AlertDialog` does this
+ * itself: its write closes it with `isOpenerRemoved`, and the focus goes to the heading once the
+ * modal has left. So does the side panel for a modal opened from its content: its content closes
  * it with `isOpenerRemoved`, and the focus goes to the heading once the modal has left. The page is
  * not scrolled: the person keeps their place, and the next Tab goes on from the top of the page.
  */

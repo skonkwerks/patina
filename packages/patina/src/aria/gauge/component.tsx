@@ -56,7 +56,9 @@ export type GaugeProps = Omit<
 > & {
   /**
    * The ring's color. The caller decides what a value means (a load threshold is an application
-   * rule), so the tone is never derived from the value here.
+   * rule), so the tone is never derived from the value here. Color is never the only signal: a
+   * tone that means something (`warning`, `error`) is also said in words, in `valueLabel` ("84%,
+   * busy") or in text beside the gauge.
    */
   tone: StatusTone;
   /**

@@ -225,7 +225,9 @@ const baseRules = {
     },
     {
       // React Aria first: an interactive widget role on a plain element is a hand-rolled control.
-      selector: `JSXAttribute[name.name='role'][value.value=/^(${handRolledRoles.join('|')})$/]`,
+      // A component (a capitalized name, such as React Aria's `Dialog`, whose `role` prop takes
+      // `alertdialog`) is not a plain element; a plain element under a member name (`motion.div`) is.
+      selector: `JSXOpeningElement:not([name.type='JSXIdentifier'][name.name=/^[A-Z]/]) > JSXAttribute[name.name='role'][value.value=/^(${handRolledRoles.join('|')})$/]`,
       message:
         "Use the React Aria component for this control; a hand-rolled control needs the owner's approval.",
     },
