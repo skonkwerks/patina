@@ -9,13 +9,12 @@ import { tv } from 'tailwind-variants';
 import { overlayOptionStyles } from '../popover/index.ts';
 
 /**
- * A menu item: the shared overlay option (its `base` slot), destructive items in the destructive
- * color, with the check of a selectable item and a submenu's indicator.
+ * A menu item: the shared overlay option (its `base` slot, and its check for a selectable item),
+ * destructive items in the destructive color, and a submenu's indicator.
  */
 export const menuItemStyles = tv({
   extend: overlayOptionStyles,
   slots: {
-    check: 'h-4 w-4 shrink-0',
     // Held off a long label, at the item's end.
     submenuIndicator: 'ml-auto flex shrink-0 pl-3',
     submenuIcon: 'h-4 w-4',
@@ -23,7 +22,6 @@ export const menuItemStyles = tv({
   variants: {
     // A string applies to the item itself, the `base` slot the overlay option defines.
     isDestructive: { true: 'text-destructive' },
-    isSelected: { false: { check: 'invisible' } },
   },
 });
 
@@ -60,7 +58,9 @@ export const MenuItem = ({
       return (
         <>
           {selectionMode !== 'none' && (
-            <IconCheck aria-hidden className={styles.check()} />
+            <span className={styles.checkFrame()}>
+              <IconCheck aria-hidden className={styles.check()} />
+            </span>
           )}
           {children}
           {hasSubmenu && (

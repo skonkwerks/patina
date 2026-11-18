@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { expect } from 'storybook/test';
 
 import { SearchField } from './index.ts';
 
@@ -22,8 +23,17 @@ export const WithoutVisibleLabel: Story = {
   args: { label: undefined, 'aria-label': 'Search projects' },
 };
 
+/**
+ * Disabled: the field fades as a whole, and its clear control shows the cursor of a control that
+ * cannot be used, without brightening under the pointer.
+ */
 export const Disabled: Story = {
   args: { isDisabled: true, defaultValue: 'aria' },
+  play: async ({ canvas }) => {
+    const clear = canvas.getByRole('button', { name: 'Clear search' });
+    await expect(clear).toBeDisabled();
+    await expect(getComputedStyle(clear).cursor).toBe('not-allowed');
+  },
 };
 
 /** Enter calls `onSubmit`; by default Enter does nothing. */

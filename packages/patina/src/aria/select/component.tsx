@@ -8,13 +8,15 @@ import {
   Select as AriaSelect,
   type SelectProps as AriaSelectProps,
   SelectValue,
-  Text,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { Count } from '../../count/index.ts';
 import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
-import { Spinner } from '../../spinner/index.ts';
+import {
+  FieldDescription,
+  type FieldPendingProps,
+} from '../form/description.tsx';
 import { Popover } from '../popover/index.ts';
 
 export const selectStyles = tv({
@@ -24,7 +26,6 @@ export const selectStyles = tv({
     count: 'text-xs',
     value: 'placeholder-shown:text-input-placeholder truncate',
     chevron: 'h-4 w-4 shrink-0',
-    pending: 'text-surface-foreground-muted flex items-center gap-1.5 text-xs',
     popover: 'max-h-72 w-(--trigger-width) overflow-auto p-1',
     listBox: 'outline-0',
   },
@@ -57,17 +58,14 @@ export type SelectProps<T extends object> = Omit<
   items: Iterable<T>;
   children: (item: T) => ReactNode;
   className?: string;
-} & (
-    | { isPending?: false; pendingText?: undefined }
-    | {
-        /** While the choices are still being read, `pendingText` and a spinner stand where the description does. */
-        isPending: boolean;
-        /** What to say while pending, such as "Loading regions". */
-        pendingText: string;
-      }
-  );
+} & FieldPendingProps;
 
-/** A labeled single-choice dropdown: a trigger showing the chosen item and a list in a popover. */
+/**
+ * A labeled single-choice dropdown: a trigger showing the chosen option and a list in a popover.
+ * The trigger shows the chosen option's text (its `textValue`, or its children when they are plain
+ * text), never its other content: an option with an icon shows its words alone there, and an
+ * option whose children are not plain text and that has no `textValue` shows nothing there.
+ */
 export const Select = <T extends object>({
   label,
   count,
@@ -104,22 +102,21 @@ export const Select = <T extends object>({
             <Button
               className={(renderProps) => selectTriggerStyles(renderProps)}
             >
-              {/* With nothing chosen, React Aria shows the `placeholder` prop, or its own "Select an item". */}
-              <SelectValue className={styles.value()} />
+              {/* The chosen option's text, as a combo box's input shows it: the option's own content
+                also holds the check mark the list draws. With nothing chosen, React Aria shows the
+                `placeholder` prop, or its own "Select an item". */}
+              <SelectValue className={styles.value()}>
+                {({ isPlaceholder, defaultChildren, selectedText }) =>
+                  isPlaceholder ? defaultChildren : selectedText
+                }
+              </SelectValue>
               <IconChevronDown className={styles.chevron()} aria-hidden />
             </Button>
-            {isPending ? (
-              <Text slot='description' className={styles.pending()}>
-                <Spinner size='sm' />
-                {pendingText}
-              </Text>
-            ) : (
-              description && (
-                <Text slot='description' className={parts.description()}>
-                  {description}
-                </Text>
-              )
-            )}
+            <FieldDescription
+              description={description}
+              isPending={isPending}
+              pendingText={pendingText}
+            />
             <FieldError className={parts.error()}>{errorMessage}</FieldError>
             <Popover className={styles.popover()}>
               <ListBox items={items} className={styles.listBox()}>

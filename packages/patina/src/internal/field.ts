@@ -42,6 +42,25 @@ export const fieldBoxStyles = tv({
 });
 
 /**
+ * A small control inside the field box, beside the text, defined once: the search field's clear
+ * control and the combo box's chevron. It is quieter than the text until hovered and carries the
+ * shared focus ring. A disabled field fades its whole box, this control with it, so it draws no
+ * fade of its own; disabled, it only stops brightening under the pointer and shows the cursor of
+ * a control that cannot be used. The date picker's calendar button is not drawn with it: React Aria
+ * makes that button a Tab stop, so it is a ghost icon button with its own focus ring and hover
+ * fill, while these two controls stay out of the Tab order.
+ */
+export const fieldButtonStyles = tv({
+  extend: focusRing,
+  base: 'text-surface-foreground-muted hover:text-surface-foreground flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded',
+  variants: {
+    isDisabled: {
+      true: 'hover:text-surface-foreground-muted cursor-not-allowed',
+    },
+  },
+});
+
+/**
  * A choice control in two columns, the mark and the text, defined once for `Checkbox`, `Radio` and
  * `Switch`: the button spans both and lays its mark and label on them (a subgrid), so the
  * description below stands under the label without restating the mark's width. Each control extends

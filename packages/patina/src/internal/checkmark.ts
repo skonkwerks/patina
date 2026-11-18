@@ -1,10 +1,11 @@
 import { tv } from 'tailwind-variants';
 
 /**
- * A checkbox's mark, defined once for `Checkbox` and `MultiSelect`'s options: a square with a
- * control's edge while off, and no fill, so it reads on any layer; filled with the primary color
- * and showing its check while on. `size`: `md` (20px, a form's checkbox) or `sm` (16px, a list
- * row's, beside a 14px label).
+ * A checkbox's mark, defined once for `Checkbox` and for the options of a multiple choice
+ * (`ListBoxItem`, in a `ListBox`, a `ComboBox` or a `MultiSelect`): a square with a control's edge
+ * while off, and no fill, so it reads on any layer; filled with the primary color and showing its
+ * check while on. `size`: `md` (20px, a form's checkbox) or `sm` (16px, a list row's, beside a
+ * 14px label).
  */
 export const checkMarkStyles = tv({
   slots: {

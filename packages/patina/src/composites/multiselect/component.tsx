@@ -1,4 +1,4 @@
-import { IconCheck, IconChevronDown } from '@tabler/icons-react';
+import { IconChevronDown } from '@tabler/icons-react';
 import { useId, useState } from 'react';
 import {
   Button as AriaButton,
@@ -7,18 +7,16 @@ import {
   type Key,
   Label,
   ListBox,
-  ListBoxItem,
   type Selection,
 } from 'react-aria-components';
 
 import { Button } from '../../aria/button/index.ts';
+import { listBoxEmptyStyles, ListBoxItem } from '../../aria/listbox/index.ts';
 import { Popover } from '../../aria/popover/index.ts';
 import { SearchField } from '../../aria/searchfield/index.ts';
-import { checkMarkStyles } from '../../internal/checkmark.ts';
 import { fieldStyles } from '../../internal/field.ts';
 import {
   multiSelectListBoxStyles,
-  multiSelectOptionStyles,
   multiSelectStyles,
   multiSelectTriggerStyles,
 } from './styles.ts';
@@ -155,38 +153,14 @@ export const MultiSelect = ({
               selectedKeys={chosen}
               onSelectionChange={changeSelection}
               renderEmptyState={() => (
-                <p className={styles.noMatches()}>{noMatchesLabel}</p>
+                <p className={listBoxEmptyStyles()}>{noMatchesLabel}</p>
               )}
               items={shown}
               className={(renderProps) => multiSelectListBoxStyles(renderProps)}
             >
               {(option) => (
-                <ListBoxItem
-                  id={option.id}
-                  textValue={option.label}
-                  className={({ isFocused, isSelected }) =>
-                    multiSelectOptionStyles({ isFocused, isSelected })
-                  }
-                >
-                  {({ isSelected }) => {
-                    // The option's checkbox: the shared mark, at a list row's size.
-                    const mark = checkMarkStyles({ size: 'sm', isSelected });
-                    return (
-                      <>
-                        <span className={mark.box()}>
-                          <IconCheck
-                            aria-hidden
-                            className={mark.check()}
-                            strokeWidth={2.5}
-                          />
-                        </span>
-                        <span className={styles.optionLabel()}>
-                          {option.label}
-                        </span>
-                      </>
-                    );
-                  }}
-                </ListBoxItem>
+                // The shared option: in a multiple choice, it shows the checkbox `Checkbox` draws.
+                <ListBoxItem id={option.id}>{option.label}</ListBoxItem>
               )}
             </ListBox>
             <Button

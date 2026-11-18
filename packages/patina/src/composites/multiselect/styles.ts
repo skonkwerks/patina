@@ -1,6 +1,5 @@
 import { tv } from 'tailwind-variants';
 
-import { overlayOptionStyles } from '../../aria/popover/index.ts';
 import { fieldBoxStyles } from '../../internal/field.ts';
 import { focusRing } from '../../internal/focus.ts';
 
@@ -10,8 +9,6 @@ export const multiSelectStyles = tv({
     chevron: 'h-4 w-4 shrink-0',
     popover: 'w-72 p-2',
     dialog: 'flex flex-col gap-2 outline-0',
-    noMatches: 'text-overlay-foreground-muted px-2 py-1.5 text-sm',
-    optionLabel: 'min-w-0 flex-1 truncate',
     clear: 'self-end',
   },
 });
@@ -29,12 +26,4 @@ export const multiSelectTriggerStyles = tv({
 export const multiSelectListBoxStyles = tv({
   extend: focusRing,
   base: 'max-h-64 overflow-auto rounded',
-});
-
-/** An option of the list: the shared overlay option, the chosen ones in a heavier weight. */
-export const multiSelectOptionStyles = tv({
-  extend: overlayOptionStyles,
-  variants: {
-    isSelected: { true: 'font-medium' },
-  },
 });

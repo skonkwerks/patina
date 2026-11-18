@@ -9,8 +9,11 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
-import { focusRing } from '../../internal/focus.ts';
+import {
+  fieldBoxStyles,
+  fieldButtonStyles,
+  fieldStyles,
+} from '../../internal/field.ts';
 
 export const searchFieldStyles = tv({
   slots: {
@@ -29,10 +32,10 @@ export const searchFieldBoxStyles = tv({
   base: 'flex h-8 items-center gap-2 px-2',
 });
 
-/** The clear control, which carries the shared focus ring. */
+/** The clear control: the shared field button, hidden while the field is empty. */
 export const searchFieldClearStyles = tv({
-  extend: focusRing,
-  base: 'text-surface-foreground-muted hover:text-surface-foreground flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded group-empty:invisible',
+  extend: fieldButtonStyles,
+  base: 'group-empty:invisible',
 });
 
 export type SearchFieldProps = Omit<

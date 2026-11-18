@@ -1,8 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryContext, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import type { Key } from 'react-aria-components';
+import { expect, within } from 'storybook/test';
 
-import { Select, SelectItem, type SelectProps } from './index.ts';
+import { ListBoxItem, ListBoxSection } from '../listbox/index.ts';
+import { Select, type SelectProps } from './index.ts';
 
 type Option = { id: string; name: string; isDisabled?: boolean };
 
@@ -20,9 +22,9 @@ const meta = {
     label: 'Region',
     items: regions,
     children: (item: Option) => (
-      <SelectItem id={item.id} isDisabled={item.isDisabled}>
+      <ListBoxItem id={item.id} isDisabled={item.isDisabled}>
         {item.name}
-      </SelectItem>
+      </ListBoxItem>
     ),
   },
   decorators: [
@@ -37,13 +39,30 @@ const meta = {
 export default meta;
 type Story = StoryObj<SelectProps<Option>>;
 
+/**
+ * The play context. The props' pending union keeps Storybook from inferring it for a story, so
+ * each play function names it.
+ */
+type Context = StoryContext;
+
 export const Default: Story = {};
 
 export const WithPlaceholder: Story = {
   args: { placeholder: 'Choose a region' },
 };
 
-export const WithValue: Story = { args: { defaultValue: 'eu-central' } };
+/**
+ * A chosen region: the trigger shows its text alone. The option's check mark belongs to the list,
+ * never to the trigger.
+ */
+export const WithValue: Story = {
+  args: { defaultValue: 'eu-central' },
+  play: async ({ canvas }: Context) => {
+    const trigger = canvas.getByRole('button', { name: /Region/ });
+    await expect(trigger).toHaveTextContent(/^EU Central$/);
+    await expect(trigger.querySelectorAll('svg')).toHaveLength(1);
+  },
+};
 
 export const WithDescription: Story = {
   args: { description: 'Where your data is stored.' },
@@ -73,6 +92,53 @@ export const DisabledItem: Story = {
     items: regions.map((region) =>
       region.id === 'ap-south' ? { ...region, isDisabled: true } : region,
     ),
+  },
+};
+
+type Area = { id: string; name: string; regions: Option[] };
+
+const areas: Area[] = [
+  { id: 'americas', name: 'Americas', regions: regions.slice(0, 2) },
+  { id: 'elsewhere', name: 'Europe and Asia', regions: regions.slice(2) },
+];
+
+/** Choices in titled groups, the shared `ListBoxSection`; the chosen one is checked. */
+export const Sections: Story = {
+  render: () => (
+    <Select<Area> label='Region' items={areas} defaultValue='eu-central'>
+      {(area) => (
+        <ListBoxSection id={area.id} title={area.name} items={area.regions}>
+          {(region) => <ListBoxItem id={region.id}>{region.name}</ListBoxItem>}
+        </ListBoxSection>
+      )}
+    </Select>
+  ),
+};
+
+const mumbai = 'Asia Pacific South (Mumbai, the first region in India)';
+const singapore = 'Asia Pacific South (Singapore, the first region in Asia)';
+
+/**
+ * Long options that begin alike: each option's label wraps inside the list, so the two can be told
+ * apart; the trigger keeps one line.
+ */
+export const LongOptions: Story = {
+  args: {
+    items: [
+      { id: 'mumbai', name: mumbai },
+      { id: 'singapore', name: singapore },
+    ],
+  },
+  play: async ({ canvas, canvasElement, userEvent }: Context) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole('button', { name: /Region/ }));
+    const listBox = await page.findByRole('listbox');
+    for (const name of [mumbai, singapore]) {
+      const label = within(listBox).getByText(name);
+      // All of the text is shown: nothing runs past the label's box to be cut off.
+      await expect(label.scrollWidth).toBeLessThanOrEqual(label.clientWidth);
+      await expect(label.getClientRects().length).toBeGreaterThan(0);
+    }
   },
 };
 

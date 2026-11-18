@@ -10,8 +10,8 @@ import {
  * control in a popover or a modal would take what the place it was opened from gives its own
  * controls: a `Toolbar`'s separator orientation (across the toolbar) and toggle group orientation.
  * `Popover` and `DialogModal` wrap their content in it, so a `Separator` or a `ToggleGroup` in an
- * overlay takes its own orientation. A context a component comes to provide to everything inside it
- * is cleared here too.
+ * overlay takes its own orientation. A context a component later provides to the controls inside
+ * it is added here when a control in an overlay opened from that component could take it.
  */
 export const OverlayContextBoundary = ({
   children,
