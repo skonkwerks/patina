@@ -11,8 +11,6 @@ export const multiSelectStyles = tv({
     popover: 'w-72 p-2',
     dialog: 'flex flex-col gap-2 outline-0',
     noMatches: 'text-overlay-foreground-muted px-2 py-1.5 text-sm',
-    checkFrame: 'flex h-4 w-4 items-center justify-center',
-    check: 'h-3.5 w-3.5',
     optionLabel: 'min-w-0 flex-1 truncate',
     clear: 'self-end',
   },

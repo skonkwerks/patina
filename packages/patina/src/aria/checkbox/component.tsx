@@ -8,18 +8,16 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { checkMarkStyles } from '../../internal/checkmark.ts';
+import { cn } from '../../internal/cn.ts';
 import { choiceControlStyles } from '../../internal/field.ts';
 import { focusRing } from '../../internal/focus.ts';
 
-/** A checkbox: the shared choice control with a square mark that fills and shows a check when on. */
-export const checkboxStyles = tv({
-  extend: choiceControlStyles,
-  slots: {
-    mark: 'border-surface-border bg-neutral group-selected:bg-primary w-5 justify-center rounded border',
-    check:
-      'text-primary-foreground group-selected:opacity-100 h-4 w-4 opacity-0',
-  },
-});
+/**
+ * A checkbox: the shared choice control, whose mark is the shared checkbox mark (`checkMarkStyles`):
+ * a square with a control's edge that fills and shows a check when on.
+ */
+export const checkboxStyles = tv({ extend: choiceControlStyles });
 
 export type CheckboxProps = Omit<
   CheckboxFieldProps,
@@ -56,22 +54,25 @@ export const Checkbox = ({
       return (
         <>
           <CheckboxButton className={styles.button()}>
-            {({ isFocusVisible }) => (
-              <>
-                <span
-                  className={styles.mark({
-                    className: focusRing({ isFocusVisible }),
-                  })}
-                >
-                  <IconCheck
-                    aria-hidden
-                    className={styles.check()}
-                    strokeWidth={2.5}
-                  />
-                </span>
-                <span className={styles.label()}>{children}</span>
-              </>
-            )}
+            {({ isFocusVisible, isSelected }) => {
+              const mark = checkMarkStyles({ isSelected });
+              return (
+                <>
+                  <span
+                    className={styles.mark({
+                      className: cn(mark.box(), focusRing({ isFocusVisible })),
+                    })}
+                  >
+                    <IconCheck
+                      aria-hidden
+                      className={mark.check()}
+                      strokeWidth={2.5}
+                    />
+                  </span>
+                  <span className={styles.label()}>{children}</span>
+                </>
+              );
+            }}
           </CheckboxButton>
           {description && (
             <Text slot='description' className={styles.description()}>

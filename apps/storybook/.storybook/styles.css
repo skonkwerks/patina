@@ -26,6 +26,7 @@
   --color-input-foreground: var(--patina-clr-input-foreground);
   --color-input-placeholder: var(--patina-clr-input-placeholder);
   --color-input-border: var(--patina-clr-input-border);
+  --color-control-border: var(--patina-clr-control-border);
   --color-primary: var(--patina-clr-primary);
   --color-primary-foreground: var(--patina-clr-primary-foreground);
   --color-primary-hover: var(--patina-clr-primary-hover);

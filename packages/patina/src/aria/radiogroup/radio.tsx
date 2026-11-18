@@ -13,7 +13,7 @@ import { focusRing } from '../../internal/focus.ts';
 export const radioStyles = tv({
   extend: choiceControlStyles,
   slots: {
-    mark: 'border-surface-border bg-neutral w-5 justify-center rounded-full border',
+    mark: 'border-control-border w-5 justify-center rounded-full border',
     dot: 'bg-primary group-selected:opacity-100 h-2.5 w-2.5 rounded-full opacity-0',
   },
 });

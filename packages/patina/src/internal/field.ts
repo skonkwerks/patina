@@ -36,7 +36,7 @@ export const fieldStyles = tv({
  */
 export const fieldBoxStyles = tv({
   extend: focusRing,
-  base: 'bg-input text-input-foreground border-input-border rounded-md border text-sm',
+  base: 'bg-input text-input-foreground border-control-border rounded-md border text-sm',
   variants: {
     isInvalid: { true: 'border-error' },
     isDisabled: { true: DISABLED },

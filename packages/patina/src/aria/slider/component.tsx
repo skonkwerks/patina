@@ -18,7 +18,7 @@ export const sliderStyles = tv({
     header: 'flex items-baseline justify-between gap-2',
     output: 'text-surface-foreground-muted ms-auto text-sm tabular-nums',
     track: 'relative h-8 w-full',
-    rail: 'bg-input-border absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full',
+    rail: 'bg-control-border absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full',
   },
   variants: {
     // A disabled slider is drawn disabled by its rail and its thumb. Its label, unlike other fields',

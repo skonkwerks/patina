@@ -35,6 +35,14 @@
  *   warning  warning-foreground  warning-tint
  *   error    error-foreground    error-tint       (something that went wrong: a failure, an invalid field)
  *
+ *   A layer's `-border` is a faint line that divides its rows, panels or a field's inner parts.
+ *
+ *   Controls
+ *   control-border   the edge of a control: a field's box, a checkbox's or radio's mark, a
+ *                    switch's off track, a slider's rail. It must reach 3:1 (non-text contrast)
+ *                    against every layer and hover fill it stands on, in every mode: canvas,
+ *                    surface, surface-hover, overlay, overlay-hover and input.
+ *
  *   Other
  *   focus-ring   the one keyboard focus ring
  *   scrim        the backdrop behind a modal dialog

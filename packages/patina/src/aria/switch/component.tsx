@@ -17,7 +17,7 @@ export const switchStyles = tv({
     // Declared so the variants below can name them; their classes come from the choice control.
     button: '',
     description: '',
-    mark: 'bg-neutral group-selected:bg-primary w-9 rounded-full px-0.5 transition-colors',
+    mark: 'bg-control-border group-selected:bg-primary w-9 rounded-full px-0.5 transition-colors',
     thumb:
       'bg-surface group-selected:translate-x-4 flex h-4 w-4 items-center justify-center rounded-full shadow transition-transform',
     spinner: 'text-surface-foreground-muted',

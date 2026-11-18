@@ -61,6 +61,9 @@
   --patina-clr-input-foreground: var(--cat-latte-text);
   --patina-clr-input-placeholder: var(--cat-latte-subtext1);
   --patina-clr-input-border: var(--cat-latte-surface1);
+  /* A control's edge, held to 3:1 against every layer it stands on: 3.49:1 on base (surface,
+     overlay, input), 3.25:1 on mantle (canvas, surface-hover, overlay-hover). */
+  --patina-clr-control-border: var(--cat-latte-overlay2);
   --patina-clr-primary: var(--cat-latte-blue-dark);
   --patina-clr-primary-foreground: var(--cat-latte-base);
   --patina-clr-primary-hover: var(--cat-latte-blue-darker);
@@ -137,6 +140,10 @@
   --patina-clr-input-foreground: var(--cat-mocha-text);
   --patina-clr-input-placeholder: var(--cat-mocha-overlay1);
   --patina-clr-input-border: var(--cat-mocha-surface1);
+  /* A control's edge, held to 3:1 against every layer it stands on: 5.07:1 on crust (canvas),
+     4.44:1 on base (surface, overlay), 4.75:1 on mantle (input), 3.40:1 on surface0
+     (surface-hover, overlay-hover). */
+  --patina-clr-control-border: var(--cat-mocha-overlay1);
   --patina-clr-primary: var(--cat-mocha-blue);
   --patina-clr-primary-foreground: var(--cat-mocha-crust);
   --patina-clr-primary-hover: var(--cat-mocha-blue-light);

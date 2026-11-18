@@ -14,6 +14,7 @@ import {
 import { Button } from '../../aria/button/index.ts';
 import { Popover } from '../../aria/popover/index.ts';
 import { SearchField } from '../../aria/searchfield/index.ts';
+import { checkMarkStyles } from '../../internal/checkmark.ts';
 import { fieldStyles } from '../../internal/field.ts';
 import {
   multiSelectListBoxStyles,
@@ -167,18 +168,24 @@ export const MultiSelect = ({
                     multiSelectOptionStyles({ isFocused, isSelected })
                   }
                 >
-                  {({ isSelected }) => (
-                    <>
-                      <span className={styles.checkFrame()}>
-                        {isSelected && (
-                          <IconCheck aria-hidden className={styles.check()} />
-                        )}
-                      </span>
-                      <span className={styles.optionLabel()}>
-                        {option.label}
-                      </span>
-                    </>
-                  )}
+                  {({ isSelected }) => {
+                    // The option's checkbox: the shared mark, at a list row's size.
+                    const mark = checkMarkStyles({ size: 'sm', isSelected });
+                    return (
+                      <>
+                        <span className={mark.box()}>
+                          <IconCheck
+                            aria-hidden
+                            className={mark.check()}
+                            strokeWidth={2.5}
+                          />
+                        </span>
+                        <span className={styles.optionLabel()}>
+                          {option.label}
+                        </span>
+                      </>
+                    );
+                  }}
                 </ListBoxItem>
               )}
             </ListBox>
