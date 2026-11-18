@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect } from 'storybook/test';
 
+import { Header } from '../../header/index.js';
 import { Checkbox, CheckboxGroup } from './index.js';
 
 const meta = {
@@ -22,25 +23,96 @@ export const WithDescription: Story = {
   args: { description: 'Sent every Monday morning.' },
 };
 
+const channels = [
+  { id: 'email', name: 'Email' },
+  { id: 'sms', name: 'Text message' },
+  { id: 'push', name: 'Push notification' },
+] as const;
+
+/** The heading's text, which is also the group's name: one value, so the two always agree. */
+const NOTIFICATIONS = 'Notifications';
+
+const SelectAllChannels = () => {
+  const [chosen, setChosen] = useState<string[]>(['email']);
+  const all = channels.map(({ id }) => id);
+  return (
+    <div className='flex flex-col gap-3'>
+      <Header variant='section' title={NOTIFICATIONS} />
+      <Checkbox
+        isSelected={chosen.length === all.length}
+        isIndeterminate={chosen.length > 0 && chosen.length < all.length}
+        onChange={(isSelected) => {
+          setChosen(isSelected ? all : []);
+        }}
+      >
+        All notifications
+      </Checkbox>
+      {/* Under the heading that names it, so it takes the heading's text as its name. */}
+      <CheckboxGroup
+        aria-label={NOTIFICATIONS}
+        value={chosen}
+        onChange={setChosen}
+      >
+        {channels.map(({ id, name }) => (
+          <Checkbox key={id} value={id}>
+            {name}
+          </Checkbox>
+        ))}
+      </CheckboxGroup>
+    </div>
+  );
+};
+
 /**
- * Neither checked nor unchecked, such as a select-all over a partly checked group: the mark is
- * filled and shows a dash, and assistive technology hears it as mixed. React Aria keeps it
- * indeterminate whatever is clicked (the state is presentational only); the app clears
- * `isIndeterminate`, as a select-all does when its group becomes all or none, so a click on this
- * story changes nothing on screen.
+ * A select-all over a group: checked when every box under it is, unchecked when none is, and
+ * indeterminate (filled, with a dash; mixed to assistive technology) when only some are. React Aria
+ * leaves the indeterminate state to the app (`isIndeterminate` is presentational only): the app
+ * works it out from the group, as here, so a press on the select-all checks every box, or clears
+ * them all once all are checked, and the state follows.
  */
-export const Indeterminate: Story = {
-  args: { isIndeterminate: true },
-  play: async ({ canvas, canvasElement }) => {
-    const checkbox = canvas.getByRole<HTMLInputElement>('checkbox');
-    await expect(checkbox.indeterminate).toBe(true);
-    // The story's one glyph: the mark's.
-    const glyph = canvasElement.querySelector('svg');
-    if (!glyph) {
-      throw new Error('The checkbox draws no glyph.');
+export const SelectAll: Story = {
+  render: () => <SelectAllChannels />,
+  play: async ({ canvas, userEvent }) => {
+    const box = (name: string) =>
+      canvas.getByRole<HTMLInputElement>('checkbox', { name });
+    const all = box('All notifications');
+    // The select-all's glyph: the one icon in its label.
+    const glyph = () => {
+      const icon = all.closest('label')?.querySelector('svg');
+      if (!icon) {
+        throw new Error('The select-all draws no glyph.');
+      }
+      return {
+        isDash: icon.classList.contains('tabler-icon-minus'),
+        isShown: getComputedStyle(icon).opacity === '1',
+      };
+    };
+
+    // Only Email is checked: the select-all is indeterminate and shows its dash.
+    await expect(all.indeterminate).toBe(true);
+    await expect(glyph()).toEqual({ isDash: true, isShown: true });
+
+    // A press checks every box, and the select-all is checked.
+    await userEvent.click(all);
+    for (const name of ['Email', 'Text message', 'Push notification']) {
+      await expect(box(name)).toBeChecked();
     }
-    await expect(glyph.classList.contains('tabler-icon-minus')).toBe(true);
-    await expect(getComputedStyle(glyph).opacity).toBe('1');
+    await expect(all).toBeChecked();
+    await expect(all.indeterminate).toBe(false);
+    await expect(glyph()).toEqual({ isDash: false, isShown: true });
+
+    // Another press clears them all.
+    await userEvent.click(all);
+    for (const name of ['Email', 'Text message', 'Push notification']) {
+      await expect(box(name)).not.toBeChecked();
+    }
+    await expect(all).not.toBeChecked();
+    await expect(glyph().isShown).toBe(false);
+
+    // Checking one box makes the select-all indeterminate again.
+    await userEvent.click(box('Text message'));
+    await expect(all.indeterminate).toBe(true);
+    await expect(glyph()).toEqual({ isDash: true, isShown: true });
   },
 };
 
