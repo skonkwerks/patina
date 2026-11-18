@@ -8,6 +8,8 @@ import {
   ColorSwatch,
   ColorWheel,
 } from '../aria/color/index.ts';
+import { DateField } from '../aria/datefield/index.ts';
+import { DatePicker } from '../aria/datepicker/index.ts';
 import { Radio, RadioGroup } from '../aria/radiogroup/index.ts';
 import { Slider } from '../aria/slider/index.ts';
 import { Switch } from '../aria/switch/index.ts';
@@ -30,13 +32,16 @@ const layers = [
 
 /**
  * The edges drawn in `control-border`: one for each control, unchecked and off, and two for the
- * color wheel (the outer and the inner edge of its track).
+ * color wheel (the outer and the inner edge of its track). `TimeField` and `DateRangePicker` draw
+ * the same boxes as `DateField` and `DatePicker`, so they add none.
  */
-const EDGES_PER_LAYER = 10;
+const EDGES_PER_LAYER = 12;
 
 const Controls = ({ id }: { id: string }) => (
   <div className='flex flex-col gap-3'>
     <TextField label={`Name ${id}`} />
+    <DateField label={`Start ${id}`} />
+    <DatePicker label={`Due ${id}`} />
     <Checkbox>{`Remember ${id}`}</Checkbox>
     <RadioGroup label={`Size ${id}`}>
       <Radio value='small'>Small</Radio>
@@ -87,10 +92,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Every control's edge (a field's box, a checkbox's and a radio's mark, a switch's off track, a
- * slider's rail, a color swatch's, a color slider's track's, a color area's, and a color wheel's
- * two) is drawn in `control-border` and reaches 3:1 against each layer and hover fill it
- * can stand on, in both modes of the theme: the non-text contrast an interface component needs.
+ * Every control's edge (a field's box, a date field's and a date picker's, a checkbox's and a
+ * radio's mark, a switch's off track, a slider's rail, a color swatch's, a color slider's track's,
+ * a color area's, and a color wheel's two) is drawn in `control-border` and reaches 3:1 against
+ * each layer and hover fill it can stand on, in both modes of the theme: the non-text contrast an
+ * interface component needs.
  */
 export const ReachesThreeToOne: Story = {
   play: async ({ canvasElement }) => {

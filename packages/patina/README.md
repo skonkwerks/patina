@@ -70,6 +70,8 @@ What the wrappers need beyond that is drawn in, not imported:
    });
    ```
 
+   The date components (`DateField`, `TimeField`, `Calendar`, `RangeCalendar`, `DatePicker`, `DateRangePicker`) take and give `@internationalized/date` values, which they only pass through. An app that passes them a value builds it with `@internationalized/date` (`parseDate`, `today`) and installs that package itself, as React Aria's documentation says; Patina does not depend on it.
+
 2. In the app's Tailwind entry CSS:
 
    ```css

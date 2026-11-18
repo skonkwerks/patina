@@ -13,19 +13,34 @@ import { type RefObject, useEffect } from 'react';
  * paste, or a step button), so there a typed fix still clears when it is committed; a value set
  * from code clears it at once.
  *
+ * A date or time field (and a date picker) has no visible input: its form value lives in a hidden
+ * input that carries no `aria-invalid`, beside a second hidden input for the browser's autofill
+ * (`form=""`, so it is never submitted). There the field's root says it shows an error
+ * (`data-invalid`), and the commit goes to the form input. React Aria commits a date field when the
+ * focus leaves it changed, and a date picker also when a date is chosen in its calendar.
+ *
  * This relies on how the installed React Aria implements commits, not on its documented API: the
- * native `change` listener of its private `useFormValidation`. Check it again when upgrading
- * React Aria: show an error, set the value from code, and see the error clear.
+ * native `change` listener of its private `useFormValidation`, and the date fields' two hidden
+ * inputs. Check it again when upgrading React Aria: show an error, set the value from code, and see
+ * the error clear (the `SetFromCode` stories of `DateField`, `TimeField`, `DatePicker` and
+ * `DateRangePicker` do this for the date fields).
  */
 export const useShownErrorFollowsValue = (
   field: RefObject<HTMLElement | null>,
   value: unknown,
 ) => {
   useEffect(() => {
-    field.current
-      ?.querySelector(
+    const root = field.current;
+    if (root === null) {
+      return;
+    }
+    const shownInput =
+      root.querySelector(
         'input[aria-invalid="true"], textarea[aria-invalid="true"]',
-      )
-      ?.dispatchEvent(new Event('change'));
+      ) ??
+      (root.matches('[data-invalid]')
+        ? root.querySelector('input:not([form=""])')
+        : null);
+    shownInput?.dispatchEvent(new Event('change'));
   }, [field, value]);
 };

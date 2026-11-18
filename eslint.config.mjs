@@ -361,13 +361,16 @@ export default tseslint.config([
     files: ['packages/patina/src/**/*.spec.ts'],
     rules: { 'no-restricted-imports': ariaImports(['vitest']) },
   },
-  // Stories are not shipped to apps; they may also use Storybook's types.
+  // Stories are not shipped to apps; they may also use Storybook's types, and
+  // @internationalized/date to build the date values a date story shows (a dev dependency; no
+  // shipped file imports it, since the date components only pass values through).
   {
     files: ['packages/patina/src/**/*.stories.tsx'],
     rules: {
       'no-restricted-imports': ariaImports([
         '@storybook/react-vite',
         'storybook',
+        '@internationalized/date',
       ]),
       // A story file exports its stories and its meta, which is what Storybook expects.
       'react-refresh/only-export-components': 'off',
