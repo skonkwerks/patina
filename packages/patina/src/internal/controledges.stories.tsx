@@ -17,6 +17,7 @@ import { Slider } from '../aria/slider/index.ts';
 import { Switch } from '../aria/switch/index.ts';
 import { TextField } from '../aria/textfield/index.ts';
 import { Token, TokenField } from '../aria/tokenfield/index.ts';
+import { InfoButton } from '../composites/infobutton/index.ts';
 import {
   contrastRatio,
   edgeColor,
@@ -43,10 +44,20 @@ const EDGES_PER_LAYER = 14;
 
 const Controls = ({ id }: { id: string }) => (
   <div className='flex flex-col gap-3'>
-    <TextField label={`Name ${id}`} />
+    <TextField
+      label={`Name ${id}`}
+      info={<InfoButton aria-label={`About names ${id}`} />}
+    />
     <DateField label={`Start ${id}`} />
-    <DatePicker label={`Due ${id}`} />
-    <ComboBox label={`Region ${id}`} noMatchesLabel='No regions match'>
+    <DatePicker
+      label={`Due ${id}`}
+      info={<InfoButton aria-label={`About due dates ${id}`} />}
+    />
+    <ComboBox
+      label={`Region ${id}`}
+      noMatchesLabel='No regions match'
+      info={<InfoButton aria-label={`About regions ${id}`} />}
+    >
       <ListBoxItem id='north'>North</ListBoxItem>
     </ComboBox>
     <TokenField label={`Topics ${id}`}>
@@ -57,7 +68,11 @@ const Controls = ({ id }: { id: string }) => (
       <Radio value='small'>Small</Radio>
     </RadioGroup>
     <Switch>{`Notify ${id}`}</Switch>
-    <Slider label={`Volume ${id}`} defaultValue={40} />
+    <Slider
+      label={`Volume ${id}`}
+      defaultValue={40}
+      info={<InfoButton aria-label={`About volume ${id}`} />}
+    />
     {/* The color controls at their lightest, white and clear, where the edge alone shows them. */}
     <ColorSwatch color='#ffffff' />
     <ColorSlider
