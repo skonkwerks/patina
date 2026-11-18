@@ -45,7 +45,10 @@
  *                    canvas, surface, surface-hover, overlay, overlay-hover and input.
  *
  *   Other
- *   focus-ring   the one keyboard focus ring
+ *   focus-ring   the one keyboard focus ring. It must reach 3:1 against every layer and fill
+ *                it stands on or is drawn over, in every mode: a focused option's ring is drawn
+ *                over overlay-hover, or surface-hover in a list on the page, and a selected
+ *                row's or tile's over primary at 10% (12% under the pointer) on surface.
  *   scrim        the backdrop behind a modal dialog
  */
 

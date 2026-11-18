@@ -198,9 +198,12 @@ export const Default: Story = {
       await expect(searchAgain).toHaveFocus();
     });
     await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
-    await expect(activeOption(searchAgain)).toBe(
-      within(again).getByRole('menuitem', { name: 'Assign to me' }),
-    );
+    const assign = within(again).getByRole('menuitem', {
+      name: 'Assign to me',
+    });
+    await expect(activeOption(searchAgain)).toBe(assign);
+    // The active command is the keyboard's, so it carries the focus ring.
+    await expect(assign).toHaveAttribute('data-focus-visible', 'true');
     await expect(searchAgain).toHaveFocus();
     await userEvent.keyboard('{Enter}');
     await waitFor(async () => {

@@ -93,7 +93,8 @@ const pageOf = (canvasElement: HTMLElement) =>
 /**
  * The arrow keys open the list on the first option; typing narrows it to the options that contain
  * the text; Enter chooses the focused option and closes the list. The input keeps the focus
- * throughout, and Escape closes the list without choosing.
+ * throughout, and Escape closes the list without choosing. The option the arrow keys reach is the
+ * keyboard's, so it carries the focus ring (`Contract/Option focus ring`).
  */
 export const Default: Story = {
   play: async ({ canvas, canvasElement, userEvent }: Context) => {
@@ -105,6 +106,7 @@ export const Default: Story = {
     const listBox = await page.findByRole('listbox');
     const first = within(listBox).getByRole('option', { name: 'US East' });
     await expect(input).toHaveAttribute('aria-activedescendant', first.id);
+    await expect(first).toHaveAttribute('data-focus-visible', 'true');
 
     // Escape closes the list; nothing is chosen and the input keeps the focus.
     await userEvent.keyboard('{Escape}');

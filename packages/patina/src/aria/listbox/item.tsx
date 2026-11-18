@@ -11,11 +11,11 @@ import { overlayOptionStyles } from '../popover/index.ts';
 import { ListBoxLayerContext } from './layer.ts';
 
 /**
- * An option of a list: the shared overlay option (its `base` slot and its single-choice check), the
- * chosen one in a heavier weight. A long label wraps rather than being cut, so two options that
- * begin alike can be told apart; the mark before it stands at its first line. On the surface layer
- * (a standalone `ListBox`) it takes the surface's colors, and lights up under the pointer, since
- * there the focus does not follow it.
+ * An option of a list: the shared overlay option (its `base` slot with the keyboard's focus ring, and
+ * its single-choice check), the chosen one in a heavier weight. A long label wraps rather than
+ * being cut, so two options that begin alike can be told apart; the mark before it stands at its
+ * first line. On the surface layer (a standalone `ListBox`) it takes the surface's colors, and
+ * lights up under the pointer, since there the focus does not follow it.
  */
 export const listBoxItemStyles = tv({
   extend: overlayOptionStyles,
@@ -65,10 +65,17 @@ export const ListBoxItem = ({ children, ...rest }: ListBoxItemProps) => {
       textValue={
         rest.textValue ?? (typeof children === 'string' ? children : undefined)
       }
-      className={({ isFocused, isHovered, isSelected, isDisabled }) =>
+      className={({
+        isFocused,
+        isFocusVisible,
+        isHovered,
+        isSelected,
+        isDisabled,
+      }) =>
         listBoxItemStyles({
           layer,
           isFocused,
+          isFocusVisible,
           isHovered,
           isSelected,
           isDisabled,

@@ -9,8 +9,9 @@ import { tv } from 'tailwind-variants';
 import { overlayOptionStyles } from '../popover/index.ts';
 
 /**
- * A menu item: the shared overlay option (its `base` slot, and its check for a selectable item),
- * destructive items in the destructive color, and a submenu's indicator.
+ * A menu item: the shared overlay option (its `base` slot with the keyboard's focus ring, and its
+ * check for a selectable item), destructive items in the destructive color, and a submenu's
+ * indicator.
  */
 export const menuItemStyles = tv({
   extend: overlayOptionStyles,
@@ -49,8 +50,13 @@ export const MenuItem = ({
     textValue={
       rest.textValue ?? (typeof children === 'string' ? children : undefined)
     }
-    className={({ isFocused, isDisabled }) =>
-      menuItemStyles({ isDestructive, isFocused, isDisabled }).base()
+    className={({ isFocused, isFocusVisible, isDisabled }) =>
+      menuItemStyles({
+        isDestructive,
+        isFocused,
+        isFocusVisible,
+        isDisabled,
+      }).base()
     }
   >
     {({ isSelected, selectionMode, hasSubmenu }) => {

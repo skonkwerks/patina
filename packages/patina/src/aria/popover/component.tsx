@@ -5,6 +5,7 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { DISABLED } from '../../internal/disabled.ts';
+import { focusRing } from '../../internal/focus.ts';
 import { OverlayContextBoundary } from '../../internal/overlaycontextboundary.tsx';
 
 export const popoverStyles = tv({
@@ -15,20 +16,28 @@ export const popoverStyles = tv({
  * An option in a list on an overlay, defined once for `ListBoxItem` (the options of a `Select`, a
  * `ComboBox` and a `MultiSelect`) and `MenuItem`: one row of text in the overlay's color (its `base`
  * slot), filled with the overlay's hover color while it holds the focus, and the shared disabled
- * look. The single-choice check is defined here too: a 14px check in a 16px frame (`checkFrame`,
- * `check`), the size of the checkbox mark's check and box at a list row's size, so the labels of a
- * single choice, a multiple choice and a menu stand at the same place; it is invisible on an item
- * that is not chosen, which keeps its room. Each extends it with what is its own, such as a chosen
- * option's weight or a menu item's destructive color.
+ * look. The fill is a soft tint, far below the 3:1 a focus indicator needs against the overlay, so
+ * while the focus is the keyboard's (`isFocusVisible`, which React Aria also reports for the
+ * virtual focus of a combo box or a command palette) the option carries the shared focus ring,
+ * inside its edge so a neighbor or the popover's edge never cuts it; under the pointer the fill
+ * stays alone. The single-choice check is defined here too: a 14px check in a 16px frame
+ * (`checkFrame`, `check`), the size of the checkbox mark's check and box at a list row's size, so
+ * the labels of a single choice, a multiple choice and a menu stand at the same place; it is
+ * invisible on an item that is not chosen, which keeps its room. Each extends it with what is its
+ * own, such as a chosen option's weight or a menu item's destructive color.
  */
 export const overlayOptionStyles = tv({
   slots: {
-    base: 'text-overlay-foreground flex cursor-default items-center gap-2 rounded px-2 py-1.5 text-sm outline-0 select-none',
+    base: [
+      focusRing.base,
+      'text-overlay-foreground flex cursor-default items-center gap-2 rounded px-2 py-1.5 text-sm -outline-offset-2 select-none',
+    ],
     checkFrame: 'flex size-4 shrink-0 items-center justify-center',
     check: 'size-3.5',
   },
   variants: {
     isFocused: { true: 'bg-overlay-hover' },
+    isFocusVisible: focusRing.variants.isFocusVisible,
     isDisabled: { true: DISABLED },
     isSelected: { false: { check: 'invisible' } },
   },
