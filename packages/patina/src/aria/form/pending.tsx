@@ -1,5 +1,6 @@
 import { tv } from 'tailwind-variants';
 
+import { fieldStyles } from '../../internal/field.ts';
 import { Spinner } from '../../spinner/index.ts';
 
 /**
@@ -7,7 +8,8 @@ import { Spinner } from '../../spinner/index.ts';
  * read. `…/select` and `…/combobox` re-export it, so an app extends the look from either.
  */
 export const fieldPendingStyles = tv({
-  base: 'text-surface-foreground-muted flex items-center gap-1.5 text-xs',
+  // The field description's look, defined once in `fieldStyles`, laid out for the spinner and words.
+  base: [fieldStyles.slots.description, 'flex items-center gap-1.5'],
 });
 
 /**

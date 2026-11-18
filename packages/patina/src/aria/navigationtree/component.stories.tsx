@@ -50,7 +50,7 @@ const Navigation = ({
               id='search'
               href='/search'
               textValue='Search'
-              {...(collapsed ? { tooltip: 'Search' } : {})}
+              tooltip={collapsed ? 'Search' : undefined}
             >
               <IconSearch aria-hidden className='h-5 w-5 shrink-0' />
               {name('Search')}
@@ -60,7 +60,7 @@ const Navigation = ({
               href='/downloads'
               textValue='Downloads'
               isCurrentSection={currentSection === '/downloads'}
-              {...(collapsed ? { tooltip: 'Downloads' } : {})}
+              tooltip={collapsed ? 'Downloads' : undefined}
             >
               <IconDownload aria-hidden className='h-5 w-5 shrink-0' />
               {name('Downloads')}
@@ -74,7 +74,7 @@ const Navigation = ({
               id='about'
               href='/about'
               textValue='About'
-              {...(collapsed ? { tooltip: 'About' } : {})}
+              tooltip={collapsed ? 'About' : undefined}
             >
               <IconInfoCircle aria-hidden className='h-5 w-5 shrink-0' />
               {name('About')}

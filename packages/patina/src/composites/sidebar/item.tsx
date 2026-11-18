@@ -70,11 +70,13 @@ export const SidebarItem = ({
   const name = new Intl.ListFormat(locale, {
     type: 'unit',
     style: 'short',
-  }).format([
-    count === undefined ? label : `${label} ${count}`,
-    ...(isPending && pendingText !== undefined ? [pendingText] : []),
-    ...(alert === undefined ? [] : [alert.label]),
-  ]);
+  }).format(
+    [
+      count === undefined ? label : `${label} ${count}`,
+      isPending ? pendingText : undefined,
+      alert?.label,
+    ].filter((part) => part !== undefined),
+  );
   const AlertIcon = alert === undefined ? null : ALERT_ICONS[alert.tone];
   return (
     <NavigationTreeLink

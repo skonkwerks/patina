@@ -22,7 +22,10 @@ export type FormProps = Omit<AriaFormProps, 'onSubmit' | 'className'> & {
   onSubmit: () => void;
   /**
    * The action row at the form's foot, at the end of the line: Cancel, then the form's one action
-   * (its submit button). No action stands at the start of the row.
+   * (its submit button); on a later step of a dialog of steps, Back takes Cancel's place. No action
+   * stands at the start of the row. On a page or in the side panel the app's `FormActions` fills
+   * it; in a dialog, centered or the modal drawer (`placement='right'`), it is the dialog's own
+   * action row: its `DialogCancel`, then the action.
    */
   actions?: ReactNode;
   /**

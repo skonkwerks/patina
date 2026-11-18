@@ -1,6 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 import { DISABLED } from '../../internal/disabled.ts';
+import { fieldStyles } from '../../internal/field.ts';
 import { focusRing } from '../../internal/focus.ts';
 
 /**
@@ -27,7 +28,8 @@ export const calendarStyles = tv({
     // Days touch sideways, so a range's band runs unbroken along a week; weeks keep a hairline apart.
     grid: 'border-separate border-spacing-x-0 border-spacing-y-0.5',
     headerCell: 'h-7 text-xs font-medium',
-    error: 'text-error text-xs',
+    // The field error's look, defined once in `fieldStyles`.
+    error: fieldStyles.slots.error,
   },
   variants: {
     layer: {

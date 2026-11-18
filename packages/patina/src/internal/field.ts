@@ -97,8 +97,9 @@ export const choiceControlStyles = tv({
     button: 'group relative col-span-2 grid grid-cols-subgrid items-start',
     mark: 'mt-0.5 flex h-5 shrink-0 items-center',
     label: 'text-surface-foreground font-medium',
-    description: 'text-surface-foreground-muted col-start-2 text-xs',
-    error: 'text-error col-start-2 text-xs',
+    // The field description's and error's looks, defined once in `fieldStyles`, in the text column.
+    description: [fieldStyles.slots.description, 'col-start-2'],
+    error: [fieldStyles.slots.error, 'col-start-2'],
   },
   variants: {
     isDisabled: { true: { button: DISABLED } },
