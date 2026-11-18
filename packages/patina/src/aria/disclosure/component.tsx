@@ -5,6 +5,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { DISABLED } from '../../internal/disabled.ts';
+
 export const disclosureStyles = tv({
   slots: {
     heading: 'm-0 flex',
@@ -18,6 +20,10 @@ export const disclosureStyles = tv({
     panel:
       'h-(--disclosure-panel-height) overflow-clip motion-safe:transition-[height]',
     content: 'flex flex-col gap-3 pt-3 text-sm',
+  },
+  variants: {
+    // A disabled section's trigger: its chevron and title together, under the one disabled rule.
+    isDisabled: { true: { trigger: DISABLED } },
   },
 });
 

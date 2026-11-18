@@ -1,7 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { itemStateStyles } from '../../internal/itemstate.ts';
 import {
   gridListDropTargetOutline,
   gridListTileDropLine,
@@ -12,23 +11,17 @@ import {
  * selected, hovered, dragged, and disabled, and the insertion line of a reorder.
  */
 export const gridListTileStateStyles = tv({
-  extend: focusRing,
+  // The shared item states (`internal/itemstate.ts`): the focus ring, the hover and selected fills,
+  // and the disabled look. A tile's mark of selection that is not color alone is its own border.
+  extend: itemStateStyles,
   base: [
-    'bg-surface text-surface-foreground relative flex min-w-0 cursor-default flex-col rounded-lg border -outline-offset-2 select-none',
+    'bg-surface text-surface-foreground relative flex min-w-0 cursor-default flex-col rounded-lg border select-none',
     // Where a reordered tile will land: a line at the edge of the tile beside the drop indicator.
     gridListTileDropLine,
   ],
   variants: {
-    isSelected: {
-      false: 'border-surface-border',
-      // The selected tile's border is wider as well as colored, so selection never rests on color alone.
-      true: 'border-primary bg-primary/10 ring-primary ring-1',
-    },
-    // Only a tile React Aria lets the pointer act on lights up, so a locked tile never invites a press.
-    isHovered: { true: '' },
     // The tile being dragged fades, so where it will land reads against where it was.
     isDragging: { true: 'opacity-40' },
-    isDisabled: { true: [DISABLED, 'forced-colors:text-[GrayText]'] },
     // A drop onto the tile draws `gridListDropTargetOutline` (dropindicator.tsx). The primary on the
     // surface is 4.9:1 in Storybook's light theme, and 4.3:1 on the selected fill. A drop between
     // tiles draws the insertion line instead.
@@ -36,14 +29,15 @@ export const gridListTileStateStyles = tv({
     // while a drop is over a focused item, the dashed outline stands in for the focus ring.
     isDropTarget: { true: '', false: '' },
   },
-  // A selected tile under the pointer keeps a selected fill, as a list's row does; the two fills are
-  // the ones an app checks the tile's text contrast on.
   compoundVariants: [
+    { isSelected: false, class: 'border-surface-border' },
+    // The selected tile's border is wider as well as colored, so selection never rests on color
+    // alone. (Compound variants, since an extending style that defines `isSelected` again loses its
+    // boolean type in tailwind-variants 3.3.1.)
+    { isSelected: true, class: 'border-primary ring-primary ring-1' },
     {
       isDropTarget: true,
       class: gridListDropTargetOutline,
     },
-    { isSelected: false, isHovered: true, class: 'bg-surface-hover' },
-    { isSelected: true, isHovered: true, class: 'bg-primary/12' },
   ],
 });

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconCheck, IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
 import type { Key } from 'react-aria-components';
+import { expect } from 'storybook/test';
 
 import { IconToggle, Toggle, ToggleGroup } from './index.ts';
 
@@ -26,6 +27,32 @@ type Story = StoryObj<typeof meta>;
 
 /** Single choice: one pressed at a time, never none. */
 export const Single: Story = {};
+
+/**
+ * A column (`orientation='vertical'`): the segments stack, the top and bottom corners are rounded,
+ * assistive technology hears a vertical group, and Up and Down move between the segments.
+ */
+export const Vertical: Story = {
+  args: { orientation: 'vertical' },
+  play: async ({ canvas, userEvent }) => {
+    const group = canvas.getByRole('radiogroup', { name: 'View' });
+    await expect(group).toHaveAttribute('aria-orientation', 'vertical');
+    const list = canvas.getByRole('radio', { name: 'List' });
+    const grid = canvas.getByRole('radio', { name: 'Grid' });
+    await expect(grid.getBoundingClientRect().left).toBe(
+      list.getBoundingClientRect().left,
+    );
+    await expect(grid.getBoundingClientRect().top).toBeGreaterThan(
+      list.getBoundingClientRect().top,
+    );
+    await userEvent.tab();
+    await expect(list).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(grid).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(list).toHaveFocus();
+  },
+};
 
 /** Multiple: any number pressed, including none. */
 export const Multiple: Story = {

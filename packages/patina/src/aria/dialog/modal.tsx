@@ -4,6 +4,7 @@ import {
   type ModalOverlayProps,
 } from 'react-aria-components';
 
+import { OverlayContextBoundary } from '../../internal/overlaycontextboundary.tsx';
 import { dialogStyles } from './component.tsx';
 import { DialogPlacementContext, DismissDisabledContext } from './context.ts';
 
@@ -64,9 +65,13 @@ export const DialogModal = ({
         {(renderProps) => (
           <DialogPlacementContext value={placement}>
             <DismissDisabledContext value={isDismissDisabled}>
-              {typeof children === 'function'
-                ? children(renderProps)
-                : children}
+              {/* What the modal was opened from does not reach into it: a `Separator` or a
+                `ToggleGroup` in a modal opened from a `Toolbar` takes its own orientation. */}
+              <OverlayContextBoundary>
+                {typeof children === 'function'
+                  ? children(renderProps)
+                  : children}
+              </OverlayContextBoundary>
             </DismissDisabledContext>
           </DialogPlacementContext>
         )}

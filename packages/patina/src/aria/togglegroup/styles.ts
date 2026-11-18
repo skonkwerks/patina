@@ -19,9 +19,16 @@ export const toggleStyles = tv({
       md: 'h-8 px-3 text-sm',
       lg: 'h-9 px-4 text-sm',
     },
-    /** A segment shares its edges with its neighbors; a toggle on its own is rounded all round. */
+    /**
+     * A segment shares its edges with its neighbors, along the group's orientation (React Aria's
+     * `data-orientation` on the `ToggleGroup`): in a row the outer left and right corners are
+     * rounded, in a column the top and bottom ones. A toggle on its own is rounded all round.
+     */
     isInGroup: {
-      true: '-ml-px first:ml-0 first:rounded-l-md last:rounded-r-md',
+      true: [
+        'group-data-[orientation=horizontal]/segments:-ml-px group-data-[orientation=horizontal]/segments:first:ml-0 group-data-[orientation=horizontal]/segments:first:rounded-l-md group-data-[orientation=horizontal]/segments:last:rounded-r-md',
+        'group-data-[orientation=vertical]/segments:-mt-px group-data-[orientation=vertical]/segments:first:mt-0 group-data-[orientation=vertical]/segments:first:rounded-t-md group-data-[orientation=vertical]/segments:last:rounded-b-md',
+      ],
       false: 'rounded-md',
     },
     isSelected: { true: 'z-10', false: '' },

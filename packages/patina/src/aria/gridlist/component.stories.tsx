@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { expect, within } from 'storybook/test';
 
+import {
+  contrastRatio,
+  NON_TEXT_CONTRAST,
+} from '../../internal/contrast.testing.ts';
+import { startEdgeOf, TRANSPARENT } from '../../internal/itemstate.testing.ts';
 import { Button } from '../button/index.ts';
 import { useFileDrop } from '../draganddrop/index.ts';
 import {
@@ -87,6 +93,47 @@ export const SimpleItems: Story = {
       <GridListItem id='c'>Logo.svg</GridListItem>
     </GridList>
   ),
+};
+
+/**
+ * Rows that select, replacing the selection on a press. A selected row has its tint and, so that
+ * color is not the only sign, a 2px primary bar at its start edge; an unselected row keeps the same
+ * edge, transparent, so selecting never moves a row's content.
+ */
+export const SelectedRows: Story = {
+  render: (args) => (
+    <GridList
+      {...args}
+      selectionMode='multiple'
+      selectionBehavior='replace'
+      defaultSelectedKeys={['budget']}
+    >
+      {docItems(docs)}
+    </GridList>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    const row = (name: string) => canvas.getByRole('row', { name });
+    const surface = getComputedStyle(canvas.getByRole('grid')).backgroundColor;
+    const selected = startEdgeOf(row('Budget 2027.xlsx'));
+    await expect(selected.width).toBe('2px');
+    await expect(contrastRatio(selected.color, surface)).toBeGreaterThanOrEqual(
+      NON_TEXT_CONTRAST,
+    );
+    await expect(startEdgeOf(row('Launch brief.pdf'))).toEqual({
+      width: '2px',
+      color: TRANSPARENT,
+    });
+
+    // The bar follows the selection, and the row's content stays where it was.
+    const text = within(row('Launch brief.pdf')).getByText('Launch brief.pdf');
+    const left = text.getBoundingClientRect().left;
+    await userEvent.click(row('Launch brief.pdf'));
+    await expect(startEdgeOf(row('Launch brief.pdf')).color).toBe(
+      selected.color,
+    );
+    await expect(startEdgeOf(row('Budget 2027.xlsx')).color).toBe(TRANSPARENT);
+    await expect(text.getBoundingClientRect().left).toBe(left);
+  },
 };
 
 /** `layout='grid'` with tiles; the caller sets the grid's columns. */

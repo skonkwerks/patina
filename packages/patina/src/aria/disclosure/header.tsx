@@ -22,7 +22,10 @@ export const DisclosureHeader = ({
     <Button
       slot='trigger'
       className={(renderProps) =>
-        styles.trigger({ className: focusRing(renderProps) })
+        styles.trigger({
+          isDisabled: renderProps.isDisabled,
+          className: focusRing(renderProps),
+        })
       }
     >
       <IconChevronRight aria-hidden className={styles.chevron()} />

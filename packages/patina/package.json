@@ -53,6 +53,7 @@
     "./rowtile": "./src/rowtile/index.ts",
     "./searchfield": "./src/aria/searchfield/index.ts",
     "./select": "./src/aria/select/index.ts",
+    "./separator": "./src/aria/separator/index.ts",
     "./sidebar": "./src/composites/sidebar/index.ts",
     "./sidepanel": "./src/composites/sidepanel/index.ts",
     "./slider": "./src/aria/slider/index.ts",
@@ -69,7 +70,9 @@
     "./thememode": "./src/composites/thememode/index.ts",
     "./toast": "./src/aria/toast/index.ts",
     "./togglegroup": "./src/aria/togglegroup/index.ts",
-    "./tooltip": "./src/aria/tooltip/index.ts"
+    "./toolbar": "./src/aria/toolbar/index.ts",
+    "./tooltip": "./src/aria/tooltip/index.ts",
+    "./tree": "./src/aria/tree/index.ts"
   },
   "files": [
     "src",

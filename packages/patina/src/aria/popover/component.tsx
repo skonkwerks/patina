@@ -5,6 +5,7 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { DISABLED } from '../../internal/disabled.ts';
+import { OverlayContextBoundary } from '../../internal/overlaycontextboundary.tsx';
 
 export const popoverStyles = tv({
   base: 'bg-overlay border-overlay-border text-overlay-foreground rounded-md border shadow-lg outline-0',
@@ -29,7 +30,17 @@ export type PopoverProps = Omit<AriaPopoverProps, 'className'> & {
   className?: string;
 };
 
-/** Shared overlay surface; React Aria owns positioning, dismissal, and focus behavior. */
-export const Popover = ({ className, ...props }: PopoverProps) => (
-  <AriaPopover {...props} className={popoverStyles({ className })} />
+/**
+ * Shared overlay surface; React Aria owns positioning, dismissal, and focus behavior. What it was
+ * opened from does not reach into it (`OverlayContextBoundary`): a `Separator` or a `ToggleGroup` in
+ * a popover opened from a `Toolbar` takes its own orientation.
+ */
+export const Popover = ({ className, children, ...props }: PopoverProps) => (
+  <AriaPopover {...props} className={popoverStyles({ className })}>
+    {(renderProps) => (
+      <OverlayContextBoundary>
+        {typeof children === 'function' ? children(renderProps) : children}
+      </OverlayContextBoundary>
+    )}
+  </AriaPopover>
 );
