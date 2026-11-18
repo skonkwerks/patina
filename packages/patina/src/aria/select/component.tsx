@@ -11,6 +11,7 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { Count } from '../../count/index.ts';
+import { useDescriptionId } from '../../internal/descriptionid.ts';
 import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
 import {
   FieldHeader,
@@ -66,11 +67,11 @@ export type SelectProps<T extends object> = Omit<
 /**
  * A labeled single-choice dropdown under the shared field header: a trigger showing the chosen
  * option, its error under it, and a list in a popover. While the choices are read (`isPending`),
- * the spinner and `pendingText` stand where the description does, in a place that keeps one
- * height, so the trigger does not move when they come or go. The trigger shows the chosen
- * option's text (its `textValue`, or its children when they are plain text), never its other
- * content: an option with an icon shows its words alone there, and an option whose children are
- * not plain text and that has no `textValue` shows nothing there.
+ * the spinner and `pendingText` stand at the end of the label row and describe the trigger, so
+ * nothing is reserved for them and the trigger does not move when they come or go. The trigger
+ * shows the chosen option's text (its `textValue`, or its children when they are plain text),
+ * never its other content: an option with an icon shows its words alone there, and an option
+ * whose children are not plain text and that has no `textValue` shows nothing there.
  */
 export const Select = <T extends object>({
   label,
@@ -87,9 +88,18 @@ export const Select = <T extends object>({
   ...rest
 }: SelectProps<T>) => {
   const styles = selectStyles();
+  // React Aria finds a field's description element only when the field mounts, so the pending
+  // words, which come and go after that, describe the trigger through `aria-describedby`, which
+  // React Aria adds after the description and the error.
+  const { descriptionId: pendingId, 'aria-describedby': describedBy } =
+    useDescriptionId(
+      isPending ? pendingText : undefined,
+      rest['aria-describedby'],
+    );
   return (
     <AriaSelect
       {...rest}
+      aria-describedby={describedBy}
       // An explicit isInvalid makes React Aria skip `validate` and `isRequired`, so it is set only
       // for a caller's error.
       isInvalid={errorMessage === undefined ? rest.isInvalid : true}
@@ -109,12 +119,15 @@ export const Select = <T extends object>({
               optionalText={optionalText}
               info={info}
               description={description}
-              pendingDescription={
+              pending={
                 pendingText === undefined ? undefined : (
-                  <FieldPending pendingText={pendingText} />
+                  <FieldPending
+                    id={pendingId}
+                    isPending={isPending}
+                    pendingText={pendingText}
+                  />
                 )
               }
-              isPending={isPending}
               isDisabled={isDisabled}
             />
             <Button

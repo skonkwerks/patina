@@ -4,13 +4,21 @@ import { DISABLED } from './disabled.ts';
 import { focusRing } from './focus.ts';
 
 /**
+ * The box of a part beside a field's label, defined once: one label line tall (the label's
+ * `text-sm` line, 20px), with what it holds centered on that line. The info control stands in one,
+ * and so do a pending field's spinner and words (`fieldPendingStyles`).
+ */
+const labelLineBox = 'h-5 items-center';
+
+/**
  * The parts every field draws around its control, defined once, in the column `root` stacks from
- * the top: the label row (`labelRow`: the `label`, with the `optional` text inside it, the field's
- * `info` control beside it, and what a field keeps at the row's end, `rowEnd`), the `description`
- * (in a `descriptionCell` while the field can be pending), the field's control, and the `error`
- * under the control. `FieldHeader` draws the label row and the description with these slots for
- * every field whose label stands above its control, and every such field stacks them in `root`'s
- * column, so the fields' headers cannot drift apart.
+ * the top: the label row (`labelRow`: the `labelLine`, which holds the `labelText`, the `label`
+ * with the `optional` text inside it and the field's `info` control after it, and a pending field's
+ * sign at its end, each part beside the label in a `labelLineBox`; then what a field keeps at the
+ * row's end, `rowEnd`), the `description`, the field's control, and the `error` under the control.
+ * `FieldHeader` draws the label row and the description with these slots for every field whose
+ * label stands above its control, and every such field stacks them in `root`'s column, so the
+ * fields' headers cannot drift apart.
  *
  * A disabled field is drawn disabled part by part: its label here, its box in `fieldBoxStyles`. No
  * container is faded, because a faded container around a faded part would compound the two (a
@@ -22,22 +30,33 @@ export const fieldStyles = tv({
   slots: {
     root: 'flex flex-col gap-1',
     labelRow: 'flex items-center gap-1',
-    label: 'text-surface-foreground text-sm font-medium',
-    // Inside the label, after its text: quieter than the label, at the label's size.
-    optional: 'text-surface-foreground-muted font-normal',
-    // One label line tall (the label's `text-sm` line, 20px), with the info control centered on
-    // it. The control keeps its whole box, an `InfoButton`'s 28px with its press area and hover
-    // fill, which reaches 4px above and below the row into the column's gap, so a row with an info
-    // control is as tall as one without and the fields beside each other start their controls
-    // level. The box ends where the gap does, short of the description or the control below it;
-    // only its focus ring, 4px outside the box and drawn on top, reaches past the gap, over the
-    // top of the line below, while the control has the keyboard's focus.
-    info: 'flex h-5 shrink-0 items-center',
+    // The label's text, and a pending field's sign at the end of its first line.
+    labelLine: 'flex min-w-0 flex-1 items-start gap-1',
+    // The label and its info control, as one run of text. A label too long for its row wraps
+    // between its words (it is never cut), and the info control follows its last word on whatever
+    // line it ends: no line may break between them (this rule, with the word joiner `FieldHeader`
+    // puts before the control), only inside the label, so a last word with no room for the
+    // control takes it onto the next line, and the control never stands alone at a line's start.
+    // The label's text size gives every line the label's height.
+    labelText: 'text-sm whitespace-nowrap',
+    label: 'text-surface-foreground text-sm font-medium whitespace-normal',
+    // Inside the label, after its text: quieter than the label, at the label's size. It wraps with
+    // the label's words, but as one piece, so a marker of several words is never split.
+    optional: 'text-surface-foreground-muted font-normal whitespace-nowrap',
+    // The box of a part beside the label (`labelLineBox`, above), for the styles that draw such a
+    // part outside this one to build theirs from.
+    labelLineBox,
+    // Right after the label's last word, in a label line's box, with the info control centered on
+    // that line. The control keeps its whole box, an `InfoButton`'s 28px with its press area and
+    // hover fill, which reaches 4px above and below the line (into the column's gap below, and,
+    // when the label wraps, over the foot of the label's line above), so it makes no line taller:
+    // a row with an info control is as tall as one without, and fields beside each other start
+    // their controls level. The box ends where the gap does, short of the description or the
+    // control below it; only its focus ring, 4px outside the box and drawn on top, reaches past
+    // the gap, over the top of the line below, while the control has the keyboard's focus.
+    info: [labelLineBox, 'ms-1 inline-flex align-top'],
     rowEnd: 'ms-auto ps-1',
     description: 'text-surface-foreground-muted text-xs',
-    // The description's place in a field that can be pending: the description and the pending
-    // line share one cell, so the place is as tall as the taller of the two, pending or not.
-    descriptionCell: 'grid *:col-start-1 *:row-start-1',
     error: 'text-error text-xs',
   },
   variants: {

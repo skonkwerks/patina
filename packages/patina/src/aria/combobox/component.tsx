@@ -11,6 +11,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { useDescriptionId } from '../../internal/descriptionid.ts';
 import {
   fieldBoxStyles,
   fieldButtonStyles,
@@ -98,9 +99,9 @@ export type ComboBoxProps<
  * text; a caller that passes `items` filters them itself. With `selectionMode='multiple'` the list
  * stays open while options are chosen, and the chosen ones are listed under the input. The options
  * are the shared `ListBoxItem`, so they look as a `Select`'s do. While the options are read
- * (`isPending`, such as a search on a server), the spinner and `pendingText` stand where the
- * description does, in a place that keeps one height, so the input does not move under the person
- * typing; an empty list says `pendingText` rather than that nothing matches.
+ * (`isPending`, such as a search on a server), the spinner and `pendingText` stand at the end of
+ * the label row and describe the input, so nothing is reserved for them and the input does not
+ * move under the person typing; an empty list says `pendingText` rather than that nothing matches.
  */
 export const ComboBox = <
   T extends object,
@@ -122,10 +123,19 @@ export const ComboBox = <
 }: ComboBoxProps<T, M>) => {
   const field = useRef<HTMLDivElement>(null);
   const styles = comboBoxStyles();
+  // React Aria finds a field's description element only when the field mounts, so the pending
+  // words, which come and go after that, describe the input through `aria-describedby`, which
+  // React Aria adds after the description and the error.
+  const { descriptionId: pendingId, 'aria-describedby': describedBy } =
+    useDescriptionId(
+      isPending ? pendingText : undefined,
+      rest['aria-describedby'],
+    );
   return (
     <AriaComboBox
       ref={field}
       {...rest}
+      aria-describedby={describedBy}
       // An explicit isInvalid makes React Aria skip `validate` and `isRequired`, so it is set only
       // for a caller's error.
       isInvalid={errorMessage === undefined ? rest.isInvalid : true}
@@ -142,12 +152,15 @@ export const ComboBox = <
               optionalText={optionalText}
               info={info}
               description={description}
-              pendingDescription={
+              pending={
                 pendingText === undefined ? undefined : (
-                  <FieldPending pendingText={pendingText} />
+                  <FieldPending
+                    id={pendingId}
+                    isPending={isPending}
+                    pendingText={pendingText}
+                  />
                 )
               }
-              isPending={isPending}
               isDisabled={isDisabled}
             />
             <Group

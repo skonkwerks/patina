@@ -22,6 +22,7 @@ import { Token, TokenField } from '../aria/tokenfield/index.ts';
 import { InfoButton } from '../composites/infobutton/index.ts';
 import { MultiSelect } from '../composites/multiselect/index.ts';
 import { TextDropArea } from '../composites/textdroparea/index.ts';
+import { labelLines } from './labellines.testing.ts';
 
 const OPTIONAL = '(optional)';
 
@@ -491,5 +492,100 @@ export const InfoDoesNotGrowTheRow: Story = {
         `${around.tagName.toLowerCase()}.${around.className}`,
       ).toBe('visible');
     }
+  },
+};
+
+/** The widths the sweep draws its field at: 150px to 300px, by 2px. */
+const SWEEP = Array.from({ length: 76 }, (_, index) => 150 + index * 2);
+
+const PATH = 'Path to the content folder';
+
+/**
+ * The info control follows the label's last word, on whatever line the label ends, and is never
+ * parted from it. Drawn at every width from 150px to 300px, by 2px, a label with the optional
+ * marker and an info control stands on one line and then wraps before each of its last words in
+ * turn; at every width the info control stands right after the label's last word, on its last
+ * line, never alone at the start of a line. It makes no line taller (the control starts one gap
+ * under the label's last line), and the label is never cut.
+ */
+export const InfoFollowsTheLabel: Story = {
+  render: () => (
+    <div className='bg-surface flex flex-col gap-4 p-4'>
+      {SWEEP.map((width) => (
+        <div
+          key={width}
+          data-width={width}
+          style={{ width: `${String(width)}px` }}
+        >
+          <TextField
+            label={PATH}
+            optionalText={OPTIONAL}
+            info={
+              <InfoButton aria-label={`About the path, ${String(width)}px`} />
+            }
+          />
+        </div>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const problems: string[] = [];
+    const lineCounts = new Set<number>();
+    for (const width of SWEEP) {
+      const at = `${String(width)}px`;
+      const root = canvasElement.querySelector<HTMLElement>(
+        `[data-width="${String(width)}"]`,
+      );
+      const label = root === null ? undefined : labelOf(root, PATH);
+      if (root === null || label === undefined) {
+        throw new Error(`The field at ${at} is not drawn`);
+      }
+      const lines = labelLines(label);
+      const last = lines.at(-1);
+      if (last === undefined) {
+        throw new Error(`The label at ${at} draws no text`);
+      }
+      lineCounts.add(lines.length);
+      const info = within(root).getByRole('button', {
+        name: `About the path, ${at}`,
+      });
+      const box = info.getBoundingClientRect();
+      const after = Math.round(box.left - last.right);
+      const off = Math.round((box.top + box.bottom) / 2 - last.middle);
+      if (after < 0 || after > 8 || Math.abs(off) > 1) {
+        problems.push(
+          `${at}: the info control does not follow the label's last word (it starts ${String(after)}px after it, ${String(off)}px off its line)`,
+        );
+      }
+      // Each of the label's lines is one line tall, and the control starts one gap (the column's
+      // 4px) under the last.
+      const lineHeight = Number.parseFloat(getComputedStyle(label).lineHeight);
+      const fieldBox = root.getBoundingClientRect();
+      const controlTop = Math.round(
+        within(root).getByRole('textbox').getBoundingClientRect().top -
+          fieldBox.top,
+      );
+      if (controlTop !== lines.length * lineHeight + 4) {
+        problems.push(
+          `${at}: the control starts at ${String(controlTop)}, under ${String(lines.length)} lines of ${String(lineHeight)}px`,
+        );
+      }
+      if (
+        !lines.every(
+          (line) =>
+            line.left >= fieldBox.left - 0.5 &&
+            line.right <= fieldBox.right + 0.5,
+        )
+      ) {
+        problems.push(`${at}: the label is cut`);
+      }
+    }
+    // The sweep holds the label on one line and wrapped, or it proves less than it says.
+    await expect(lineCounts.has(1), 'a width with one line').toBe(true);
+    await expect(
+      [...lineCounts].some((count) => count > 1),
+      'a width at which the label wraps',
+    ).toBe(true);
+    await expect(problems).toEqual([]);
   },
 };

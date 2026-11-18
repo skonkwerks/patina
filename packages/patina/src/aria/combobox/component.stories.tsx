@@ -326,11 +326,10 @@ export const Multiple: Story = {
   },
 };
 
-/** No visible label, as in a toolbar: the combo box carries `aria-label`. */
 /**
- * While the regions are read, the spinner and its words stand where the description does and
- * describe the input; the description keeps its room, hidden, so the input does not move. An empty
- * list says the same, not that nothing matches.
+ * While the regions are read, the spinner and its words stand at the end of the label row, on the
+ * label's line, and describe the input after its description, which stays drawn under the label.
+ * An empty list says the same, not that nothing matches.
  */
 export const Pending: Story = {
   args: {
@@ -341,10 +340,19 @@ export const Pending: Story = {
   },
   play: async ({ canvas, canvasElement, userEvent }: Context) => {
     const input = canvas.getByRole('combobox', { name: 'Region' });
-    await expect(input).toHaveAccessibleDescription('Loading regions…');
-    await expect(
-      canvas.getByText('Where your data is stored.'),
-    ).not.toBeVisible();
+    await expect(input).toHaveAccessibleDescription(
+      'Where your data is stored. Loading regions…',
+    );
+    await expect(canvas.getByText('Where your data is stored.')).toBeVisible();
+    const words = canvas.getByText('Loading regions…');
+    const label = canvas.getByText('Region');
+    const middle = (element: Element) => {
+      const box = element.getBoundingClientRect();
+      return (box.top + box.bottom) / 2;
+    };
+    await expect(Math.abs(middle(words) - middle(label))).toBeLessThanOrEqual(
+      1,
+    );
 
     await userEvent.click(input);
     await userEvent.keyboard('{ArrowDown}');
@@ -429,6 +437,7 @@ export const CustomValue: Story = {
   },
 };
 
+/** No visible label, as in a toolbar: the combo box carries `aria-label`. */
 export const WithoutVisibleLabel: Story = {
   args: { label: undefined, 'aria-label': 'Region' },
 };

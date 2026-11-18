@@ -71,9 +71,33 @@ export const WithDescription: Story = {
 /** A muted count beside the label, formatted by the caller. */
 export const WithCount: Story = { args: { count: '(4)' } };
 
-/** While the choices are still being read: a spinner and a word stand where the description does. */
+/**
+ * While the choices are still being read: the spinner and its words stand at the end of the label
+ * row, on the label's line, and describe the trigger.
+ */
 export const Pending: Story = {
   args: { isPending: true, pendingText: 'Loading regions…', items: [] },
+  play: async ({ canvas }: Context) => {
+    const trigger = canvas.getByRole('button', { name: /Region/ });
+    await expect(trigger).toHaveAccessibleDescription('Loading regions…');
+    const words = canvas.getByText('Loading regions…');
+    const [label] = canvas.getAllByText('Region', {
+      ignore: '[aria-hidden="true"] *, script, style, option',
+    });
+    if (label === undefined) {
+      throw new Error('No label');
+    }
+    const middle = (element: Element) => {
+      const box = element.getBoundingClientRect();
+      return (box.top + box.bottom) / 2;
+    };
+    await expect(Math.abs(middle(words) - middle(label))).toBeLessThanOrEqual(
+      1,
+    );
+    await expect(words.getBoundingClientRect().left).toBeGreaterThan(
+      label.getBoundingClientRect().right,
+    );
+  },
 };
 
 export const WithError: Story = {
