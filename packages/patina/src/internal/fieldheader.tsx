@@ -31,8 +31,8 @@ export type FieldHeaderProps = {
    * follows the label's last word, on whatever line the label ends, and is never parted from it;
    * it makes no line taller, so a field with one starts its control where a field without one
    * does. A field in a dialog, in the modal drawer (`DialogModal` with `placement='right'`) or in
-   * a form in the side drawer takes none: the help panel it opens lies behind a modal, and in the
-   * side drawer it would take the form's place. Patina does not enforce this; the app leaves
+   * a form in the side panel takes none: the help panel it opens lies behind a modal, and in the
+   * side panel it would take the form's place. Patina does not enforce this; the app leaves
    * `info` unset there.
    */
   info?: ReactNode;

@@ -15,7 +15,7 @@ export type ActionMenuProps = {
   /**
    * Called with the id of the item that was chosen, and with the menu's control. The control is
    * what a surface opened by the choice returns the focus to when it closes, such as the side
-   * drawer: the chosen item is gone with the menu by then, and React Aria's menu hands its action
+   * panel: the chosen item is gone with the menu by then, and React Aria's menu hands its action
    * the item's id alone.
    */
   onAction: (key: Key, control: HTMLButtonElement | null) => void;
