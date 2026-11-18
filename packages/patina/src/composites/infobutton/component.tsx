@@ -3,8 +3,8 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import {
   IconButton,
   type IconButtonProps,
-} from '../../aria/iconbutton/index.ts';
-import { infoButtonStyles } from './styles.ts';
+} from '../../aria/iconbutton/index.js';
+import { infoButtonStyles } from './styles.js';
 
 export type InfoButtonProps = Omit<IconButtonProps, 'children' | 'size'>;
 

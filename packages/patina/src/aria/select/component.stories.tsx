@@ -3,8 +3,8 @@ import { useState } from 'react';
 import type { Key } from 'react-aria-components';
 import { expect, within } from 'storybook/test';
 
-import { ListBoxItem, ListBoxSection } from '../listbox/index.ts';
-import { Select, type SelectProps } from './index.ts';
+import { ListBoxItem, ListBoxSection } from '../listbox/index.js';
+import { Select, type SelectProps } from './index.js';
 
 type Option = { id: string; name: string; isDisabled?: boolean };
 

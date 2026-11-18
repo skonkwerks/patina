@@ -1,7 +1,7 @@
 import { createContext, use } from 'react';
 
-import type { PanelOpening } from './action.ts';
-import type { PanelState } from './state.ts';
+import type { PanelOpening } from './action.js';
+import type { PanelState } from './state.js';
 
 export type SidePanelActions = Readonly<{
   /** Opens the opener's content, or closes the panel when that opener's content is shown. */

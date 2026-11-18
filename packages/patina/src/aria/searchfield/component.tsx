@@ -12,11 +12,11 @@ import {
   fieldBoxStyles,
   fieldButtonStyles,
   fieldStyles,
-} from '../../internal/field.ts';
+} from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
+} from '../../internal/fieldheader.js';
 
 export const searchFieldStyles = tv({
   slots: {

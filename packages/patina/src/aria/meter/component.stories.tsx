@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 
-import { Meter } from './index.ts';
+import { Meter } from './index.js';
 
 const meta = {
   title: 'Aria/Meter',

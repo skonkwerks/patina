@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import type { PanelOpening, SidePanelAction } from './action.ts';
-import { sidePanelReducer } from './reducer.ts';
-import { initialPanelState, type PanelState } from './state.ts';
+import type { PanelOpening, SidePanelAction } from './action.js';
+import { sidePanelReducer } from './reducer.js';
+import { initialPanelState, type PanelState } from './state.js';
 
 // Stand-ins for the controls that opened the panel: the reducer holds them as data and never reads
 // them, so any event target will do where the spec has no DOM.

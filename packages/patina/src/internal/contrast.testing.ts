@@ -1,5 +1,5 @@
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.ts`).
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.ts`).
  *
  * The WCAG contrast ratio of two computed colors, for stories that hold a color pair to a minimum,
  * such as a control's edge against the layer it stands on (3:1, non-text contrast). Both colors are

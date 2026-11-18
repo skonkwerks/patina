@@ -5,9 +5,9 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { gradientOverGrid } from './fill.ts';
-import { ColorThumb } from './thumb.tsx';
+import { DISABLED } from '../../internal/disabled.js';
+import { gradientOverGrid } from './fill.js';
+import { ColorThumb } from './thumb.js';
 
 /**
  * The wheel's radii, in pixels: 192px across, as wide as a color area, with a track 24px wide, as

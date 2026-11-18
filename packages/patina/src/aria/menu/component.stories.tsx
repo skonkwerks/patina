@@ -3,8 +3,8 @@ import { useState } from 'react';
 import type { Selection } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { ActionMenu } from '../../composites/actionmenu/index.ts';
-import { Button } from '../button/index.ts';
+import { ActionMenu } from '../../composites/actionmenu/index.js';
+import { Button } from '../button/index.js';
 import {
   Menu,
   MenuItem,
@@ -13,7 +13,7 @@ import {
   MenuTrigger,
   Submenu,
   SubmenuTrigger,
-} from './index.ts';
+} from './index.js';
 
 const meta = {
   title: 'Aria/Menu',

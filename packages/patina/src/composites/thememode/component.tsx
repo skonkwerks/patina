@@ -1,9 +1,9 @@
 import { IconDeviceDesktop, IconMoon, IconSun } from '@tabler/icons-react';
 import { useId } from 'react';
 
-import { IconButton } from '../../aria/iconbutton/index.ts';
-import { useSidebar } from '../sidebar/index.ts';
-import { themeModeStyles } from './styles.ts';
+import { IconButton } from '../../aria/iconbutton/index.js';
+import { useSidebar } from '../sidebar/index.js';
+import { themeModeStyles } from './styles.js';
 
 /** How the app chooses its theme: following the operating system, or always light or dark. */
 export type ThemeModeValue = 'system' | 'light' | 'dark';

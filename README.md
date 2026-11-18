@@ -24,7 +24,9 @@ pnpm lint:es          # ESLint, the full pass, including the aria dependency rul
 pnpm lint:fix         # fix import order and braces in the React workspaces, then format
 pnpm format           # Prettier, on the project's file types
 pnpm test             # unit specs, and every story in Chromium with the axe accessibility check
-just ci-local         # every check above (check, both lint passes, format check, tests): the gate before every commit
+pnpm build            # compile packages/patina into its dist/ (JavaScript and type definitions)
+pnpm check:package    # pack packages/patina, check the tarball, and install it into a throwaway app
+just ci-local         # every check above (check, both lint passes, format check, tests, packaging check): the gate before every commit
 ```
 
 ## License

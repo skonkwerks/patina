@@ -9,7 +9,7 @@ import {
   ColorSwatchPicker,
   ColorSwatchPickerItem,
   ColorWheel,
-} from './index.ts';
+} from './index.js';
 
 const meta = {
   title: 'Aria/ColorPicker',

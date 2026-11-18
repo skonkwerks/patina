@@ -1,2 +1,2 @@
-export * from './component.tsx';
-export * from './queue.ts';
+export * from './component.js';
+export * from './queue.js';

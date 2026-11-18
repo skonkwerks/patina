@@ -6,17 +6,17 @@ import { expect, waitFor, within } from 'storybook/test';
 import {
   LIVE_ANNOUNCER_CLEAR_MS,
   LIVE_ANNOUNCER_MESSAGE,
-} from '../../internal/liveannouncer.testing.ts';
-import { Button } from '../button/index.ts';
-import { IconButton } from '../iconbutton/index.ts';
-import { TextField } from '../textfield/index.ts';
+} from '../../internal/liveannouncer.testing.js';
+import { Button } from '../button/index.js';
+import { IconButton } from '../iconbutton/index.js';
+import { TextField } from '../textfield/index.js';
 import {
   Dialog,
   DialogCancel,
   DialogModal,
   type DialogProps,
   DialogTrigger,
-} from './index.ts';
+} from './index.js';
 
 const meta = {
   title: 'Aria/Dialog',

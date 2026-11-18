@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import Dots from './dots.tsx';
-import type { IndicatorKind } from './rules.ts';
-import Scrubber from './scrubber.tsx';
-import type { CarouselItem } from './state.ts';
-import { carouselStyles } from './styles.ts';
-import type { CarouselIndicator } from './types.ts';
+import Dots from './dots.js';
+import type { IndicatorKind } from './rules.js';
+import Scrubber from './scrubber.js';
+import type { CarouselItem } from './state.js';
+import { carouselStyles } from './styles.js';
+import type { CarouselIndicator } from './types.js';
 
 type PositionProps<T extends CarouselItem> = {
   items: readonly T[];

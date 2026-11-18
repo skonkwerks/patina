@@ -4,7 +4,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
+import { focusRing } from '../../internal/focus.js';
 
 export const breadcrumbLinkStyles = tv({
   extend: focusRing,

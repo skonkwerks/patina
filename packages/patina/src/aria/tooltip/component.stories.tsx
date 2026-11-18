@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconDownload } from '@tabler/icons-react';
 
-import { Button } from '../button/index.ts';
-import { IconButton } from '../iconbutton/index.ts';
-import { Link } from '../link/index.ts';
-import { Tooltip, TooltipTrigger } from './index.ts';
+import { Button } from '../button/index.js';
+import { IconButton } from '../iconbutton/index.js';
+import { Link } from '../link/index.js';
+import { Tooltip, TooltipTrigger } from './index.js';
 
 const meta = {
   title: 'Aria/Tooltip',

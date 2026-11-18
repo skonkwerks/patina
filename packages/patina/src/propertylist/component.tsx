@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { propertyListStyles } from './styles.ts';
+import { propertyListStyles } from './styles.js';
 
 export type PropertyListItem = Readonly<{
   /** Stable within the list, such as the property's field name; the row's identity. */

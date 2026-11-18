@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 
-import { Alert } from '../../composites/alert/index.ts';
-import { Button } from '../button/index.ts';
-import { Checkbox } from '../checkbox/index.ts';
-import { TextField } from '../textfield/index.ts';
-import { Form } from './index.ts';
+import { Alert } from '../../composites/alert/index.js';
+import { Button } from '../button/index.js';
+import { Checkbox } from '../checkbox/index.js';
+import { TextField } from '../textfield/index.js';
+import { Form } from './index.js';
 
 const meta = {
   title: 'Aria/Form',

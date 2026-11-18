@@ -1,3 +1,3 @@
-export * from './component.tsx';
-export { PAN_MOVING, PAN_OVERSCROLL } from './pan.ts';
-export * from './styles.ts';
+export * from './component.js';
+export { PAN_MOVING, PAN_OVERSCROLL } from './pan.js';
+export * from './styles.js';

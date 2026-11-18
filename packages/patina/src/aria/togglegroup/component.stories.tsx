@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { Key } from 'react-aria-components';
 import { expect } from 'storybook/test';
 
-import { IconToggle, Toggle, ToggleGroup } from './index.ts';
+import { IconToggle, Toggle, ToggleGroup } from './index.js';
 
 const meta = {
   title: 'Aria/ToggleGroup',

@@ -6,9 +6,9 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { choiceControlStyles } from '../../internal/field.ts';
-import { focusRing } from '../../internal/focus.ts';
-import { Spinner } from '../../spinner/index.ts';
+import { choiceControlStyles } from '../../internal/field.js';
+import { focusRing } from '../../internal/focus.js';
+import { Spinner } from '../../spinner/index.js';
 
 /** A switch: the shared choice control with a track for its mark, and a thumb that slides when on. */
 export const switchStyles = tv({

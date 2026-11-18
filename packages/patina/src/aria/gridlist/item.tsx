@@ -5,11 +5,11 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { rowStateStyles } from '../../internal/itemstate.ts';
+import { rowStateStyles } from '../../internal/itemstate.js';
 import {
   gridListDropTargetOutline,
   gridListRowDropLine,
-} from './dropindicator.tsx';
+} from './dropindicator.js';
 
 export const gridListItemStyles = tv({
   // The shared row states (`internal/itemstate.ts`): the focus ring, the hover and selected fills,

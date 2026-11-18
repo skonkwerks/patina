@@ -38,10 +38,11 @@
           "deny",
           "ignorePackages",
           {
-            "ts": "always",
-            "tsx": "always",
-            "js": "never",
-            "jsx": "never"
+            "ts": "never",
+            "tsx": "never",
+            "js": "always",
+            "jsx": "always",
+            "checkTypeImports": true
           }
         ],
         "import/no-cycle": "deny",

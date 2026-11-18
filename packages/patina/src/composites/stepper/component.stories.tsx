@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { type Step, Stepper, type StepperProps } from './index.ts';
+import { type Step, Stepper, type StepperProps } from './index.js';
 
 const steps: readonly Step[] = [
   { id: 'file', label: 'Choose a file' },

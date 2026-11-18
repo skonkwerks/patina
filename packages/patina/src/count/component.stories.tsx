@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Count } from './index.ts';
+import { Count } from './index.js';
 
 const meta = {
   title: 'Core/Count',

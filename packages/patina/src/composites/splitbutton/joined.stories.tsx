@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 
-import { Menu, MenuItem } from '../../aria/menu/index.ts';
-import { SplitButton } from './index.ts';
+import { Menu, MenuItem } from '../../aria/menu/index.js';
+import { SplitButton } from './index.js';
 
 const menu = (
   <Menu aria-label='Run count'>

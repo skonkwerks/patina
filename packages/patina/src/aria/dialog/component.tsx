@@ -7,8 +7,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { IconButton } from '../iconbutton/index.ts';
-import { DialogPlacementContext, DismissDisabledContext } from './context.ts';
+import { IconButton } from '../iconbutton/index.js';
+import { DialogPlacementContext, DismissDisabledContext } from './context.js';
 
 export const dialogStyles = tv({
   slots: {

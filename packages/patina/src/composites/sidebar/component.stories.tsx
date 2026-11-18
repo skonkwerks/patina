@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { DemoSidebar } from './demo.testing.tsx';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { DemoSidebar } from './demo.testing.js';
 
 const meta = {
   title: 'Composites/Sidebar',

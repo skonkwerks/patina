@@ -1,5 +1,5 @@
-import { Spinner } from './component.tsx';
-import { pendingStatusStyles } from './styles.ts';
+import { Spinner } from './component.js';
+import { pendingStatusStyles } from './styles.js';
 
 export type PendingStatusProps = {
   /** The words that say the surface is working, such as "Loading". */

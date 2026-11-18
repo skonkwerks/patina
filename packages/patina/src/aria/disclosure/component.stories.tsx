@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Disclosure, DisclosureHeader, DisclosurePanel } from './index.ts';
+import { Disclosure, DisclosureHeader, DisclosurePanel } from './index.js';
 
 const meta = {
   title: 'Aria/Disclosure',

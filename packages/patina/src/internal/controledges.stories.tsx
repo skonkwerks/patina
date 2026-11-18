@@ -1,28 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 
-import { Checkbox } from '../aria/checkbox/index.ts';
+import { Checkbox } from '../aria/checkbox/index.js';
 import {
   ColorArea,
   ColorSlider,
   ColorSwatch,
   ColorWheel,
-} from '../aria/color/index.ts';
-import { ComboBox } from '../aria/combobox/index.ts';
-import { DateField } from '../aria/datefield/index.ts';
-import { DatePicker } from '../aria/datepicker/index.ts';
-import { ListBoxItem } from '../aria/listbox/index.ts';
-import { Radio, RadioGroup } from '../aria/radiogroup/index.ts';
-import { Slider } from '../aria/slider/index.ts';
-import { Switch } from '../aria/switch/index.ts';
-import { TextField } from '../aria/textfield/index.ts';
-import { Token, TokenField } from '../aria/tokenfield/index.ts';
-import { InfoButton } from '../composites/infobutton/index.ts';
+} from '../aria/color/index.js';
+import { ComboBox } from '../aria/combobox/index.js';
+import { DateField } from '../aria/datefield/index.js';
+import { DatePicker } from '../aria/datepicker/index.js';
+import { ListBoxItem } from '../aria/listbox/index.js';
+import { Radio, RadioGroup } from '../aria/radiogroup/index.js';
+import { Slider } from '../aria/slider/index.js';
+import { Switch } from '../aria/switch/index.js';
+import { TextField } from '../aria/textfield/index.js';
+import { Token, TokenField } from '../aria/tokenfield/index.js';
+import { InfoButton } from '../composites/infobutton/index.js';
 import {
   contrastRatio,
   edgeColor,
   NON_TEXT_CONTRAST,
-} from './contrast.testing.ts';
+} from './contrast.testing.js';
 
 /** Every layer and hover fill a control stands on, as the token contract names them. */
 const layers = [

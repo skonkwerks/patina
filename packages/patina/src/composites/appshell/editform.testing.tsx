@@ -1,18 +1,18 @@
 import { useState } from 'react';
 
-import { Button } from '../../aria/button/index.ts';
+import { Button } from '../../aria/button/index.js';
 import {
   Dialog,
   DialogCancel,
   DialogModal,
   DialogTrigger,
-} from '../../aria/dialog/index.ts';
-import { SearchField } from '../../aria/searchfield/index.ts';
-import { TextField } from '../../aria/textfield/index.ts';
-import { useSidePanelHold } from '../sidepanel/index.ts';
+} from '../../aria/dialog/index.js';
+import { SearchField } from '../../aria/searchfield/index.js';
+import { TextField } from '../../aria/textfield/index.js';
+import { useSidePanelHold } from '../sidepanel/index.js';
 
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.tsx`). The form the
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.tsx`). The form the
  * shell demo shows in the side panel. Its writes are pretend: each takes a moment.
  */
 

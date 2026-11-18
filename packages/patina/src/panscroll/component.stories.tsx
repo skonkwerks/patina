@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef } from 'react';
 
-import { MediaStrip, MediaStripItem } from '../aria/mediastrip/index.ts';
-import { PanScroll } from './index.ts';
+import { MediaStrip, MediaStripItem } from '../aria/mediastrip/index.js';
+import { PanScroll } from './index.js';
 
 /**
  * Picture stand-ins: real images (an inline SVG gradient each), so a drag that starts on a picture

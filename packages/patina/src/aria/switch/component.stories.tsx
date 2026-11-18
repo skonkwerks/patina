@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Switch } from './index.ts';
+import { Switch } from './index.js';
 
 const meta = {
   title: 'Aria/Switch',

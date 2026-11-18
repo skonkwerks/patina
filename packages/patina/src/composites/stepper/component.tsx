@@ -1,5 +1,5 @@
-import { ButtonBase } from '../../aria/button/base.tsx';
-import { stepperStyles, stepStyles } from './styles.ts';
+import { ButtonBase } from '../../aria/button/base.js';
+import { stepperStyles, stepStyles } from './styles.js';
 
 export type Step = Readonly<{
   /** The step's stable id. */

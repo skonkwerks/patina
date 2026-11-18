@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { useSidebar } from './context.ts';
-import { sidebarHeaderStyles } from './styles.ts';
+import { useSidebar } from './context.js';
+import { sidebarHeaderStyles } from './styles.js';
 
 export type SidebarHeaderProps = {
   /** The product's brand while the sidebar is open, such as its logo with the product's name. */

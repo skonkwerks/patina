@@ -5,8 +5,8 @@ import {
   contrastRatio,
   edgeColor,
   NON_TEXT_CONTRAST,
-} from '../../internal/contrast.testing.ts';
-import { ColorSwatch } from './index.ts';
+} from '../../internal/contrast.testing.js';
+import { ColorSwatch } from './index.js';
 
 const meta = {
   title: 'Aria/ColorSwatch',

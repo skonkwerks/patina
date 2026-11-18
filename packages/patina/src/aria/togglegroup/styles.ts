@@ -1,7 +1,7 @@
 import { tv, type VariantProps } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { DISABLED } from '../../internal/disabled.js';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * The look of a toggle, pressed or not, on its own or as a segment of a `ToggleGroup`. The same

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Link, LinkButton } from './index.ts';
+import { Link, LinkButton } from './index.js';
 
 const meta = {
   title: 'Aria/Link',

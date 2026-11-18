@@ -10,20 +10,20 @@ import {
 import { type ReactNode, useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Button } from '../../aria/button/index.ts';
+import { Button } from '../../aria/button/index.js';
 import {
   Dialog,
   DialogCancel,
   DialogModal,
   DialogTrigger,
-} from '../../aria/dialog/index.ts';
+} from '../../aria/dialog/index.js';
 import {
   Menu,
   MenuItem,
   MenuSeparator,
   MenuTrigger,
-} from '../../aria/menu/index.ts';
-import { CommandPalette } from './index.ts';
+} from '../../aria/menu/index.js';
+import { CommandPalette } from './index.js';
 
 /** A command: its icon beside its name, which is also the text the search matches. */
 const Command = ({

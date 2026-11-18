@@ -1,2 +1,2 @@
-export * from './component.tsx';
-export * from './tag.tsx';
+export * from './component.js';
+export * from './tag.js';

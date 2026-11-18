@@ -4,7 +4,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { ProgressBar } from '../progressbar/index.ts';
+import { ProgressBar } from '../progressbar/index.js';
 
 export const tableLoadMoreStyles = tv({ base: 'p-3' });
 

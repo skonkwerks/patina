@@ -1,6 +1,6 @@
 import { IconCheck, IconInfoCircle } from '@tabler/icons-react';
 
-import type { ToastTone } from './queue.ts';
+import type { ToastTone } from './queue.js';
 
 type StatusIconProps = {
   tone: ToastTone;

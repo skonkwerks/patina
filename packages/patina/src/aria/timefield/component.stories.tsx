@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { expect, waitFor } from 'storybook/test';
 
-import { Button } from '../button/index.ts';
-import { Form } from '../form/index.ts';
-import { TimeField, type TimeFieldProps } from './index.ts';
+import { Button } from '../button/index.js';
+import { Form } from '../form/index.js';
+import { TimeField, type TimeFieldProps } from './index.js';
 
 const meta = {
   title: 'Aria/TimeField',

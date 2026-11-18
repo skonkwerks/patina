@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Checkbox, CheckboxGroup } from './index.ts';
+import { Checkbox, CheckboxGroup } from './index.js';
 
 const meta = {
   title: 'Aria/Checkbox',

@@ -6,14 +6,14 @@ import {
 import type { ReactNode } from 'react';
 import { Dialog as AriaDialog, DialogTrigger } from 'react-aria-components';
 
-import { ButtonBase } from '../../aria/button/base.tsx';
-import { Popover } from '../../aria/popover/index.ts';
-import type { StatusTone } from '../../internal/statustone.ts';
+import { ButtonBase } from '../../aria/button/base.js';
+import { Popover } from '../../aria/popover/index.js';
+import type { StatusTone } from '../../internal/statustone.js';
 import {
   stateDetailsControlStyles,
   stateDetailsDialogStyles,
   stateDetailsStyles,
-} from './styles.ts';
+} from './styles.js';
 
 /** The tones a state's details can carry: a failure, something to attend to, or a note. */
 export type StateDetailsTone = Extract<

@@ -5,7 +5,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
+import { DISABLED } from '../../internal/disabled.js';
 
 export const disclosureStyles = tv({
   slots: {

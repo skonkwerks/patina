@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { type Color, parseColor } from 'react-aria-components';
 import { expect, within } from 'storybook/test';
 
-import { ColorSwatchPicker, ColorSwatchPickerItem } from './index.ts';
+import { ColorSwatchPicker, ColorSwatchPickerItem } from './index.js';
 
 /** A palette whose colors have names of their own. */
 const palette = [

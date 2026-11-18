@@ -1,7 +1,7 @@
 import { ColorThumb as AriaColorThumb } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * The thumb of a color slider, area or wheel: a circle filled with the chosen color, in a white

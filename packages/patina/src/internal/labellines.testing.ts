@@ -1,5 +1,5 @@
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.ts`).
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.ts`).
  */
 
 /** One line of a label's text, as drawn: its extent, and the middle of the line it stands on. */

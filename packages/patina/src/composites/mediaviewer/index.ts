@@ -1,3 +1,3 @@
-export * from './component.tsx';
-export * from './dialog.tsx';
-export * from './styles.ts';
+export * from './component.js';
+export * from './dialog.js';
+export * from './styles.js';

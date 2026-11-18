@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconSearch, IconX } from '@tabler/icons-react';
 
-import { IconButton } from '../iconbutton/index.ts';
-import { Button } from './index.ts';
+import { IconButton } from '../iconbutton/index.js';
+import { Button } from './index.js';
 
 const variants = ['solid', 'outline', 'ghost', 'link'] as const;
 const tones = ['neutral', 'primary', 'destructive'] as const;

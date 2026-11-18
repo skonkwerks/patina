@@ -9,17 +9,17 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { useDescriptionId } from '../../internal/descriptionid.ts';
-import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import { useDescriptionId } from '../../internal/descriptionid.js';
+import { fieldBoxStyles, fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { Popover } from '../popover/index.ts';
-import { ColorArea } from './area.tsx';
-import { ColorField } from './field.tsx';
-import { ColorSlider } from './slider.tsx';
-import { ColorSwatch } from './swatch.tsx';
+} from '../../internal/fieldheader.js';
+import { Popover } from '../popover/index.js';
+import { ColorArea } from './area.js';
+import { ColorField } from './field.js';
+import { ColorSlider } from './slider.js';
+import { ColorSwatch } from './swatch.js';
 
 export const colorPickerStyles = tv({
   slots: {

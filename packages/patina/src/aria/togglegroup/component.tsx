@@ -4,8 +4,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { GroupContext } from './context.ts';
-import type { ToggleStyleProps } from './styles.ts';
+import { GroupContext } from './context.js';
+import type { ToggleStyleProps } from './styles.js';
 
 /**
  * The group's frame: its toggles touch, in a row, or in a column when React Aria's orientation is

@@ -16,7 +16,7 @@ import {
   turnedPlace,
   turnStart,
   usesArrowKeys,
-} from './rules.ts';
+} from './rules.js';
 
 const element = (localName: string, type?: string) => ({
   localName,

@@ -1,5 +1,5 @@
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.ts`).
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.ts`).
  *
  * Tab as a browser presses it, standing in for a defect in Storybook's bundled user-event
  * (storybook 10.6.7, `dist/test/index.js`, the `Tab` key behavior), which takes the Tab destination

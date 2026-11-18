@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PendingStatus, Spinner } from './index.ts';
+import { PendingStatus, Spinner } from './index.js';
 
 const sizes = ['sm', 'md', 'lg'] as const;
 

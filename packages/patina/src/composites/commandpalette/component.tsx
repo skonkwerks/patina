@@ -5,11 +5,11 @@ import {
   useFilter,
 } from 'react-aria-components';
 
-import { Dialog, DialogModal } from '../../aria/dialog/index.ts';
-import { menuStyles } from '../../aria/menu/index.ts';
-import { SearchField } from '../../aria/searchfield/index.ts';
-import { useOpenShortcut } from './shortcut.ts';
-import { commandPaletteStyles } from './styles.ts';
+import { Dialog, DialogModal } from '../../aria/dialog/index.js';
+import { menuStyles } from '../../aria/menu/index.js';
+import { SearchField } from '../../aria/searchfield/index.js';
+import { useOpenShortcut } from './shortcut.js';
+import { commandPaletteStyles } from './styles.js';
 
 export type CommandPaletteProps<T extends object> = Omit<
   AriaMenuProps<T>,

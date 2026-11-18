@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { CarouselItem } from './state.ts';
+import type { CarouselItem } from './state.js';
 
 /**
  * The shape a carousel keeps its frame in, inside the room its caller gives it, as a width and a

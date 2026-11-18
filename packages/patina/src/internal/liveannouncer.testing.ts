@@ -1,5 +1,5 @@
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.ts` and `*.testing.tsx`).
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.ts` and `*.testing.tsx`).
  *
  * React Aria announces a pending control, and the opening of a modal, through its live announcer:
  * a transient node labelled by the control or the dialog's title. When that labelled element is

@@ -1,4 +1,4 @@
-export * from './cancel.tsx';
-export * from './component.tsx';
-export { useIsDismissDisabled } from './context.ts';
-export * from './modal.tsx';
+export * from './cancel.js';
+export * from './component.js';
+export { useIsDismissDisabled } from './context.js';
+export * from './modal.js';

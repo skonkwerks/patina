@@ -9,10 +9,10 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { checkMarkStyles } from '../../internal/checkmark.ts';
-import { cn } from '../../internal/cn.ts';
-import { focusRing } from '../../internal/focus.ts';
-import { rowStateStyles } from '../../internal/itemstate.ts';
+import { checkMarkStyles } from '../../internal/checkmark.js';
+import { cn } from '../../internal/cn.js';
+import { focusRing } from '../../internal/focus.js';
+import { rowStateStyles } from '../../internal/itemstate.js';
 
 /**
  * A row of a `Tree`: 32px high, with the shared row states (`internal/itemstate.ts`) a `GridList`

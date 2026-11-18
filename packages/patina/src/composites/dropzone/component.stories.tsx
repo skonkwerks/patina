@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import type { DropFailureReason } from '../../internal/droppedfiles.ts';
-import { DropZone, type DropZoneProps } from './index.ts';
+import type { DropFailureReason } from '../../internal/droppedfiles.js';
+import { DropZone, type DropZoneProps } from './index.js';
 
 const meta = {
   title: 'Composites/DropZone',

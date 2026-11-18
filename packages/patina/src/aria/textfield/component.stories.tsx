@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect } from 'storybook/test';
 
-import { InfoButton } from '../../composites/infobutton/index.ts';
-import { TextField } from './index.ts';
+import { InfoButton } from '../../composites/infobutton/index.js';
+import { TextField } from './index.js';
 
 const meta = {
   title: 'Aria/TextField',

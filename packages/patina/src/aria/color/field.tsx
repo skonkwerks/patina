@@ -9,13 +9,13 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldStyles } from '../../internal/field.ts';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
-import { textFieldInputStyles } from '../textfield/index.ts';
+} from '../../internal/fieldheader.js';
+import { useShownErrorFollowsValue } from '../../internal/shownerror.js';
+import { textFieldInputStyles } from '../textfield/index.js';
 
 /** The input: `TextField`'s look, one line of the shared field box, extended here for the color field alone. */
 export const colorFieldInputStyles = tv({ extend: textFieldInputStyles });

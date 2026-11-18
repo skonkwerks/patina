@@ -7,7 +7,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import type { StatusTone } from '../../internal/statustone.ts';
+import type { StatusTone } from '../../internal/statustone.js';
 
 /**
  * The ring's drawn box, written once for the ring and its middle. Tailwind reads the class from

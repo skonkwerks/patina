@@ -12,11 +12,11 @@ import {
 } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Button } from '../button/index.ts';
-import { dayName, ringOf } from '../calendar/month.testing.ts';
-import { ringClearance } from '../datepicker/picker.testing.ts';
-import { Form } from '../form/index.ts';
-import { DateRangePicker, type DateRangePickerProps } from './index.ts';
+import { Button } from '../button/index.js';
+import { dayName, ringOf } from '../calendar/month.testing.js';
+import { ringClearance } from '../datepicker/picker.testing.js';
+import { Form } from '../form/index.js';
+import { DateRangePicker, type DateRangePickerProps } from './index.js';
 
 const november = {
   start: parseDate('2026-11-10'),

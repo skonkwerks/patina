@@ -1,7 +1,7 @@
 import { type RefObject, use } from 'react';
 import { ComboBoxStateContext } from 'react-aria-components';
 
-import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
+import { useShownErrorFollowsValue } from '../../internal/shownerror.js';
 
 /**
  * Keeps the combo box's shown error true to what it judges, chosen from the list, typed, or set by

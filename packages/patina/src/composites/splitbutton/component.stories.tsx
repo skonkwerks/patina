@@ -3,10 +3,10 @@ import { useState } from 'react';
 import type { Selection } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Menu, MenuItem } from '../../aria/menu/index.ts';
-import { Switch } from '../../aria/switch/index.ts';
-import { FilePicker } from '../filepicker/index.ts';
-import { SplitButton, type SplitButtonProps } from './index.ts';
+import { Menu, MenuItem } from '../../aria/menu/index.js';
+import { Switch } from '../../aria/switch/index.js';
+import { FilePicker } from '../filepicker/index.js';
+import { SplitButton, type SplitButtonProps } from './index.js';
 
 const counts = ['1', '3', '10'] as const;
 

@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { fieldStyles } from '../../internal/field.ts';
-import { Spinner, spinnerStyles } from '../../spinner/index.ts';
+import { fieldStyles } from '../../internal/field.js';
+import { Spinner, spinnerStyles } from '../../spinner/index.js';
 
 /**
  * The spinner and the words at the end of a field's label line while its choices are read.

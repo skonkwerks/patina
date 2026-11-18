@@ -1,3 +1,3 @@
-export * from './component.tsx';
-export { focusPageHeading } from './focus.ts';
-export * from './styles.ts';
+export * from './component.js';
+export { focusPageHeading } from './focus.js';
+export * from './styles.js';

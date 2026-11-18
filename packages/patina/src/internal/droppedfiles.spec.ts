@@ -5,7 +5,7 @@ import type {
 } from 'react-aria-components';
 import { describe, expect, it } from 'vitest';
 
-import { readDroppedFiles } from './droppedfiles.ts';
+import { readDroppedFiles } from './droppedfiles.js';
 
 /** A dropped file that reads back as `file`. */
 const fileItem = (file: File): FileDropItem => ({

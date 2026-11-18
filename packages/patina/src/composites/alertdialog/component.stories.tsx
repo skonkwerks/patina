@@ -2,14 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Button } from '../../aria/button/index.ts';
-import { Dialog, DialogModal, DialogTrigger } from '../../aria/dialog/index.ts';
-import { Header } from '../../header/index.ts';
+import { Button } from '../../aria/button/index.js';
+import { Dialog, DialogModal, DialogTrigger } from '../../aria/dialog/index.js';
+import { Header } from '../../header/index.js';
 import {
   LIVE_ANNOUNCER_CLEAR_MS,
   LIVE_ANNOUNCER_MESSAGE,
-} from '../../internal/liveannouncer.testing.ts';
-import { AlertDialog, Confirmation } from './index.ts';
+} from '../../internal/liveannouncer.testing.js';
+import { AlertDialog, Confirmation } from './index.js';
 
 /** How long the story's write runs before it answers. */
 const WRITE_MS = 600;

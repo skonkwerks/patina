@@ -189,11 +189,16 @@ const baseRules = {
     { prefer: 'type-imports', disallowTypeAnnotations: false },
   ],
   'import-x/no-duplicates': 'error',
-  // Relative imports carry their .ts or .tsx extension; the repository defines no path aliases.
+  // A relative import names the .js file the build writes (./component.js for component.tsx),
+  // never the .ts or .tsx source, type-only imports and exports included; the repository defines
+  // no path aliases. With checkTypeImports set, import-x reads the extensions only from `pattern`.
   'import-x/extensions': [
     'error',
     'ignorePackages',
-    { ts: 'always', tsx: 'always', js: 'never', jsx: 'never' },
+    {
+      checkTypeImports: true,
+      pattern: { ts: 'never', tsx: 'never', js: 'always', jsx: 'always' },
+    },
   ],
   'import-x/no-unresolved': 'error',
   'no-restricted-imports': [

@@ -1,10 +1,10 @@
 import type { Key } from 'react-aria-components';
 
-import { DialogModal } from '../../aria/dialog/index.ts';
-import type { CarouselItem } from '../carousel/index.ts';
-import type { MediaViewerContentProps } from './component.tsx';
-import Content from './content.tsx';
-import { mediaViewerDialogStyles } from './styles.ts';
+import { DialogModal } from '../../aria/dialog/index.js';
+import type { CarouselItem } from '../carousel/index.js';
+import type { MediaViewerContentProps } from './component.js';
+import Content from './content.js';
+import { mediaViewerDialogStyles } from './styles.js';
 
 export type MediaViewerDialogProps<T extends CarouselItem> =
   MediaViewerContentProps<T> & {

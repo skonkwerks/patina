@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-import { focusVisibleRing } from '../../internal/focus.ts';
+import { focusVisibleRing } from '../../internal/focus.js';
 
 /**
  * A media viewer's parts, in a column of a given height (32rem unless the caller sizes it), which

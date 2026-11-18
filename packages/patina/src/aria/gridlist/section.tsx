@@ -6,7 +6,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { Count } from '../../count/index.ts';
+import { Count } from '../../count/index.js';
 
 export const gridListSectionStyles = tv({
   slots: {

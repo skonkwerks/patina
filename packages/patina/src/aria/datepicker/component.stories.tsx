@@ -8,11 +8,11 @@ import { useState } from 'react';
 import { I18nProvider, useLocale } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Button } from '../button/index.ts';
-import { dayName, ringOf } from '../calendar/month.testing.ts';
-import { Form } from '../form/index.ts';
-import { DatePicker, type DatePickerProps } from './index.ts';
-import { ringClearance } from './picker.testing.ts';
+import { Button } from '../button/index.js';
+import { dayName, ringOf } from '../calendar/month.testing.js';
+import { Form } from '../form/index.js';
+import { DatePicker, type DatePickerProps } from './index.js';
+import { ringClearance } from './picker.testing.js';
 
 const meta = {
   title: 'Aria/DatePicker',

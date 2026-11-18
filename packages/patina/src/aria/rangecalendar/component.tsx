@@ -8,12 +8,12 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { focusRing } from '../../internal/focus.ts';
-import { CalendarLayerContext } from '../calendar/context.ts';
-import { CalendarMonth } from '../calendar/month.tsx';
-import { renderCalendarRoot } from '../calendar/root.tsx';
-import { calendarStyles } from '../calendar/styles.ts';
+import { DISABLED } from '../../internal/disabled.js';
+import { focusRing } from '../../internal/focus.js';
+import { CalendarLayerContext } from '../calendar/context.js';
+import { CalendarMonth } from '../calendar/month.js';
+import { renderCalendarRoot } from '../calendar/root.js';
+import { calendarStyles } from '../calendar/styles.js';
 
 /** The parts of `RangeCalendar` around its days: `Calendar`'s, which an app may extend for ranges alone. */
 export const rangeCalendarStyles = tv({ extend: calendarStyles });

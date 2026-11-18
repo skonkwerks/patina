@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-import { focusVisibleRing } from '../../internal/focus.ts';
+import { focusVisibleRing } from '../../internal/focus.js';
 
 /**
  * A carousel's parts. The root is a column of a given height (20rem unless the caller sizes it):

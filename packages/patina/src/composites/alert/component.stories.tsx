@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 
-import { Button } from '../../aria/button/index.ts';
-import { Alert, type StatusTone } from './index.ts';
+import { Button } from '../../aria/button/index.js';
+import { Alert, type StatusTone } from './index.js';
 
 const meta = {
   title: 'Composites/Alert',

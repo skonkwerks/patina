@@ -1,3 +1,3 @@
-export * from './breadcrumb.tsx';
-export * from './component.tsx';
-export * from './link.tsx';
+export * from './breadcrumb.js';
+export * from './component.js';
+export * from './link.js';

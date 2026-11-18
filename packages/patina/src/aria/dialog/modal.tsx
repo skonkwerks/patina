@@ -4,9 +4,9 @@ import {
   type ModalOverlayProps,
 } from 'react-aria-components';
 
-import { OverlayContextBoundary } from '../../internal/overlaycontextboundary.tsx';
-import { dialogStyles } from './component.tsx';
-import { DialogPlacementContext, DismissDisabledContext } from './context.ts';
+import { OverlayContextBoundary } from '../../internal/overlaycontextboundary.js';
+import { dialogStyles } from './component.js';
+import { DialogPlacementContext, DismissDisabledContext } from './context.js';
 
 export type DialogModalProps = Omit<
   ModalOverlayProps,

@@ -1,2 +1,2 @@
-export * from './component.tsx';
-export { dateSegmentStyles } from './input.tsx';
+export * from './component.js';
+export { dateSegmentStyles } from './input.js';

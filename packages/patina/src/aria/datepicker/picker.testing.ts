@@ -1,6 +1,6 @@
-// For stories only; not shipped (`package.json` `files` leaves out `*.testing.ts`).
+// For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.ts`).
 
-import { ringOf } from '../calendar/month.testing.ts';
+import { ringOf } from '../calendar/month.testing.js';
 
 /**
  * The room, in pixels, between the focus ring an element inside a box draws and the inside of the

@@ -2,9 +2,9 @@ import {
   Dialog,
   DialogModal,
   type DialogModalProps,
-} from '../../aria/dialog/index.ts';
-import type { ConfirmationProps } from './confirmation.tsx';
-import Content, { type AlertDialogCloseOptions } from './content.tsx';
+} from '../../aria/dialog/index.js';
+import type { ConfirmationProps } from './confirmation.js';
+import Content, { type AlertDialogCloseOptions } from './content.js';
 
 export type { AlertDialogCloseOptions };
 

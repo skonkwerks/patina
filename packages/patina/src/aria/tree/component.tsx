@@ -4,7 +4,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * The tree's frame on a surface. It carries the shared focus ring for when it holds the focus

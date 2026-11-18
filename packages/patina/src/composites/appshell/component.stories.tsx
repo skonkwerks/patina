@@ -4,8 +4,8 @@ import { expect, waitFor, within } from 'storybook/test';
 import {
   LIVE_ANNOUNCER_CLEAR_MS,
   LIVE_ANNOUNCER_MESSAGE,
-} from '../../internal/liveannouncer.testing.ts';
-import { Shell } from './demo.testing.tsx';
+} from '../../internal/liveannouncer.testing.js';
+import { Shell } from './demo.testing.js';
 
 /**
  * Waits until React Aria's live announcer has let go of a message labelled by an element this story

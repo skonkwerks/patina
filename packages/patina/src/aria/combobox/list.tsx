@@ -1,7 +1,7 @@
 import { type ReactNode, use } from 'react';
 import { ComboBoxStateContext, ListBox } from 'react-aria-components';
 
-import { listBoxEmptyStyles } from '../listbox/index.ts';
+import { listBoxEmptyStyles } from '../listbox/index.js';
 
 type Props<T extends object> = {
   className: string;

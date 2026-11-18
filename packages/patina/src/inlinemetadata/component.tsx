@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { inlineMetadataStyles } from './styles.ts';
+import { inlineMetadataStyles } from './styles.js';
 
 export type InlineMetadataItem = Readonly<{
   /** Stable within the line, such as the property the value shows. */

@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { Count } from '../count/index.ts';
-import { PAGE_HEADING_ATTRIBUTE } from './focus.ts';
-import { headerStyles } from './styles.ts';
+import { Count } from '../count/index.js';
+import { PAGE_HEADING_ATTRIBUTE } from './focus.js';
+import { headerStyles } from './styles.js';
 
 /** The heading element for each level. */
 const HEADING_TAGS = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4' } as const;

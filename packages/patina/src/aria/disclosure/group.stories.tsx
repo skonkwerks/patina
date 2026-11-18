@@ -8,7 +8,7 @@ import {
   DisclosureGroup,
   DisclosureHeader,
   DisclosurePanel,
-} from './index.ts';
+} from './index.js';
 
 const meta = {
   title: 'Aria/DisclosureGroup',

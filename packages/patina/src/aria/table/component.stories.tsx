@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { type ReactNode, useState } from 'react';
 
-import { Button } from '../button/index.ts';
+import { Button } from '../button/index.js';
 import {
   Cell,
   Column,
@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableLoadMore,
   type TableProps,
-} from './index.ts';
+} from './index.js';
 
 type Invoice = { id: string; customer: string; issued: string; amount: string };
 

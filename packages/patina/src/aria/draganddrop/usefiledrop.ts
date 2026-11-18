@@ -3,7 +3,7 @@ import { type DragAndDropHooks, useDragAndDrop } from 'react-aria-components';
 import {
   type DropFailureReason,
   readDroppedFiles,
-} from '../../internal/droppedfiles.ts';
+} from '../../internal/droppedfiles.js';
 
 /**
  * A collection's file drop, from `useFileDrop`, given to a collection such as `GridList` as `fileDrop`.

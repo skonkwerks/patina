@@ -4,8 +4,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
-import { type Align, align } from './align.ts';
+import { focusRing } from '../../internal/focus.js';
+import { type Align, align } from './align.js';
 
 export const tableColumnStyles = tv({
   extend: focusRing,

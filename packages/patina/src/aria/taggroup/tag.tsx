@@ -7,9 +7,9 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { chipStyles } from '../../chip/index.ts';
-import { DISABLED } from '../../internal/disabled.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { chipStyles } from '../../chip/index.js';
+import { DISABLED } from '../../internal/disabled.js';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * A tag: the chip's rounded label (`chipStyles`, its neutral tone), made interactive. It adds the

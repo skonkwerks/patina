@@ -1,10 +1,10 @@
 import { tv } from 'tailwind-variants';
 
-import { itemStateStyles } from '../../internal/itemstate.ts';
+import { itemStateStyles } from '../../internal/itemstate.js';
 import {
   gridListDropTargetOutline,
   gridListTileDropLine,
-} from './dropindicator.tsx';
+} from './dropindicator.js';
 
 /**
  * The states every tile of a grid layout draws, a `GridListTile` and any composite tile alike:

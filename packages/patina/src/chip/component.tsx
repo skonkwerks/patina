@@ -1,5 +1,5 @@
-import type { StatusTone } from '../internal/statustone.ts';
-import { chipStyles } from './styles.ts';
+import type { StatusTone } from '../internal/statustone.js';
+import { chipStyles } from './styles.js';
 
 export type ChipProps = {
   /** The label: a state or a category, in words. A chip is text only (no icon or logo), and its color never stands without its words. */

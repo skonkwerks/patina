@@ -11,21 +11,21 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldStyles } from '../../internal/field.ts';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
-import { CalendarLayerContext } from '../calendar/context.ts';
-import { DateInput } from '../datefield/input.tsx';
+} from '../../internal/fieldheader.js';
+import { useShownErrorFollowsValue } from '../../internal/shownerror.js';
+import { CalendarLayerContext } from '../calendar/context.js';
+import { DateInput } from '../datefield/input.js';
 import {
   datePickerGroupStyles,
   datePickerStyles,
-} from '../datepicker/index.ts';
-import { iconButtonStyles } from '../iconbutton/index.ts';
-import { Popover } from '../popover/index.ts';
-import { RangeCalendar } from '../rangecalendar/index.ts';
+} from '../datepicker/index.js';
+import { iconButtonStyles } from '../iconbutton/index.js';
+import { Popover } from '../popover/index.js';
+import { RangeCalendar } from '../rangecalendar/index.js';
 
 /**
  * The parts of `DateRangePicker`: `DatePicker`'s, and the two dates in the box, start and end, with

@@ -9,97 +9,329 @@
     "*.css"
   ],
   "exports": {
-    "./actionmenu": "./src/composites/actionmenu/index.ts",
-    "./alert": "./src/composites/alert/index.ts",
-    "./alertdialog": "./src/composites/alertdialog/index.ts",
-    "./appshell": "./src/composites/appshell/index.ts",
-    "./breadcrumbs": "./src/aria/breadcrumbs/index.ts",
-    "./button": "./src/aria/button/index.ts",
-    "./calendar": "./src/aria/calendar/index.ts",
-    "./carousel": "./src/composites/carousel/index.ts",
-    "./checkbox": "./src/aria/checkbox/index.ts",
-    "./chip": "./src/chip/index.ts",
-    "./color": "./src/aria/color/index.ts",
-    "./combobox": "./src/aria/combobox/index.ts",
-    "./commandpalette": "./src/composites/commandpalette/index.ts",
-    "./count": "./src/count/index.ts",
-    "./datefield": "./src/aria/datefield/index.ts",
-    "./datepicker": "./src/aria/datepicker/index.ts",
-    "./daterangepicker": "./src/aria/daterangepicker/index.ts",
-    "./dialog": "./src/aria/dialog/index.ts",
-    "./disclosure": "./src/aria/disclosure/index.ts",
-    "./draganddrop": "./src/aria/draganddrop/index.ts",
-    "./droptarget": "./src/aria/droptarget/index.ts",
-    "./dropzone": "./src/composites/dropzone/index.ts",
-    "./emptystate": "./src/emptystate/index.ts",
-    "./filepicker": "./src/composites/filepicker/index.ts",
-    "./filetrigger": "./src/aria/filetrigger/index.ts",
-    "./form": "./src/aria/form/index.ts",
-    "./gauge": "./src/aria/gauge/index.ts",
-    "./gridlist": "./src/aria/gridlist/index.ts",
-    "./gridlistrow": "./src/composites/gridlistrow/index.ts",
-    "./header": "./src/header/index.ts",
-    "./iconbutton": "./src/aria/iconbutton/index.ts",
-    "./iconmark": "./src/iconmark/index.ts",
-    "./imageoverlay": "./src/imageoverlay/index.ts",
-    "./infobutton": "./src/composites/infobutton/index.ts",
-    "./inlinemetadata": "./src/inlinemetadata/index.ts",
-    "./link": "./src/aria/link/index.ts",
-    "./listbox": "./src/aria/listbox/index.ts",
-    "./loadstatus": "./src/composites/loadstatus/index.ts",
-    "./mediastrip": "./src/aria/mediastrip/index.ts",
-    "./mediaviewer": "./src/composites/mediaviewer/index.ts",
-    "./menu": "./src/aria/menu/index.ts",
-    "./meter": "./src/aria/meter/index.ts",
-    "./multiselect": "./src/composites/multiselect/index.ts",
-    "./navigationtree": "./src/aria/navigationtree/index.ts",
-    "./numberfield": "./src/aria/numberfield/index.ts",
-    "./page": "./src/page/index.ts",
-    "./panscroll": "./src/panscroll/index.ts",
+    "./actionmenu": {
+      "types": "./dist/composites/actionmenu/index.d.ts",
+      "default": "./dist/composites/actionmenu/index.js"
+    },
+    "./alert": {
+      "types": "./dist/composites/alert/index.d.ts",
+      "default": "./dist/composites/alert/index.js"
+    },
+    "./alertdialog": {
+      "types": "./dist/composites/alertdialog/index.d.ts",
+      "default": "./dist/composites/alertdialog/index.js"
+    },
+    "./appshell": {
+      "types": "./dist/composites/appshell/index.d.ts",
+      "default": "./dist/composites/appshell/index.js"
+    },
+    "./breadcrumbs": {
+      "types": "./dist/aria/breadcrumbs/index.d.ts",
+      "default": "./dist/aria/breadcrumbs/index.js"
+    },
+    "./button": {
+      "types": "./dist/aria/button/index.d.ts",
+      "default": "./dist/aria/button/index.js"
+    },
+    "./calendar": {
+      "types": "./dist/aria/calendar/index.d.ts",
+      "default": "./dist/aria/calendar/index.js"
+    },
+    "./carousel": {
+      "types": "./dist/composites/carousel/index.d.ts",
+      "default": "./dist/composites/carousel/index.js"
+    },
+    "./checkbox": {
+      "types": "./dist/aria/checkbox/index.d.ts",
+      "default": "./dist/aria/checkbox/index.js"
+    },
+    "./chip": {
+      "types": "./dist/chip/index.d.ts",
+      "default": "./dist/chip/index.js"
+    },
+    "./color": {
+      "types": "./dist/aria/color/index.d.ts",
+      "default": "./dist/aria/color/index.js"
+    },
+    "./combobox": {
+      "types": "./dist/aria/combobox/index.d.ts",
+      "default": "./dist/aria/combobox/index.js"
+    },
+    "./commandpalette": {
+      "types": "./dist/composites/commandpalette/index.d.ts",
+      "default": "./dist/composites/commandpalette/index.js"
+    },
+    "./count": {
+      "types": "./dist/count/index.d.ts",
+      "default": "./dist/count/index.js"
+    },
+    "./datefield": {
+      "types": "./dist/aria/datefield/index.d.ts",
+      "default": "./dist/aria/datefield/index.js"
+    },
+    "./datepicker": {
+      "types": "./dist/aria/datepicker/index.d.ts",
+      "default": "./dist/aria/datepicker/index.js"
+    },
+    "./daterangepicker": {
+      "types": "./dist/aria/daterangepicker/index.d.ts",
+      "default": "./dist/aria/daterangepicker/index.js"
+    },
+    "./dialog": {
+      "types": "./dist/aria/dialog/index.d.ts",
+      "default": "./dist/aria/dialog/index.js"
+    },
+    "./disclosure": {
+      "types": "./dist/aria/disclosure/index.d.ts",
+      "default": "./dist/aria/disclosure/index.js"
+    },
+    "./draganddrop": {
+      "types": "./dist/aria/draganddrop/index.d.ts",
+      "default": "./dist/aria/draganddrop/index.js"
+    },
+    "./droptarget": {
+      "types": "./dist/aria/droptarget/index.d.ts",
+      "default": "./dist/aria/droptarget/index.js"
+    },
+    "./dropzone": {
+      "types": "./dist/composites/dropzone/index.d.ts",
+      "default": "./dist/composites/dropzone/index.js"
+    },
+    "./emptystate": {
+      "types": "./dist/emptystate/index.d.ts",
+      "default": "./dist/emptystate/index.js"
+    },
+    "./filepicker": {
+      "types": "./dist/composites/filepicker/index.d.ts",
+      "default": "./dist/composites/filepicker/index.js"
+    },
+    "./filetrigger": {
+      "types": "./dist/aria/filetrigger/index.d.ts",
+      "default": "./dist/aria/filetrigger/index.js"
+    },
+    "./form": {
+      "types": "./dist/aria/form/index.d.ts",
+      "default": "./dist/aria/form/index.js"
+    },
+    "./gauge": {
+      "types": "./dist/aria/gauge/index.d.ts",
+      "default": "./dist/aria/gauge/index.js"
+    },
+    "./gridlist": {
+      "types": "./dist/aria/gridlist/index.d.ts",
+      "default": "./dist/aria/gridlist/index.js"
+    },
+    "./gridlistrow": {
+      "types": "./dist/composites/gridlistrow/index.d.ts",
+      "default": "./dist/composites/gridlistrow/index.js"
+    },
+    "./header": {
+      "types": "./dist/header/index.d.ts",
+      "default": "./dist/header/index.js"
+    },
+    "./iconbutton": {
+      "types": "./dist/aria/iconbutton/index.d.ts",
+      "default": "./dist/aria/iconbutton/index.js"
+    },
+    "./iconmark": {
+      "types": "./dist/iconmark/index.d.ts",
+      "default": "./dist/iconmark/index.js"
+    },
+    "./imageoverlay": {
+      "types": "./dist/imageoverlay/index.d.ts",
+      "default": "./dist/imageoverlay/index.js"
+    },
+    "./infobutton": {
+      "types": "./dist/composites/infobutton/index.d.ts",
+      "default": "./dist/composites/infobutton/index.js"
+    },
+    "./inlinemetadata": {
+      "types": "./dist/inlinemetadata/index.d.ts",
+      "default": "./dist/inlinemetadata/index.js"
+    },
+    "./link": {
+      "types": "./dist/aria/link/index.d.ts",
+      "default": "./dist/aria/link/index.js"
+    },
+    "./listbox": {
+      "types": "./dist/aria/listbox/index.d.ts",
+      "default": "./dist/aria/listbox/index.js"
+    },
+    "./loadstatus": {
+      "types": "./dist/composites/loadstatus/index.d.ts",
+      "default": "./dist/composites/loadstatus/index.js"
+    },
+    "./mediastrip": {
+      "types": "./dist/aria/mediastrip/index.d.ts",
+      "default": "./dist/aria/mediastrip/index.js"
+    },
+    "./mediaviewer": {
+      "types": "./dist/composites/mediaviewer/index.d.ts",
+      "default": "./dist/composites/mediaviewer/index.js"
+    },
+    "./menu": {
+      "types": "./dist/aria/menu/index.d.ts",
+      "default": "./dist/aria/menu/index.js"
+    },
+    "./meter": {
+      "types": "./dist/aria/meter/index.d.ts",
+      "default": "./dist/aria/meter/index.js"
+    },
+    "./multiselect": {
+      "types": "./dist/composites/multiselect/index.d.ts",
+      "default": "./dist/composites/multiselect/index.js"
+    },
+    "./navigationtree": {
+      "types": "./dist/aria/navigationtree/index.d.ts",
+      "default": "./dist/aria/navigationtree/index.js"
+    },
+    "./numberfield": {
+      "types": "./dist/aria/numberfield/index.d.ts",
+      "default": "./dist/aria/numberfield/index.js"
+    },
+    "./page": {
+      "types": "./dist/page/index.d.ts",
+      "default": "./dist/page/index.js"
+    },
+    "./panscroll": {
+      "types": "./dist/panscroll/index.d.ts",
+      "default": "./dist/panscroll/index.js"
+    },
     "./patina.css": "./patina.css",
-    "./popover": "./src/aria/popover/index.ts",
-    "./progressbar": "./src/aria/progressbar/index.ts",
-    "./propertylist": "./src/propertylist/index.ts",
-    "./radiogroup": "./src/aria/radiogroup/index.ts",
-    "./rangecalendar": "./src/aria/rangecalendar/index.ts",
-    "./rowtile": "./src/rowtile/index.ts",
-    "./searchfield": "./src/aria/searchfield/index.ts",
-    "./select": "./src/aria/select/index.ts",
-    "./separator": "./src/aria/separator/index.ts",
-    "./sidebar": "./src/composites/sidebar/index.ts",
-    "./sidepanel": "./src/composites/sidepanel/index.ts",
-    "./slider": "./src/aria/slider/index.ts",
-    "./spinner": "./src/spinner/index.ts",
-    "./splitbutton": "./src/composites/splitbutton/index.ts",
-    "./statedetails": "./src/composites/statedetails/index.ts",
-    "./stepper": "./src/composites/stepper/index.ts",
-    "./switch": "./src/aria/switch/index.ts",
-    "./table": "./src/aria/table/index.ts",
-    "./tabs": "./src/aria/tabs/index.ts",
-    "./taggroup": "./src/aria/taggroup/index.ts",
-    "./textarea": "./src/aria/textarea/index.ts",
-    "./textdroparea": "./src/composites/textdroparea/index.ts",
-    "./textfield": "./src/aria/textfield/index.ts",
-    "./thememode": "./src/composites/thememode/index.ts",
-    "./timefield": "./src/aria/timefield/index.ts",
-    "./toast": "./src/aria/toast/index.ts",
-    "./togglegroup": "./src/aria/togglegroup/index.ts",
-    "./tokenfield": "./src/aria/tokenfield/index.ts",
-    "./toolbar": "./src/aria/toolbar/index.ts",
-    "./tooltip": "./src/aria/tooltip/index.ts",
-    "./tree": "./src/aria/tree/index.ts"
+    "./popover": {
+      "types": "./dist/aria/popover/index.d.ts",
+      "default": "./dist/aria/popover/index.js"
+    },
+    "./progressbar": {
+      "types": "./dist/aria/progressbar/index.d.ts",
+      "default": "./dist/aria/progressbar/index.js"
+    },
+    "./propertylist": {
+      "types": "./dist/propertylist/index.d.ts",
+      "default": "./dist/propertylist/index.js"
+    },
+    "./radiogroup": {
+      "types": "./dist/aria/radiogroup/index.d.ts",
+      "default": "./dist/aria/radiogroup/index.js"
+    },
+    "./rangecalendar": {
+      "types": "./dist/aria/rangecalendar/index.d.ts",
+      "default": "./dist/aria/rangecalendar/index.js"
+    },
+    "./rowtile": {
+      "types": "./dist/rowtile/index.d.ts",
+      "default": "./dist/rowtile/index.js"
+    },
+    "./searchfield": {
+      "types": "./dist/aria/searchfield/index.d.ts",
+      "default": "./dist/aria/searchfield/index.js"
+    },
+    "./select": {
+      "types": "./dist/aria/select/index.d.ts",
+      "default": "./dist/aria/select/index.js"
+    },
+    "./separator": {
+      "types": "./dist/aria/separator/index.d.ts",
+      "default": "./dist/aria/separator/index.js"
+    },
+    "./sidebar": {
+      "types": "./dist/composites/sidebar/index.d.ts",
+      "default": "./dist/composites/sidebar/index.js"
+    },
+    "./sidepanel": {
+      "types": "./dist/composites/sidepanel/index.d.ts",
+      "default": "./dist/composites/sidepanel/index.js"
+    },
+    "./slider": {
+      "types": "./dist/aria/slider/index.d.ts",
+      "default": "./dist/aria/slider/index.js"
+    },
+    "./spinner": {
+      "types": "./dist/spinner/index.d.ts",
+      "default": "./dist/spinner/index.js"
+    },
+    "./splitbutton": {
+      "types": "./dist/composites/splitbutton/index.d.ts",
+      "default": "./dist/composites/splitbutton/index.js"
+    },
+    "./statedetails": {
+      "types": "./dist/composites/statedetails/index.d.ts",
+      "default": "./dist/composites/statedetails/index.js"
+    },
+    "./stepper": {
+      "types": "./dist/composites/stepper/index.d.ts",
+      "default": "./dist/composites/stepper/index.js"
+    },
+    "./switch": {
+      "types": "./dist/aria/switch/index.d.ts",
+      "default": "./dist/aria/switch/index.js"
+    },
+    "./table": {
+      "types": "./dist/aria/table/index.d.ts",
+      "default": "./dist/aria/table/index.js"
+    },
+    "./tabs": {
+      "types": "./dist/aria/tabs/index.d.ts",
+      "default": "./dist/aria/tabs/index.js"
+    },
+    "./taggroup": {
+      "types": "./dist/aria/taggroup/index.d.ts",
+      "default": "./dist/aria/taggroup/index.js"
+    },
+    "./textarea": {
+      "types": "./dist/aria/textarea/index.d.ts",
+      "default": "./dist/aria/textarea/index.js"
+    },
+    "./textdroparea": {
+      "types": "./dist/composites/textdroparea/index.d.ts",
+      "default": "./dist/composites/textdroparea/index.js"
+    },
+    "./textfield": {
+      "types": "./dist/aria/textfield/index.d.ts",
+      "default": "./dist/aria/textfield/index.js"
+    },
+    "./thememode": {
+      "types": "./dist/composites/thememode/index.d.ts",
+      "default": "./dist/composites/thememode/index.js"
+    },
+    "./timefield": {
+      "types": "./dist/aria/timefield/index.d.ts",
+      "default": "./dist/aria/timefield/index.js"
+    },
+    "./toast": {
+      "types": "./dist/aria/toast/index.d.ts",
+      "default": "./dist/aria/toast/index.js"
+    },
+    "./togglegroup": {
+      "types": "./dist/aria/togglegroup/index.d.ts",
+      "default": "./dist/aria/togglegroup/index.js"
+    },
+    "./tokenfield": {
+      "types": "./dist/aria/tokenfield/index.d.ts",
+      "default": "./dist/aria/tokenfield/index.js"
+    },
+    "./toolbar": {
+      "types": "./dist/aria/toolbar/index.d.ts",
+      "default": "./dist/aria/toolbar/index.js"
+    },
+    "./tooltip": {
+      "types": "./dist/aria/tooltip/index.d.ts",
+      "default": "./dist/aria/tooltip/index.js"
+    },
+    "./tree": {
+      "types": "./dist/aria/tree/index.d.ts",
+      "default": "./dist/aria/tree/index.js"
+    }
   },
   "files": [
-    "src",
+    "dist",
     "patina.css",
     "README.md",
-    "LICENSE",
-    "!src/**/*.spec.ts",
-    "!src/**/*.stories.tsx",
-    "!src/**/*.testing.ts",
-    "!src/**/*.testing.tsx"
+    "LICENSE"
   ],
   "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepack": "pnpm run build",
     "check": "tsgo --noEmit",
     "lint": "oxlint --type-aware .",
     "test": "vitest run"

@@ -7,9 +7,9 @@ import {
 } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 
-import { IconButton } from '../../aria/iconbutton/index.ts';
-import type { StatusTone } from '../../internal/statustone.ts';
-import { alertStyles } from './styles.ts';
+import { IconButton } from '../../aria/iconbutton/index.js';
+import type { StatusTone } from '../../internal/statustone.js';
+import { alertStyles } from './styles.js';
 
 export type { StatusTone };
 

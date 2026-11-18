@@ -5,10 +5,10 @@ import {
 } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { ListBox, ListBoxItem } from '../aria/listbox/index.ts';
-import { MenuItem, menuStyles } from '../aria/menu/index.ts';
-import { contrastRatio, NON_TEXT_CONTRAST } from './contrast.testing.ts';
-import { pressTab } from './keyboard.testing.ts';
+import { ListBox, ListBoxItem } from '../aria/listbox/index.js';
+import { MenuItem, menuStyles } from '../aria/menu/index.js';
+import { contrastRatio, NON_TEXT_CONTRAST } from './contrast.testing.js';
+import { pressTab } from './keyboard.testing.js';
 
 const fruits = ['Apple', 'Banana', 'Cherry'];
 

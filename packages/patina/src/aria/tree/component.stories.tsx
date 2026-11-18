@@ -6,11 +6,11 @@ import { expect, waitFor, within } from 'storybook/test';
 import {
   contrastRatio,
   NON_TEXT_CONTRAST,
-} from '../../internal/contrast.testing.ts';
-import { startEdgeOf, TRANSPARENT } from '../../internal/itemstate.testing.ts';
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { Button } from '../button/index.ts';
-import { Tree, TreeItem, type TreeProps } from './index.ts';
+} from '../../internal/contrast.testing.js';
+import { startEdgeOf, TRANSPARENT } from '../../internal/itemstate.testing.js';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { Button } from '../button/index.js';
+import { Tree, TreeItem, type TreeProps } from './index.js';
 
 const meta = {
   title: 'Aria/Tree',

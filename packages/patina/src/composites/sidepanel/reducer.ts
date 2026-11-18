@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 
-import type { SidePanelAction } from './action.ts';
-import { initialPanelState, type PanelState } from './state.ts';
+import type { SidePanelAction } from './action.js';
+import { initialPanelState, type PanelState } from './state.js';
 
 /**
  * The side panel's rules, in one place: one thing shown at a time; the opener's control closes what

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { TextDropArea } from './index.ts';
+import { TextDropArea } from './index.js';
 
 const meta = {
   title: 'Composites/TextDropArea',

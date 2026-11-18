@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { InfoButton } from '../../composites/infobutton/index.ts';
-import { Button } from '../button/index.ts';
-import { TextArea } from './index.ts';
+import { InfoButton } from '../../composites/infobutton/index.js';
+import { Button } from '../button/index.js';
+import { TextArea } from './index.js';
 
 const meta = {
   title: 'Aria/TextArea',

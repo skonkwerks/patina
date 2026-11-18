@@ -13,10 +13,10 @@ import {
 } from 'react';
 import { type Key, useLocale } from 'react-aria-components';
 
-import { dragBounds, stripPosition, swipeIndex, turnStart } from './rules.ts';
-import type { CarouselItem } from './state.ts';
-import { carouselStyles } from './styles.ts';
-import type { CarouselShape, CarouselSlideState } from './types.ts';
+import { dragBounds, stripPosition, swipeIndex, turnStart } from './rules.js';
+import type { CarouselItem } from './state.js';
+import { carouselStyles } from './styles.js';
+import type { CarouselShape, CarouselSlideState } from './types.js';
 
 /**
  * The spring a turn and a drag that springs back move with: quick, and settling after a slight

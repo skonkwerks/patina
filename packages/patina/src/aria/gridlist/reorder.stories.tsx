@@ -8,8 +8,8 @@ import {
   useListData,
 } from 'react-aria-components';
 
-import { IconButton } from '../iconbutton/index.ts';
-import { GridList, GridListItem } from './index.ts';
+import { IconButton } from '../iconbutton/index.js';
+import { GridList, GridListItem } from './index.js';
 
 /** What React Aria hands a drop on an item. */
 type ItemDropEvent = Parameters<

@@ -6,8 +6,8 @@ import {
   composeRenderProps,
 } from 'react-aria-components';
 
-import { Spinner, type SpinnerProps } from '../../spinner/index.ts';
-import ButtonTooltip from './tooltip.tsx';
+import { Spinner, type SpinnerProps } from '../../spinner/index.js';
+import ButtonTooltip from './tooltip.js';
 
 export type ButtonBaseProps = Omit<AriaButtonProps, 'className'> & {
   className?: string;

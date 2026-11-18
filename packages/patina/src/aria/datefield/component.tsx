@@ -7,13 +7,13 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import { fieldBoxStyles, fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
-import { DateInput } from './input.tsx';
+} from '../../internal/fieldheader.js';
+import { useShownErrorFollowsValue } from '../../internal/shownerror.js';
+import { DateInput } from './input.js';
 
 /**
  * The box around the segments: the shared field box, one line tall, as a text field's input is. A

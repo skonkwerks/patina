@@ -8,12 +8,12 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldStyles } from '../../internal/field.ts';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { focusRing } from '../../internal/focus.ts';
+} from '../../internal/fieldheader.js';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * The row of tags, wrapping onto further lines. It carries the shared focus ring for when it holds

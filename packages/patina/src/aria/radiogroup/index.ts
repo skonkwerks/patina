@@ -1,2 +1,2 @@
-export * from './component.tsx';
-export * from './radio.tsx';
+export * from './component.js';
+export * from './radio.js';

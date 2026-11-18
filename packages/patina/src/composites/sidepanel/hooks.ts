@@ -1,13 +1,13 @@
 import { type ReactNode, use, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import type { PanelOpening } from './action.ts';
+import type { PanelOpening } from './action.js';
 import {
   SidePanelTargetContext,
   usePanelState,
   useSidePanelActions,
   useSidePanelId,
-} from './context.ts';
+} from './context.js';
 
 /** How content is shown in the side panel: its title, and the control the focus returns to when it closes. */
 export type SidePanelOpening = Readonly<{

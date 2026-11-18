@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
+import { DISABLED } from '../../internal/disabled.js';
 
 /**
  * The zone's frame is dashed while it takes files and solid while it does not, as a grid list's

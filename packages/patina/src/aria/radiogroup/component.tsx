@@ -6,11 +6,11 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldStyles } from '../../internal/field.ts';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
+} from '../../internal/fieldheader.js';
 
 /**
  * The group's own spacing and the column its choices stand in; its header and error are the shared

@@ -1,6 +1,6 @@
 import type { VariantProps } from 'tailwind-variants';
 
-import { spinnerStyles } from './styles.ts';
+import { spinnerStyles } from './styles.js';
 
 export type SpinnerProps = VariantProps<typeof spinnerStyles> & {
   /**

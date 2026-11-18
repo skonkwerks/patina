@@ -4,7 +4,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { chipStyles } from '../../chip/index.ts';
+import { chipStyles } from '../../chip/index.js';
 
 /**
  * A token inside the text: the chip's rounded label (`chipStyles`, its neutral tone), the one small

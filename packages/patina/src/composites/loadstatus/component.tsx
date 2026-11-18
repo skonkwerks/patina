@@ -1,5 +1,5 @@
-import { PendingStatus } from '../../spinner/index.ts';
-import { LoadFailure, type LoadFailureProps } from './failure.tsx';
+import { PendingStatus } from '../../spinner/index.js';
+import { LoadFailure, type LoadFailureProps } from './failure.js';
 
 export type LoadStatusProps = {
   /**

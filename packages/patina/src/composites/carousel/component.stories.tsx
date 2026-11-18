@@ -3,17 +3,17 @@ import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Button } from '../../aria/button/index.ts';
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { AFTER_RELEASE_MS, dragSideways } from './drag.testing.ts';
-import { Carousel, useCarouselState } from './index.ts';
+import { Button } from '../../aria/button/index.js';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { AFTER_RELEASE_MS, dragSideways } from './drag.testing.js';
+import { Carousel, useCarouselState } from './index.js';
 import {
   carouselText,
   type Picture,
   pictures,
   video,
-} from './pictures.testing.ts';
-import { PictureSlide, PictureThumbnail } from './slides.testing.tsx';
+} from './pictures.testing.js';
+import { PictureSlide, PictureThumbnail } from './slides.testing.js';
 
 type PictureCarouselProps = {
   /** The carousel's name. */

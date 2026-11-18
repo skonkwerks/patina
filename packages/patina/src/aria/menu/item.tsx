@@ -6,7 +6,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { overlayOptionStyles } from '../popover/index.ts';
+import { overlayOptionStyles } from '../popover/index.js';
 
 /**
  * A menu item: the shared overlay option (its `base` slot with the keyboard's focus ring, and its

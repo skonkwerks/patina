@@ -3,7 +3,7 @@ import {
   type LinkProps as AriaLinkProps,
 } from 'react-aria-components';
 
-import { type ButtonStyleProps, buttonStyles } from '../button/index.ts';
+import { type ButtonStyleProps, buttonStyles } from '../button/index.js';
 
 export type LinkButtonProps = Omit<AriaLinkProps, 'className'> &
   ButtonStyleProps & {

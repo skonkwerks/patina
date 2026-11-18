@@ -11,17 +11,17 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import { fieldBoxStyles, fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
-import { CalendarLayerContext } from '../calendar/context.ts';
-import { Calendar } from '../calendar/index.ts';
-import { DateInput } from '../datefield/input.tsx';
-import { iconButtonStyles } from '../iconbutton/index.ts';
-import { Popover } from '../popover/index.ts';
+} from '../../internal/fieldheader.js';
+import { useShownErrorFollowsValue } from '../../internal/shownerror.js';
+import { CalendarLayerContext } from '../calendar/context.js';
+import { Calendar } from '../calendar/index.js';
+import { DateInput } from '../datefield/input.js';
+import { iconButtonStyles } from '../iconbutton/index.js';
+import { Popover } from '../popover/index.js';
 
 /**
  * The parts of `DatePicker` inside its box: the segments, the button that opens the calendar, and

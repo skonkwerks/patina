@@ -5,9 +5,9 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import type { EmptyStateProps } from '../../emptystate/index.ts';
-import { focusRing } from '../../internal/focus.ts';
-import { BodyStatusContext } from './context.ts';
+import type { EmptyStateProps } from '../../emptystate/index.js';
+import { focusRing } from '../../internal/focus.js';
+import { BodyStatusContext } from './context.js';
 
 /** The frame around the table: where the error notice stands, the bordered box, the pending status. */
 export const tableFrameStyles = tv({

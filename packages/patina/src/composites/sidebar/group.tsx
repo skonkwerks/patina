@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 import {
   NavigationTreeHeader,
   NavigationTreeSection,
-} from '../../aria/navigationtree/index.ts';
-import { useSidebar } from './context.ts';
+} from '../../aria/navigationtree/index.js';
+import { useSidebar } from './context.js';
 
 export type SidebarGroupProps = {
   id: string;

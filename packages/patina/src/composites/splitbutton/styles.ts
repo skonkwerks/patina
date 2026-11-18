@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { buttonStyles } from '../../aria/button/index.ts';
-import { iconButtonStyles } from '../../aria/iconbutton/index.ts';
+import { buttonStyles } from '../../aria/button/index.js';
+import { iconButtonStyles } from '../../aria/iconbutton/index.js';
 
 /** The two parts side by side; the part with keyboard focus rises above its neighbor. */
 export const splitButtonStyles = tv({

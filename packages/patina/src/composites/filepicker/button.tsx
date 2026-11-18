@@ -1,5 +1,5 @@
-import { Button, type ButtonProps } from '../../aria/button/index.ts';
-import { FilePicker } from './component.tsx';
+import { Button, type ButtonProps } from '../../aria/button/index.js';
+import { FilePicker } from './component.js';
 
 export type FilePickerButtonProps = {
   label: string;

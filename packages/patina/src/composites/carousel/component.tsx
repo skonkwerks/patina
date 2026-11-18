@@ -1,18 +1,18 @@
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { type ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
 
-import { IconButton } from '../../aria/iconbutton/index.ts';
-import Frame from './frame.tsx';
-import { useCarouselKeyboard } from './keyboard.ts';
-import Position from './position.tsx';
-import { indicatorKind } from './rules.ts';
-import type { CarouselItem, CarouselState } from './state.ts';
-import { carouselStyles } from './styles.ts';
+import { IconButton } from '../../aria/iconbutton/index.js';
+import Frame from './frame.js';
+import { useCarouselKeyboard } from './keyboard.js';
+import Position from './position.js';
+import { indicatorKind } from './rules.js';
+import type { CarouselItem, CarouselState } from './state.js';
+import { carouselStyles } from './styles.js';
 import type {
   CarouselIndicator,
   CarouselShape,
   CarouselSlideState,
-} from './types.ts';
+} from './types.js';
 
 /**
  * A carousel's accessible name, which every carousel has, without the word for a carousel: the

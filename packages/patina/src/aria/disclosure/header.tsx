@@ -1,8 +1,8 @@
 import { IconChevronRight } from '@tabler/icons-react';
 import { Button, Heading } from 'react-aria-components';
 
-import { focusRing } from '../../internal/focus.ts';
-import { disclosureStyles } from './component.tsx';
+import { focusRing } from '../../internal/focus.js';
+import { disclosureStyles } from './component.js';
 
 const styles = disclosureStyles();
 

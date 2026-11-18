@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { imageOverlayStyles } from './styles.ts';
+import { imageOverlayStyles } from './styles.js';
 
 export type ImageOverlayProps = {
   /** The icon, such as a Tabler icon with `aria-hidden`; the marker sizes it. */

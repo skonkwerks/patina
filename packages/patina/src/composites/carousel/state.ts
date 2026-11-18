@@ -7,7 +7,7 @@ import {
   openingPlace,
   placeAt,
   turnedPlace,
-} from './rules.ts';
+} from './rules.js';
 
 /** A slide of a carousel: anything with an id that stays the same while the set changes. */
 export type CarouselItem = Readonly<{ id: Key }>;

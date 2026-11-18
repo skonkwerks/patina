@@ -11,20 +11,20 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { useDescriptionId } from '../../internal/descriptionid.ts';
+import { useDescriptionId } from '../../internal/descriptionid.js';
 import {
   fieldBoxStyles,
   fieldButtonStyles,
   fieldStyles,
-} from '../../internal/field.ts';
+} from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { FieldPending, type FieldPendingProps } from '../form/pending.tsx';
-import { Popover } from '../popover/index.ts';
-import List from './list.tsx';
-import ShownError from './shownerror.tsx';
+} from '../../internal/fieldheader.js';
+import { FieldPending, type FieldPendingProps } from '../form/pending.js';
+import { Popover } from '../popover/index.js';
+import List from './list.js';
+import ShownError from './shownerror.js';
 
 export const comboBoxStyles = tv({
   slots: {

@@ -9,10 +9,10 @@ import {
 // React Aria exports the selection mode's type from the calendar's own entry point alone.
 import type { CalendarSelectionMode } from 'react-aria-components/Calendar';
 
-import { CalendarLayerContext } from './context.ts';
-import { CalendarMonth } from './month.tsx';
-import { renderCalendarRoot } from './root.tsx';
-import { calendarCellStyles, calendarStyles } from './styles.ts';
+import { CalendarLayerContext } from './context.js';
+import { CalendarMonth } from './month.js';
+import { renderCalendarRoot } from './root.js';
+import { calendarCellStyles, calendarStyles } from './styles.js';
 
 export type CalendarProps<
   T extends DateValue,

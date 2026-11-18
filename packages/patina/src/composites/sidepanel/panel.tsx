@@ -1,13 +1,13 @@
 import { IconX } from '@tabler/icons-react';
 import { useCallback, useId } from 'react';
 
-import { IconButton } from '../../aria/iconbutton/index.ts';
+import { IconButton } from '../../aria/iconbutton/index.js';
 import {
   useSidePanelActions,
   useSidePanelId,
   useSidePanelState,
-} from './context.ts';
-import { sidePanelStyles } from './styles.ts';
+} from './context.js';
+import { sidePanelStyles } from './styles.js';
 
 export type SidePanelProps = {
   /** The name of the panel's close control, such as "Close". */

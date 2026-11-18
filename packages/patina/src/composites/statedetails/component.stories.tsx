@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Chip } from '../../chip/index.ts';
-import { StateDetails } from './index.ts';
+import { Chip } from '../../chip/index.js';
+import { StateDetails } from './index.js';
 
 const meta = {
   title: 'Composites/StateDetails',

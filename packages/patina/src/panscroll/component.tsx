@@ -6,9 +6,9 @@ import {
 } from 'motion/react';
 import { type ReactNode, type RefObject, useEffect, useRef } from 'react';
 
-import { scrollGlide } from './glide.ts';
-import { PAN_MOVING, PAN_OVERSCROLL } from './pan.ts';
-import { panScrollStyles } from './styles.ts';
+import { scrollGlide } from './glide.js';
+import { PAN_MOVING, PAN_OVERSCROLL } from './pan.js';
+import { panScrollStyles } from './styles.js';
 
 /** How far a glide carries, in seconds of the release speed; unhindered, it lasts twice that. */
 const GLIDE_REACH_S = 0.8;

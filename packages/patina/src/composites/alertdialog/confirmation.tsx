@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import { Text } from 'react-aria-components';
 
-import { Button } from '../../aria/button/index.ts';
-import { DialogCancel, useIsDismissDisabled } from '../../aria/dialog/index.ts';
-import { Alert } from '../alert/index.ts';
-import { confirmationStyles } from './styles.ts';
+import { Button } from '../../aria/button/index.js';
+import { DialogCancel, useIsDismissDisabled } from '../../aria/dialog/index.js';
+import { Alert } from '../alert/index.js';
+import { confirmationStyles } from './styles.js';
 
 export type ConfirmationProps = {
   /** The one question, such as "Are you sure you want to delete this project?". */

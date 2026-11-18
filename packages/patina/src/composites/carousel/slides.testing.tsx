@@ -1,10 +1,10 @@
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.tsx`).
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.tsx`).
  *
  * The placeholder slides of the carousel's and the media viewer's stories (`pictures.testing.ts`):
  * a picture whole inside the frame, or a stand-in video, and a picture's thumbnail.
  */
-import { type Picture, pictureSource } from './pictures.testing.ts';
+import { type Picture, pictureSource } from './pictures.testing.js';
 
 /** A slide: the picture whole inside the frame, or the stand-in video's player filling it. */
 export const PictureSlide = ({ picture }: { picture: Picture }) =>

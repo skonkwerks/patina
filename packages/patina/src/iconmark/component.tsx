@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { iconMarkStyles } from './styles.ts';
+import { iconMarkStyles } from './styles.js';
 
 export type IconMarkProps = {
   /** The icon, such as a Tabler icon with `aria-hidden`; the mark sizes it. */

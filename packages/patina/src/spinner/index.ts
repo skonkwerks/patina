@@ -1,3 +1,3 @@
-export * from './component.tsx';
-export * from './pendingstatus.tsx';
-export * from './styles.ts';
+export * from './component.js';
+export * from './pendingstatus.js';
+export * from './styles.js';

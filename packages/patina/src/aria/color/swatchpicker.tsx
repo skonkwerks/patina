@@ -4,8 +4,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { SwatchSizeContext } from './context.ts';
-import type { ColorSwatchProps } from './swatch.tsx';
+import { SwatchSizeContext } from './context.js';
+import type { ColorSwatchProps } from './swatch.js';
 
 /** The swatches in a wrapping row (`grid`) or a column (`stack`), spaced so focus rings never touch. */
 export const colorSwatchPickerStyles = tv({

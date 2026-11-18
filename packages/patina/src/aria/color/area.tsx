@@ -4,8 +4,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { ColorThumb } from './thumb.tsx';
+import { DISABLED } from '../../internal/disabled.js';
+import { ColorThumb } from './thumb.js';
 
 /**
  * A square 192px wide by default, as wide as a color wheel; a caller sets another width through

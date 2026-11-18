@@ -2,15 +2,15 @@ import { IconArrowsMaximize, IconArrowsMinimize } from '@tabler/icons-react';
 import { useState } from 'react';
 import type { Key } from 'react-aria-components';
 
-import { Dialog } from '../../aria/dialog/index.ts';
-import { IconToggle } from '../../aria/togglegroup/index.ts';
+import { Dialog } from '../../aria/dialog/index.js';
+import { IconToggle } from '../../aria/togglegroup/index.js';
 import {
   type CarouselItem,
   useCarouselKeyboard,
   useCarouselState,
-} from '../carousel/index.ts';
-import { MediaViewer, type MediaViewerContentProps } from './component.tsx';
-import { mediaViewerDialogStyles } from './styles.ts';
+} from '../carousel/index.js';
+import { MediaViewer, type MediaViewerContentProps } from './component.js';
+import { mediaViewerDialogStyles } from './styles.js';
 
 type ContentProps<T extends CarouselItem> = MediaViewerContentProps<T> & {
   items: readonly T[];

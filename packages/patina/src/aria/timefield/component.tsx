@@ -7,14 +7,14 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldStyles } from '../../internal/field.ts';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
-import { dateFieldInputStyles } from '../datefield/index.ts';
-import { DateInput } from '../datefield/input.tsx';
+} from '../../internal/fieldheader.js';
+import { useShownErrorFollowsValue } from '../../internal/shownerror.js';
+import { dateFieldInputStyles } from '../datefield/index.js';
+import { DateInput } from '../datefield/input.js';
 
 /** The box around the segments: `DateField`'s, which an app may extend for times alone. */
 export const timeFieldInputStyles = tv({ extend: dateFieldInputStyles });

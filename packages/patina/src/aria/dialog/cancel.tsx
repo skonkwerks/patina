@@ -1,7 +1,7 @@
 import { use } from 'react';
 
-import { Button, type ButtonProps } from '../button/index.ts';
-import { DismissDisabledContext } from './context.ts';
+import { Button, type ButtonProps } from '../button/index.js';
+import { DismissDisabledContext } from './context.js';
 
 /**
  * The dialog's Cancel button: it closes the dialog, and it is disabled whenever the dialog may not be

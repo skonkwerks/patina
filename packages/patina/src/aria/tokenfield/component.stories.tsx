@@ -8,7 +8,7 @@ import {
   type TokenFieldProps,
   type TokenFieldSegment,
   TokenFieldValue,
-} from './index.ts';
+} from './index.js';
 
 /**
  * A tag list: text typed before a comma or a line break becomes a token, and the text after the last

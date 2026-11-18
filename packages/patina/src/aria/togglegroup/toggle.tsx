@@ -4,8 +4,8 @@ import {
   type ToggleButtonProps as AriaToggleButtonProps,
 } from 'react-aria-components';
 
-import { GroupContext } from './context.ts';
-import { type ToggleStyleProps, toggleStyles } from './styles.ts';
+import { GroupContext } from './context.js';
+import { type ToggleStyleProps, toggleStyles } from './styles.js';
 
 export type ToggleProps = Omit<AriaToggleButtonProps, 'className'> &
   ToggleStyleProps & {

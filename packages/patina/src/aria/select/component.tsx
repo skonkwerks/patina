@@ -10,15 +10,15 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { Count } from '../../count/index.ts';
-import { useDescriptionId } from '../../internal/descriptionid.ts';
-import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import { Count } from '../../count/index.js';
+import { useDescriptionId } from '../../internal/descriptionid.js';
+import { fieldBoxStyles, fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { FieldPending, type FieldPendingProps } from '../form/pending.tsx';
-import { Popover } from '../popover/index.ts';
+} from '../../internal/fieldheader.js';
+import { FieldPending, type FieldPendingProps } from '../form/pending.js';
+import { Popover } from '../popover/index.js';
 
 export const selectStyles = tv({
   slots: {

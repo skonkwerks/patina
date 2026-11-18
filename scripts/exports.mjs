@@ -1,5 +1,8 @@
 // Writes the `exports` map of @skonkwerks/patina from its folders, so the map is never edited by
-// hand: one subpath per public component family, named for the family, plus the stylesheet.
+// hand: one subpath per public component family, named for the family, plus the stylesheet. Each
+// family's subpath points at its build in dist/ (`pnpm build`), declarations first: the package
+// ships the compiled JavaScript and its type definitions, never the source files (the source maps
+// carry their text, for debugging).
 // `--write` updates packages/patina/package.json (`pnpm exports`); `--check` fails when the map is
 // stale (`pnpm check`). A family is a folder with an index.ts: at the root of src/ (a core family),
 // or in aria/ or composites/. A family folder without its index.ts fails the run, in either mode,
@@ -31,7 +34,7 @@ if (mode !== '--write' && mode !== '--check') {
 }
 
 const families = [...familiesIn(''), ...TIERS.flatMap(familiesIn)];
-/** @type {Record<string, string>} */
+/** @type {Record<string, string | { types: string, default: string }>} */
 const entries = {};
 for (const family of families) {
   const name = path.posix.basename(family);
@@ -47,7 +50,10 @@ for (const family of families) {
     );
     process.exit(1);
   }
-  entries[`./${name}`] = `./src/${family}/index.ts`;
+  entries[`./${name}`] = {
+    types: `./dist/${family}/index.d.ts`,
+    default: `./dist/${family}/index.js`,
+  };
 }
 entries['./patina.css'] = './patina.css';
 const exportsMap = Object.fromEntries(

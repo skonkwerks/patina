@@ -2,9 +2,9 @@ import { IconDotsVertical } from '@tabler/icons-react';
 import { type ReactNode, useRef } from 'react';
 import type { Key } from 'react-aria-components';
 
-import { IconButton } from '../../aria/iconbutton/index.ts';
-import { Menu, MenuTrigger } from '../../aria/menu/index.ts';
-import { actionMenuStyles } from './styles.ts';
+import { IconButton } from '../../aria/iconbutton/index.js';
+import { Menu, MenuTrigger } from '../../aria/menu/index.js';
+import { actionMenuStyles } from './styles.js';
 
 export type ActionMenuProps = {
   /** The name of the menu's control, which shows three dots and no text: "Actions for" and the row's name. */

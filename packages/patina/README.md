@@ -21,7 +21,8 @@ src/
 - **A family is a folder:** `index.ts` (its public surface), `component.tsx` (the main component), one file per further component (`table/column.tsx`, `table/row.tsx`), and the family's stories. Core components and composites keep their styles in the family's `styles.ts`; a React Aria wrapper exports its `{component}Styles` from its own file, or from its family's `styles.ts` when several of the family's components share the look (`button/styles.ts` for `Button`, `IconButton` and `LinkButton`; `togglegroup/styles.ts` for `Toggle` and `IconToggle`).
 - **A custom button look builds on `ButtonBase`** (`aria/button/base.tsx`), the button family's internal base: React Aria's press handling, a disabled reason that keeps the button focusable, an optional tooltip, and a pending spinner, with the look left to the caller's `styles` function. `IconButton` and the composites with a button of their own look (`Stepper`'s steps, `StateDetails`' control, `SplitButton`'s parts) use it, so a button's state rules hold everywhere and no wrapper is restyled through `className`. It is not a public subpath.
 - **An alpha subpath:** `@skonkwerks/patina/tokenfield` wraps React Aria's TokenField, which React Aria marks alpha. Until React Aria marks it stable, the subpath (the component, and the `TokenFieldValue` and segment types it re-exports for an app to build its value from) may change with any React Aria minor version that Patina's peer range allows, and the changelog says how.
-- **One subpath per family.** An app imports `@skonkwerks/patina/<family>` and never sees the tier. `pnpm exports` writes the `exports` map from the folders; `pnpm check` fails when it is out of date.
+- **One subpath per family.** An app imports `@skonkwerks/patina/<family>` and never sees the tier. `pnpm exports` writes the `exports` map from the folders, each subpath pointing at its family's build in `dist/` (`index.d.ts` for the types, `index.js` for the code); `pnpm check` fails when it is out of date.
+- **The build.** `pnpm build` compiles `src/` with `tsc` into `dist/`: one ES module, type definition and source map per file, without the stories, specs and story helpers. The package ships `dist/`, `patina.css`, this README and the license, never the source files (the source maps carry their text, for debugging). `pnpm check:package` packs the package, checks what the tarball holds, and installs it into a throwaway app to import every subpath in Node and type-check it with `tsc` and `tsgo`.
 
 ## The hard rule: no outside dependencies
 
@@ -48,13 +49,15 @@ What the wrappers need beyond that is drawn in, not imported:
 
 ## Using it in an app
 
-1. Add the dependency, with its peer dependencies (`react`, `react-dom`, `react-aria-components`, `@tabler/icons-react`, `motion`, `tailwindcss`). While the package is private, install it through the workspace or a local link:
+1. Add the dependency, with its peer dependencies (`react`, `react-dom`, `react-aria-components`, `@tabler/icons-react`, `motion`, `tailwindcss`). The package ships ES modules and their type definitions, compiled into `dist/`; its type definitions work under `moduleResolution` `bundler` and `nodenext`. Until it is published to npm, install the tarball that `pnpm pack` writes in `packages/patina` (packing builds it first):
 
    ```json
-   "@skonkwerks/patina": "link:../patina/packages/patina"
+   "@skonkwerks/patina": "file:../patina/packages/patina/skonkwerks-patina-0.1.0.tgz"
    ```
 
-   A linked package resolves its own imports from patina's `node_modules`, so the app could end up with two copies of React and React Aria, which breaks hooks and context. Tell Vite to use the app's copies:
+   Once it is published, depend on its version from npm instead. Installed either way, the package takes React, React DOM, React Aria Components, Tabler icons and Motion from the app, so the app has one copy of each.
+
+   To try changes to Patina in an app before packing them, link the package instead (`"link:../patina/packages/patina"`) and run `pnpm build` in Patina after each change, since the app loads the build in `dist/`. A linked package resolves its own imports from Patina's `node_modules`, so the app could end up with two copies of React and React Aria, which breaks hooks and context. Tell Vite to use the app's copies:
 
    ```ts
    // vite.config.ts
@@ -81,7 +84,7 @@ What the wrappers need beyond that is drawn in, not imported:
    @import '@skonkwerks/patina/patina.css';
    ```
 
-   `patina.css` tells Tailwind to scan the components for their classes (`@source`). The `tailwindcss-react-aria-components` plugin gives the React Aria state variants the wrappers use (`selected:`, `hover:` and `disabled:` on React Aria's `data-*` attributes). The plugin is a dependency of the app's CSS, not of the wrappers.
+   `patina.css` tells Tailwind to scan the compiled components in `dist/` for their classes (`@source`). The `tailwindcss-react-aria-components` plugin gives the React Aria state variants the wrappers use (`selected:`, `hover:` and `disabled:` on React Aria's `data-*` attributes). The plugin is a dependency of the app's CSS, not of the wrappers.
 
 3. Define the color tokens in the app's theme, once per mode. `patina.css` lists them all:
 

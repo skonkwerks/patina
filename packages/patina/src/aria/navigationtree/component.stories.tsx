@@ -8,7 +8,7 @@ import {
   NavigationTreeHeader,
   NavigationTreeLink,
   NavigationTreeSection,
-} from './index.ts';
+} from './index.js';
 
 const meta = {
   title: 'Aria/NavigationTree',

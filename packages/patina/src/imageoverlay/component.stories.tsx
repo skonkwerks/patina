@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconPlayerPlay, IconStar } from '@tabler/icons-react';
 
-import { ImageOverlay } from './index.ts';
+import { ImageOverlay } from './index.js';
 
 const meta = {
   title: 'Core/ImageOverlay',

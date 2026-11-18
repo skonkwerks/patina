@@ -1,8 +1,8 @@
 import type { Ref } from 'react';
 import type { ButtonProps as AriaButtonProps } from 'react-aria-components';
 
-import { ButtonBase } from './base.tsx';
-import { type ButtonStyleProps, buttonStyles } from './styles.ts';
+import { ButtonBase } from './base.js';
+import { type ButtonStyleProps, buttonStyles } from './styles.js';
 
 export type ButtonProps = Omit<AriaButtonProps, 'className'> &
   ButtonStyleProps & {

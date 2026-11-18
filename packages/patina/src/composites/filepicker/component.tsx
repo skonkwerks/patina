@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { FileTrigger } from '../../aria/filetrigger/index.ts';
+import { FileTrigger } from '../../aria/filetrigger/index.js';
 
 export type FilePickerProps = {
   /** MIME types or extensions the picker offers; what is accepted is the receiver's check. */

@@ -9,21 +9,21 @@ import {
   type Selection,
 } from 'react-aria-components';
 
-import { Button } from '../../aria/button/index.ts';
-import { listBoxEmptyStyles, ListBoxItem } from '../../aria/listbox/index.ts';
-import { Popover } from '../../aria/popover/index.ts';
-import { SearchField } from '../../aria/searchfield/index.ts';
-import { useDescriptionId } from '../../internal/descriptionid.ts';
-import { fieldStyles } from '../../internal/field.ts';
+import { Button } from '../../aria/button/index.js';
+import { listBoxEmptyStyles, ListBoxItem } from '../../aria/listbox/index.js';
+import { Popover } from '../../aria/popover/index.js';
+import { SearchField } from '../../aria/searchfield/index.js';
+import { useDescriptionId } from '../../internal/descriptionid.js';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
+} from '../../internal/fieldheader.js';
 import {
   multiSelectListBoxStyles,
   multiSelectStyles,
   multiSelectTriggerStyles,
-} from './styles.ts';
+} from './styles.js';
 
 export type MultiSelectOption = { id: string; label: string };
 

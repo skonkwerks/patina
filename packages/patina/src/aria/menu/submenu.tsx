@@ -4,8 +4,8 @@ import {
   SubmenuTrigger,
 } from 'react-aria-components';
 
-import { Popover } from '../popover/index.ts';
-import { menuStyles } from './component.tsx';
+import { Popover } from '../popover/index.js';
+import { menuStyles } from './component.js';
 
 export { SubmenuTrigger };
 

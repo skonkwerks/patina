@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { InlineMetadata } from './index.ts';
+import { InlineMetadata } from './index.js';
 
 const meta = {
   title: 'Core/InlineMetadata',

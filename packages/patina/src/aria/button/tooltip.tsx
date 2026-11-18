@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Tooltip, TooltipTrigger } from '../tooltip/index.ts';
+import { Tooltip, TooltipTrigger } from '../tooltip/index.js';
 
 export type ButtonTooltipProps = {
   /** Why the button cannot be pressed, shown at once on hover and focus; none while it can be. */

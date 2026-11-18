@@ -6,8 +6,8 @@ import {
   type CarouselItem,
   type CarouselName,
   useCarouselKeyboard,
-} from '../carousel/index.ts';
-import { mediaViewerStyles } from './styles.ts';
+} from '../carousel/index.js';
+import { mediaViewerStyles } from './styles.js';
 
 /**
  * What a media viewer shows and says, whatever hosts it: the carousel's slides and words, and what

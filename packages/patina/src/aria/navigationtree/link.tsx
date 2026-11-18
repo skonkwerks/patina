@@ -7,8 +7,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
-import { Tooltip, TooltipTrigger } from '../tooltip/index.ts';
+import { focusRing } from '../../internal/focus.js';
+import { Tooltip, TooltipTrigger } from '../tooltip/index.js';
 
 // The current item carries an edge marker and the full text color; the others are muted until
 // hovered. Each state sets its own border color, so no base class competes with it.

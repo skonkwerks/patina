@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { emptyStateStyles } from './styles.ts';
+import { emptyStateStyles } from './styles.js';
 
 export type EmptyStateProps = {
   /** What is empty, as a short statement: "No models registered". */

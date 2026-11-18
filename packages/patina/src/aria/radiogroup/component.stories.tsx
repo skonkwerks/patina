@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Radio, RadioGroup } from './index.ts';
+import { Radio, RadioGroup } from './index.js';
 
 const meta = {
   title: 'Aria/RadioGroup',

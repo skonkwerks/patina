@@ -8,8 +8,8 @@ import { useState } from 'react';
 import { I18nProvider, useLocale } from 'react-aria-components';
 import { expect } from 'storybook/test';
 
-import { Calendar, type CalendarProps } from './index.ts';
-import { dayName, monthNames, pageButton, ringOf } from './month.testing.ts';
+import { Calendar, type CalendarProps } from './index.js';
+import { dayName, monthNames, pageButton, ringOf } from './month.testing.js';
 
 const meta = {
   title: 'Aria/Calendar',

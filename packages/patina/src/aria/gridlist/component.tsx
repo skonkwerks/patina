@@ -5,11 +5,11 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { EmptyState, type EmptyStateProps } from '../../emptystate/index.ts';
-import { focusRing } from '../../internal/focus.ts';
-import { PendingStatus } from '../../spinner/index.ts';
-import type { FileDrop } from '../draganddrop/index.ts';
-import { renderGridListDropIndicator } from './dropindicator.tsx';
+import { EmptyState, type EmptyStateProps } from '../../emptystate/index.js';
+import { focusRing } from '../../internal/focus.js';
+import { PendingStatus } from '../../spinner/index.js';
+import type { FileDrop } from '../draganddrop/index.js';
+import { renderGridListDropIndicator } from './dropindicator.js';
 
 /** The frame around the grid: where the error notice stands, and the pending status inside the grid. */
 export const gridListFrameStyles = tv({

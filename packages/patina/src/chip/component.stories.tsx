@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Chip, type StatusTone } from './index.ts';
+import { Chip, type StatusTone } from './index.js';
 
 const tones = [
   'neutral',

@@ -52,8 +52,8 @@
  *   scrim        the backdrop behind a modal dialog
  */
 
-/* Tailwind scans the wrappers for the classes they use. */
-@source './src';
+/* Tailwind scans the compiled components, which the package ships, for the classes they use. */
+@source './dist';
 
 /*
  * A scroll area whose scrollbar stays visible, where content past the edge would otherwise go

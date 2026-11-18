@@ -5,10 +5,10 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { focusRing } from '../../internal/focus.ts';
-import { SwatchSizeContext } from './context.ts';
-import { ColorSwatch } from './swatch.tsx';
+import { DISABLED } from '../../internal/disabled.js';
+import { focusRing } from '../../internal/focus.js';
+import { SwatchSizeContext } from './context.js';
+import { ColorSwatch } from './swatch.js';
 
 /**
  * A swatch to choose; its root carries the shared focus ring. The chosen one is marked by a frame

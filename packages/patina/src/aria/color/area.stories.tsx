@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { type Color, parseColor } from 'react-aria-components';
 import { expect } from 'storybook/test';
 
-import { ColorArea, ColorSwatch } from './index.ts';
+import { ColorArea, ColorSwatch } from './index.js';
 
 const meta = {
   title: 'Aria/ColorArea',

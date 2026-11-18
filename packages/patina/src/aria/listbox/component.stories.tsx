@@ -3,14 +3,14 @@ import { useState } from 'react';
 import type { Selection } from 'react-aria-components';
 import { expect, within } from 'storybook/test';
 
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { Button } from '../button/index.ts';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { Button } from '../button/index.js';
 import {
   ListBox,
   ListBoxItem,
   type ListBoxProps,
   ListBoxSection,
-} from './index.ts';
+} from './index.js';
 
 type Flavor = { id: string; name: string };
 

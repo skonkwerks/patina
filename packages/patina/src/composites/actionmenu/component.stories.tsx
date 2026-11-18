@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { MenuItem, MenuSeparator } from '../../aria/menu/index.ts';
-import { ActionMenu, type ActionMenuProps } from './index.ts';
+import { MenuItem, MenuSeparator } from '../../aria/menu/index.js';
+import { ActionMenu, type ActionMenuProps } from './index.js';
 
 const items = (
   <>

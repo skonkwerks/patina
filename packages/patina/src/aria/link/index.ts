@@ -1,2 +1,2 @@
-export * from './button.tsx';
-export * from './component.tsx';
+export * from './button.js';
+export * from './component.js';

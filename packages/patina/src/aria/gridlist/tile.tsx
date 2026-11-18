@@ -5,7 +5,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { gridListTileStateStyles } from './tilestyles.ts';
+import { gridListTileStateStyles } from './tilestyles.js';
 
 export const gridListTileStyles = tv({
   extend: gridListTileStateStyles,

@@ -4,8 +4,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
-import { ListBoxLayerContext } from './layer.ts';
+import { focusRing } from '../../internal/focus.js';
+import { ListBoxLayerContext } from './layer.js';
 
 /**
  * The list on the page: a framed column of options on the surface. It carries the shared focus ring

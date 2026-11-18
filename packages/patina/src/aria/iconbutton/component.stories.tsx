@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconSearch, IconX } from '@tabler/icons-react';
 
-import { IconButton } from './index.ts';
+import { IconButton } from './index.js';
 
 const meta = {
   title: 'Aria/IconButton',

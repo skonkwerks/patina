@@ -5,10 +5,10 @@ import { expect, within } from 'storybook/test';
 import {
   contrastRatio,
   NON_TEXT_CONTRAST,
-} from '../../internal/contrast.testing.ts';
-import { startEdgeOf, TRANSPARENT } from '../../internal/itemstate.testing.ts';
-import { Button } from '../button/index.ts';
-import { useFileDrop } from '../draganddrop/index.ts';
+} from '../../internal/contrast.testing.js';
+import { startEdgeOf, TRANSPARENT } from '../../internal/itemstate.testing.js';
+import { Button } from '../button/index.js';
+import { useFileDrop } from '../draganddrop/index.js';
 import {
   GridList,
   GridListItem,
@@ -16,7 +16,7 @@ import {
   type GridListProps,
   GridListSection,
   GridListTile,
-} from './index.ts';
+} from './index.js';
 
 type Doc = {
   id: string;

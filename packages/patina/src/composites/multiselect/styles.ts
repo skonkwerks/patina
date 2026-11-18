@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { fieldBoxStyles } from '../../internal/field.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { fieldBoxStyles } from '../../internal/field.js';
+import { focusRing } from '../../internal/focus.js';
 
 export const multiSelectStyles = tv({
   slots: {

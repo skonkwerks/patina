@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { Label, Text } from 'react-aria-components';
 
-import { fieldStyles } from './field.ts';
-import { FieldContextBoundary } from './fieldcontextboundary.tsx';
+import { fieldStyles } from './field.js';
+import { FieldContextBoundary } from './fieldcontextboundary.js';
 
 /** U+2060 WORD JOINER: no line may break on either side of it. */
 const WORD_JOINER = '\u2060';

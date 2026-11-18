@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { DISABLED } from '../../internal/disabled.js';
+import { focusRing } from '../../internal/focus.js';
 
 /** The row of steps under a dialog's title. */
 export const stepperStyles = tv({

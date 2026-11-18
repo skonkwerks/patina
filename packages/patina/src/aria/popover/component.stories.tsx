@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Dialog, DialogTrigger, Heading } from 'react-aria-components';
 
-import { Button } from '../button/index.ts';
-import { Popover } from './index.ts';
+import { Button } from '../button/index.js';
+import { Popover } from './index.js';
 
 const meta = {
   title: 'Aria/Popover',

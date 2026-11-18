@@ -7,7 +7,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { ListBoxLayerContext } from './layer.ts';
+import { ListBoxLayerContext } from './layer.js';
 
 /**
  * A titled group of options. Its heading stays at the top of the list while the group's options

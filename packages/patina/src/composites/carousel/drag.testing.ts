@@ -1,5 +1,5 @@
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.ts`).
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.ts`).
  *
  * A drag as a person makes one, with the mouse or a finger, for stories of what a drag does:
  * pressed at the middle of an element, moved sideways in steps a frame apart, and released. A

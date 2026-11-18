@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, fn, within } from 'storybook/test';
 
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { ThemeMode, type ThemeModeValue } from './index.ts';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { ThemeMode, type ThemeModeValue } from './index.js';
 
 /** The theme mode with the mode held in the story, as the app holds it; `onModeChange` records each mode applied. */
 const Cycling = ({

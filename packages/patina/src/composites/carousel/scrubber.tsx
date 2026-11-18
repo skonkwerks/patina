@@ -6,11 +6,11 @@ import {
   useLocale,
 } from 'react-aria-components';
 
-import { sliderStyles, sliderThumbStyles } from '../../aria/slider/index.ts';
-import { scrubberFraction, scrubberPosition } from './rules.ts';
-import type { CarouselItem } from './state.ts';
-import { carouselScrubberStyles } from './styles.ts';
-import type { CarouselIndicator } from './types.ts';
+import { sliderStyles, sliderThumbStyles } from '../../aria/slider/index.js';
+import { scrubberFraction, scrubberPosition } from './rules.js';
+import type { CarouselItem } from './state.js';
+import { carouselScrubberStyles } from './styles.js';
+import type { CarouselIndicator } from './types.js';
 
 /** The preview's width, in rem: its picture is a square this wide. */
 const PREVIEW_REM = 3.5;

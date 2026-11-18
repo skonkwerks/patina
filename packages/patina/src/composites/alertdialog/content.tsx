@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import { focusPageHeading } from '../../header/index.ts';
-import { Confirmation, type ConfirmationProps } from './confirmation.tsx';
+import { focusPageHeading } from '../../header/index.js';
+import { Confirmation, type ConfirmationProps } from './confirmation.js';
 
 /** How a confirmed write closes its confirmation. */
 export type AlertDialogCloseOptions = {

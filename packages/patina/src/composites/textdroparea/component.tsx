@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { isTextDropItem } from 'react-aria-components';
 
-import { DropTarget } from '../../aria/droptarget/index.ts';
+import { DropTarget } from '../../aria/droptarget/index.js';
 import {
   TextAreaBase,
   type TextAreaFieldProps,
-} from '../../aria/textarea/base.tsx';
-import { fieldStyles } from '../../internal/field.ts';
+} from '../../aria/textarea/base.js';
+import { fieldStyles } from '../../internal/field.js';
 
 export type TextDropAreaProps = TextAreaFieldProps & {
   /** The one text type a drop is read as, such as `text/plain`. */

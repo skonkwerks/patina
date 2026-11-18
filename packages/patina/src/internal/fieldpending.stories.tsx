@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Button } from '../aria/button/index.ts';
-import { ComboBox } from '../aria/combobox/index.ts';
-import { ListBoxItem } from '../aria/listbox/index.ts';
-import { Select } from '../aria/select/index.ts';
-import { InfoButton } from '../composites/infobutton/index.ts';
-import { labelLines } from './labellines.testing.ts';
+import { Button } from '../aria/button/index.js';
+import { ComboBox } from '../aria/combobox/index.js';
+import { ListBoxItem } from '../aria/listbox/index.js';
+import { Select } from '../aria/select/index.js';
+import { InfoButton } from '../composites/infobutton/index.js';
+import { labelLines } from './labellines.testing.js';
 
 const PENDING = 'Loading the choices…';
 const OPTIONAL = '(optional)';

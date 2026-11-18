@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconPhoto } from '@tabler/icons-react';
 
-import { Button } from '../aria/button/index.ts';
-import { Chip } from '../chip/index.ts';
-import { InfoButton } from '../composites/infobutton/index.ts';
-import { Header } from './index.ts';
+import { Button } from '../aria/button/index.js';
+import { Chip } from '../chip/index.js';
+import { InfoButton } from '../composites/infobutton/index.js';
+import { Header } from './index.js';
 
 const meta = {
   title: 'Core/Header',

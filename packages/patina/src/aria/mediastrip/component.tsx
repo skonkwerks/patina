@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { panScrollTargetStyles } from '../../panscroll/index.ts';
-import { GridList, type GridListProps } from '../gridlist/index.ts';
+import { panScrollTargetStyles } from '../../panscroll/index.js';
+import { GridList, type GridListProps } from '../gridlist/index.js';
 
 /**
  * The strip's grid: wrapping square tiles (`vertical`), or one row that scrolls sideways

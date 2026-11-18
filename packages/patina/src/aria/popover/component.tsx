@@ -4,9 +4,9 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { focusRing } from '../../internal/focus.ts';
-import { OverlayContextBoundary } from '../../internal/overlaycontextboundary.tsx';
+import { DISABLED } from '../../internal/disabled.js';
+import { focusRing } from '../../internal/focus.js';
+import { OverlayContextBoundary } from '../../internal/overlaycontextboundary.js';
 
 export const popoverStyles = tv({
   base: 'bg-overlay border-overlay-border text-overlay-foreground rounded-md border shadow-lg outline-0',

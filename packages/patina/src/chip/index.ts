@@ -1,3 +1,3 @@
-export type { StatusTone } from '../internal/statustone.ts';
-export * from './component.tsx';
-export * from './styles.ts';
+export type { StatusTone } from '../internal/statustone.js';
+export * from './component.js';
+export * from './styles.js';

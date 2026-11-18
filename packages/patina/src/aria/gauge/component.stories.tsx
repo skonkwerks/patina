@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconCpu } from '@tabler/icons-react';
 
-import { Gauge } from './index.ts';
+import { Gauge } from './index.js';
 
 const meta = {
   title: 'Aria/Gauge',

@@ -1,14 +1,14 @@
 import { IconChevronDown } from '@tabler/icons-react';
 import type { ReactElement, ReactNode } from 'react';
 
-import { ButtonBase } from '../../aria/button/base.tsx';
-import type { ButtonProps } from '../../aria/button/index.ts';
-import { MenuTrigger } from '../../aria/menu/index.ts';
+import { ButtonBase } from '../../aria/button/base.js';
+import type { ButtonProps } from '../../aria/button/index.js';
+import { MenuTrigger } from '../../aria/menu/index.js';
 import {
   splitButtonMenuIconStyles,
   splitButtonPartStyles,
   splitButtonStyles,
-} from './styles.ts';
+} from './styles.js';
 
 export type SplitButtonProps = Omit<
   ButtonProps,

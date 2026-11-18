@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect } from 'storybook/test';
 
-import { SearchField } from './index.ts';
+import { SearchField } from './index.js';
 
 const meta = {
   title: 'Aria/SearchField',

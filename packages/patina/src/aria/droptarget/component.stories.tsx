@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { FilePickerButton } from '../../composites/filepicker/index.ts';
-import { readDroppedFiles } from '../../internal/droppedfiles.ts';
-import { DropTarget } from './index.ts';
+import { FilePickerButton } from '../../composites/filepicker/index.js';
+import { readDroppedFiles } from '../../internal/droppedfiles.js';
+import { DropTarget } from './index.js';
 
 const meta = {
   title: 'Aria/DropTarget',

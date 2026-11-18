@@ -3,23 +3,23 @@ import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import { useId, useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { Button } from '../../aria/button/index.ts';
-import { DialogTrigger } from '../../aria/dialog/index.ts';
-import { TextField } from '../../aria/textfield/index.ts';
-import { IconToggle } from '../../aria/togglegroup/index.ts';
-import { pressTab } from '../../internal/keyboard.testing.ts';
+import { Button } from '../../aria/button/index.js';
+import { DialogTrigger } from '../../aria/dialog/index.js';
+import { TextField } from '../../aria/textfield/index.js';
+import { IconToggle } from '../../aria/togglegroup/index.js';
+import { pressTab } from '../../internal/keyboard.testing.js';
 import {
   LIVE_ANNOUNCER_CLEAR_MS,
   LIVE_ANNOUNCER_MESSAGE,
-} from '../../internal/liveannouncer.testing.ts';
-import { useCarouselState } from '../carousel/index.ts';
+} from '../../internal/liveannouncer.testing.js';
+import { useCarouselState } from '../carousel/index.js';
 import {
   carouselText,
   type Picture,
   pictures,
-} from '../carousel/pictures.testing.ts';
-import { PictureSlide, PictureThumbnail } from '../carousel/slides.testing.tsx';
-import { MediaViewer, MediaViewerDialog } from './index.ts';
+} from '../carousel/pictures.testing.js';
+import { PictureSlide, PictureThumbnail } from '../carousel/slides.testing.js';
+import { MediaViewer, MediaViewerDialog } from './index.js';
 
 /**
  * A picture's longer text, of different lengths from picture to picture: some fit the details

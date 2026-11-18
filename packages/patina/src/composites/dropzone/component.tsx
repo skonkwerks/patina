@@ -4,9 +4,9 @@ import { DropZone as AriaDropZone, Text } from 'react-aria-components';
 import {
   type DropFailureReason,
   readDroppedFiles,
-} from '../../internal/droppedfiles.ts';
-import { FilePickerButton } from '../filepicker/index.ts';
-import { dropZoneStyles } from './styles.ts';
+} from '../../internal/droppedfiles.js';
+import { FilePickerButton } from '../filepicker/index.js';
+import { dropZoneStyles } from './styles.js';
 
 export type DropZoneProps = {
   /** The short statement in the zone: "Drop files here". */

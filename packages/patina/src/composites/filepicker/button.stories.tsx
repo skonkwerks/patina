@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { type ComponentProps, useState } from 'react';
 
-import { FilePickerButton } from './index.ts';
+import { FilePickerButton } from './index.js';
 
 const meta = {
   title: 'Composites/FilePickerButton',

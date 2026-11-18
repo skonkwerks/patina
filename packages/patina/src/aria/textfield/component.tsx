@@ -7,12 +7,12 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import { fieldBoxStyles, fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
+} from '../../internal/fieldheader.js';
+import { useShownErrorFollowsValue } from '../../internal/shownerror.js';
 
 /** The input itself: the shared field box, one line tall. */
 export const textFieldInputStyles = tv({

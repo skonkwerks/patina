@@ -10,13 +10,13 @@ import {
 import { Dialog as AriaDialog } from 'react-aria-components';
 import { expect, within } from 'storybook/test';
 
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { Button } from '../button/index.ts';
-import { Dialog, DialogModal, DialogTrigger } from '../dialog/index.ts';
-import { Popover } from '../popover/index.ts';
-import { Separator } from '../separator/index.ts';
-import { IconToggle, Toggle, ToggleGroup } from '../togglegroup/index.ts';
-import { Toolbar, ToolbarGroup, type ToolbarProps } from './index.ts';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { Button } from '../button/index.js';
+import { Dialog, DialogModal, DialogTrigger } from '../dialog/index.js';
+import { Popover } from '../popover/index.js';
+import { Separator } from '../separator/index.js';
+import { IconToggle, Toggle, ToggleGroup } from '../togglegroup/index.js';
+import { Toolbar, ToolbarGroup, type ToolbarProps } from './index.js';
 
 const meta = {
   title: 'Aria/Toolbar',

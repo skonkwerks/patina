@@ -1,3 +1,3 @@
-export * from './component.tsx';
-export * from './token.tsx';
-export * from './value.ts';
+export * from './component.js';
+export * from './token.js';
+export * from './value.js';

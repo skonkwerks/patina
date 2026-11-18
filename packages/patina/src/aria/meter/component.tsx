@@ -5,9 +5,9 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldStyles } from '../../internal/field.ts';
-import type { StatusTone } from '../../internal/statustone.ts';
-import { progressBarStyles } from '../progressbar/index.ts';
+import { fieldStyles } from '../../internal/field.js';
+import type { StatusTone } from '../../internal/statustone.js';
+import { progressBarStyles } from '../progressbar/index.js';
 
 /**
  * The meter's look: a header row with the label and the value, over the progress bar's track and

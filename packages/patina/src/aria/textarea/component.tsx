@@ -1,6 +1,6 @@
-import { TextAreaBase, type TextAreaFieldProps } from './base.tsx';
+import { TextAreaBase, type TextAreaFieldProps } from './base.js';
 
-export { textAreaInputStyles } from './base.tsx';
+export { textAreaInputStyles } from './base.js';
 
 export type TextAreaProps = TextAreaFieldProps;
 

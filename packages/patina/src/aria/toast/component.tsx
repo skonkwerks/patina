@@ -8,10 +8,10 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
-import { iconButtonStyles } from '../iconbutton/index.ts';
-import { toastQueue } from './queue.ts';
-import StatusIcon from './statusicon.tsx';
+import { focusRing } from '../../internal/focus.js';
+import { iconButtonStyles } from '../iconbutton/index.js';
+import { toastQueue } from './queue.js';
+import StatusIcon from './statusicon.js';
 
 export const toastRegionStyles = tv({
   base: 'pointer-events-none fixed right-4 bottom-4 z-[100] flex w-96 max-w-[calc(100vw-2rem)] flex-col gap-2 transition-[right] duration-200 motion-reduce:transition-none',

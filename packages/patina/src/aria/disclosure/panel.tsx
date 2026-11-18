@@ -4,7 +4,7 @@ import {
   type DisclosurePanelProps as AriaDisclosurePanelProps,
 } from 'react-aria-components';
 
-import { disclosureStyles } from './component.tsx';
+import { disclosureStyles } from './component.js';
 
 const styles = disclosureStyles();
 

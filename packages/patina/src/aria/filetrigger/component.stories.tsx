@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { type ComponentProps, useState } from 'react';
 
-import { Button } from '../button/index.ts';
-import { FileTrigger } from './index.ts';
+import { Button } from '../button/index.js';
+import { FileTrigger } from './index.js';
 
 const meta = {
   title: 'Aria/FileTrigger',

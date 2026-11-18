@@ -1,8 +1,8 @@
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from '../../internal/disabled.ts';
-import { fieldStyles } from '../../internal/field.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { DISABLED } from '../../internal/disabled.js';
+import { fieldStyles } from '../../internal/field.js';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * The parts of `Calendar` and `RangeCalendar`: the months side by side, each a header (Previous,

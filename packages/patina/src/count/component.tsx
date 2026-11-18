@@ -1,4 +1,4 @@
-import { countStyles } from './styles.ts';
+import { countStyles } from './styles.js';
 
 export type CountProps = {
   text: string;

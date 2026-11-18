@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconMovie, IconPhoto } from '@tabler/icons-react';
 
-import { IconMark } from './index.ts';
+import { IconMark } from './index.js';
 
 const meta = {
   title: 'Core/IconMark',

@@ -4,6 +4,8 @@
 # Dependencies and build output
 node_modules/
 dist/
+# A packed package (pnpm pack), never committed.
+*.tgz
 storybook-static/
 *.tsbuildinfo
 

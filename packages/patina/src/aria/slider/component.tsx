@@ -7,14 +7,14 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { useDescriptionId } from '../../internal/descriptionid.ts';
-import { DISABLED } from '../../internal/disabled.ts';
-import { fieldStyles } from '../../internal/field.ts';
+import { useDescriptionId } from '../../internal/descriptionid.js';
+import { DISABLED } from '../../internal/disabled.js';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { focusRing } from '../../internal/focus.ts';
+} from '../../internal/fieldheader.js';
+import { focusRing } from '../../internal/focus.js';
 
 export const sliderStyles = tv({
   slots: {

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { SidePanel, useSidePanelState } from '../sidepanel/index.ts';
-import { appShellStyles } from './styles.ts';
+import { SidePanel, useSidePanelState } from '../sidepanel/index.js';
+import { appShellStyles } from './styles.js';
 
 type ShellLayoutProps = {
   sidebar: ReactNode;

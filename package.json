@@ -13,6 +13,8 @@
     "prepare": "husky",
     "check": "node scripts/exports.mjs --check && pnpm -r run check && tsgo --noEmit",
     "exports": "node scripts/exports.mjs --write",
+    "build": "pnpm --filter @skonkwerks/patina run build",
+    "check:package": "node scripts/checkpackage.mjs",
     "lint": "oxlint --type-aware .",
     "lint:es": "eslint --max-warnings=0 .",
     "lint:fix": "eslint --config eslint.autofix.config.mjs --fix packages/patina apps/storybook && node scripts/format.mjs --write",

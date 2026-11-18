@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Chip } from '../chip/index.ts';
-import { PropertyList } from './index.ts';
+import { Chip } from '../chip/index.js';
+import { PropertyList } from './index.js';
 
 const items = [
   { id: 'owner', label: 'Owner', value: 'Dana Reyes' },

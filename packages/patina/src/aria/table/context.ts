@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { EmptyStateProps } from '../../emptystate/index.ts';
+import type { EmptyStateProps } from '../../emptystate/index.js';
 
 /** What the body shows while it has no rows, which the table is given and its body draws. */
 type BodyStatus = Readonly<{

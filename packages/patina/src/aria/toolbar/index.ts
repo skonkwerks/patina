@@ -1,2 +1,2 @@
-export * from './component.tsx';
-export * from './group.tsx';
+export * from './component.js';
+export * from './group.js';

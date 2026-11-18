@@ -6,9 +6,9 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { checkMarkStyles } from '../../internal/checkmark.ts';
-import { overlayOptionStyles } from '../popover/index.ts';
-import { ListBoxLayerContext } from './layer.ts';
+import { checkMarkStyles } from '../../internal/checkmark.js';
+import { overlayOptionStyles } from '../popover/index.js';
+import { ListBoxLayerContext } from './layer.js';
 
 /**
  * An option of a list: the shared overlay option (its `base` slot with the keyboard's focus ring, and

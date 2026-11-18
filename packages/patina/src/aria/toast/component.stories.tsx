@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from '../button/index.ts';
-import { showToast, ToastRegion } from './index.ts';
+import { Button } from '../button/index.js';
+import { showToast, ToastRegion } from './index.js';
 
 const meta = {
   title: 'Aria/Toast',

@@ -1,6 +1,6 @@
 import { UNSTABLE_ToastQueue as ToastQueue } from 'react-aria-components';
 
-import type { StatusTone } from '../../internal/statustone.ts';
+import type { StatusTone } from '../../internal/statustone.js';
 
 /**
  * The tones a toast takes: a success, or information. Toasts announce outcomes that need no action;

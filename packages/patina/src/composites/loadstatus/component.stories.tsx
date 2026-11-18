@@ -5,8 +5,8 @@ import { expect, waitFor } from 'storybook/test';
 import {
   LIVE_ANNOUNCER_CLEAR_MS,
   LIVE_ANNOUNCER_MESSAGE,
-} from '../../internal/liveannouncer.testing.ts';
-import { LoadFailure, LoadStatus } from './index.ts';
+} from '../../internal/liveannouncer.testing.js';
+import { LoadFailure, LoadStatus } from './index.js';
 
 const meta = {
   title: 'Composites/LoadStatus',

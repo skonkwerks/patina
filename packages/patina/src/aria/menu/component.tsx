@@ -7,8 +7,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { Popover } from '../popover/index.ts';
-import type { SubmenuProps } from './submenu.tsx';
+import { Popover } from '../popover/index.js';
+import type { SubmenuProps } from './submenu.js';
 
 /*
  * `MenuTrigger` is React Aria's: it opens the `Menu` it holds. By default a press on the control

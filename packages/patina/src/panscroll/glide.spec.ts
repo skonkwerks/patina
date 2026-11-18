@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { glidePlan, scrollGlide } from './glide.ts';
+import { glidePlan, scrollGlide } from './glide.js';
 
 describe('glidePlan', () => {
   it('makes no glide without velocity', () => {

@@ -7,10 +7,10 @@ import {
   useListData,
 } from 'react-aria-components';
 
-import { IconMark } from '../../iconmark/index.ts';
-import { InlineMetadata } from '../../inlinemetadata/index.ts';
-import { IconButton } from '../iconbutton/index.ts';
-import { MediaStrip, MediaStripItem, type MediaStripProps } from './index.ts';
+import { IconMark } from '../../iconmark/index.js';
+import { InlineMetadata } from '../../inlinemetadata/index.js';
+import { IconButton } from '../iconbutton/index.js';
+import { MediaStrip, MediaStripItem, type MediaStripProps } from './index.js';
 
 type Picture = {
   id: string;

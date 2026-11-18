@@ -8,11 +8,11 @@ import {
   GridListLoadMore,
   type GridListProps,
   GridListSection,
-} from '../../aria/gridlist/index.ts';
-import { MenuItem, MenuSeparator } from '../../aria/menu/index.ts';
-import { RowTile } from '../../rowtile/index.ts';
-import { ActionMenu } from '../actionmenu/index.ts';
-import { GridListRow } from './index.ts';
+} from '../../aria/gridlist/index.js';
+import { MenuItem, MenuSeparator } from '../../aria/menu/index.js';
+import { RowTile } from '../../rowtile/index.js';
+import { ActionMenu } from '../actionmenu/index.js';
+import { GridListRow } from './index.js';
 
 type Doc = {
   id: string;

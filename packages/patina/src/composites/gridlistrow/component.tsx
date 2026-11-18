@@ -1,13 +1,13 @@
 import { IconChevronRight } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 
-import { GridListItem } from '../../aria/gridlist/index.ts';
-import { IconButton } from '../../aria/iconbutton/index.ts';
+import { GridListItem } from '../../aria/gridlist/index.js';
+import { IconButton } from '../../aria/iconbutton/index.js';
 import {
   InlineMetadata,
   type InlineMetadataItem,
-} from '../../inlinemetadata/index.ts';
-import { gridListRowStyles } from './styles.ts';
+} from '../../inlinemetadata/index.js';
+import { gridListRowStyles } from './styles.js';
 
 export type GridListRowProps = {
   /** The item's stable id in the list. */

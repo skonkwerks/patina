@@ -2,12 +2,12 @@ import { IconAlertCircle, IconAlertTriangle } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 import { useLocale } from 'react-aria-components';
 
-import { NavigationTreeLink } from '../../aria/navigationtree/index.ts';
-import { Count } from '../../count/index.ts';
-import type { StatusTone } from '../../internal/statustone.ts';
-import { Spinner } from '../../spinner/index.ts';
-import { useSidebar } from './context.ts';
-import { sidebarItemStyles } from './styles.ts';
+import { NavigationTreeLink } from '../../aria/navigationtree/index.js';
+import { Count } from '../../count/index.js';
+import type { StatusTone } from '../../internal/statustone.js';
+import { Spinner } from '../../spinner/index.js';
+import { useSidebar } from './context.js';
+import { sidebarItemStyles } from './styles.js';
 
 /** An alert on an item: something of the destination needs the person (`warning`) or has failed (`error`). */
 export type SidebarItemAlert = Readonly<{

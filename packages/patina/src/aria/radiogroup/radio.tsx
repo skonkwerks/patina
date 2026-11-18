@@ -6,8 +6,8 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { choiceControlStyles } from '../../internal/field.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { choiceControlStyles } from '../../internal/field.js';
+import { focusRing } from '../../internal/focus.js';
 
 /** A radio choice: the shared choice control with a round mark that shows a dot when chosen. */
 export const radioStyles = tv({

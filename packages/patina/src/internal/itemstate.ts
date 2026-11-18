@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from './disabled.ts';
-import { focusRing } from './focus.ts';
+import { DISABLED } from './disabled.js';
+import { focusRing } from './focus.js';
 
 /**
  * The states of an item in a collection on a surface, defined once for a `GridList`'s rows and

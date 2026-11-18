@@ -1,8 +1,8 @@
 import { tv } from 'tailwind-variants';
 
-import { ButtonBase } from '../button/base.tsx';
-import type { ButtonProps } from '../button/index.ts';
-import { buttonStyles } from '../button/index.ts';
+import { ButtonBase } from '../button/base.js';
+import type { ButtonProps } from '../button/index.js';
+import { buttonStyles } from '../button/index.js';
 
 /**
  * The icon button's look: the button look (`variant`, `tone`, `size`, `radius`) as a square of the

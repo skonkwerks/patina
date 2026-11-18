@@ -4,6 +4,12 @@
 @import './theme.css';
 
 /*
+ * patina.css scans the package's build (dist/), which an app installs. Storybook renders the source
+ * and its stories, so it scans them here and needs no build.
+ */
+@source '../../../packages/patina/src';
+
+/*
  * The token contract @skonkwerks/patina draws (see its patina.css), mapped to this theme's variables.
  * `inline` keeps the reference to the variable, so a token follows the mode class on <html>.
  */

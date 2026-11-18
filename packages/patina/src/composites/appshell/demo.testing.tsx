@@ -4,21 +4,21 @@ import {
   Breadcrumb,
   BreadcrumbLink,
   Breadcrumbs,
-} from '../../aria/breadcrumbs/index.ts';
-import { Button } from '../../aria/button/index.ts';
-import { GridList } from '../../aria/gridlist/index.ts';
-import { Switch } from '../../aria/switch/index.ts';
-import { ToastRegion } from '../../aria/toast/index.ts';
-import { Page } from '../../page/index.ts';
-import { GridListRow } from '../gridlistrow/index.ts';
-import { InfoButton } from '../infobutton/index.ts';
-import { DemoSidebar } from '../sidebar/demo.testing.tsx';
-import { useCloseSidePanelWhenGone, useSidePanel } from '../sidepanel/index.ts';
-import { EditForm, type Project } from './editform.testing.tsx';
-import { AppShell } from './index.ts';
+} from '../../aria/breadcrumbs/index.js';
+import { Button } from '../../aria/button/index.js';
+import { GridList } from '../../aria/gridlist/index.js';
+import { Switch } from '../../aria/switch/index.js';
+import { ToastRegion } from '../../aria/toast/index.js';
+import { Page } from '../../page/index.js';
+import { GridListRow } from '../gridlistrow/index.js';
+import { InfoButton } from '../infobutton/index.js';
+import { DemoSidebar } from '../sidebar/demo.testing.js';
+import { useCloseSidePanelWhenGone, useSidePanel } from '../sidepanel/index.js';
+import { EditForm, type Project } from './editform.testing.js';
+import { AppShell } from './index.js';
 
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.tsx`). A small app on
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.tsx`). A small app on
  * the shell: the sidebar contents, a page of projects, its help, and an edit form in the side panel,
  * with a modal drawer opened from the form. `refetchMs` is how long the list takes to be read again
  * after a removal: 0 removes the row with the panel's closing, and more lands the removal later, as

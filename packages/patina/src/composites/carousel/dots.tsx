@@ -1,5 +1,5 @@
-import type { CarouselItem } from './state.ts';
-import { carouselDotsStyles } from './styles.ts';
+import type { CarouselItem } from './state.js';
+import { carouselDotsStyles } from './styles.js';
 
 /**
  * A sidecar of `Carousel`, private to the carousel family: a dot for each slide of a set of up to

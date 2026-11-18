@@ -7,17 +7,17 @@ import {
   useState,
 } from 'react';
 
-import { focusPageHeading } from '../../header/index.ts';
-import type { SidePanelAction } from './action.ts';
+import { focusPageHeading } from '../../header/index.js';
+import type { SidePanelAction } from './action.js';
 import {
   type SidePanelActions,
   SidePanelActionsContext,
   SidePanelIdContext,
   SidePanelStateContext,
   SidePanelTargetContext,
-} from './context.ts';
-import { sidePanelReducer } from './reducer.ts';
-import { initialPanelState } from './state.ts';
+} from './context.js';
+import { sidePanelReducer } from './reducer.js';
+import { initialPanelState } from './state.js';
 
 /**
  * Whether the focus is on the page outside the panel. Before a closing, that means the person is

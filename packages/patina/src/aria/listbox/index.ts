@@ -1,3 +1,3 @@
-export * from './component.tsx';
-export * from './item.tsx';
-export * from './section.tsx';
+export * from './component.js';
+export * from './item.js';
+export * from './section.js';

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import type { Key, Selection } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
 
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { Button } from '../button/index.ts';
-import { Tag, TagGroup, type TagGroupProps } from './index.ts';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { Button } from '../button/index.js';
+import { Tag, TagGroup, type TagGroupProps } from './index.js';
 
 type Label = { id: string; name: string };
 

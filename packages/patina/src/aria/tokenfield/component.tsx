@@ -8,11 +8,11 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import { fieldBoxStyles, fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
+} from '../../internal/fieldheader.js';
 
 /**
  * The editable area: the shared field box, one line tall, or a few lines while it takes line

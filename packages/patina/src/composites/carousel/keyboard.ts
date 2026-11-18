@@ -1,8 +1,8 @@
 import type { KeyboardEvent } from 'react';
 import { useLocale } from 'react-aria-components';
 
-import { arrowStep, type KeyTarget } from './rules.ts';
-import type { CarouselItem, CarouselState } from './state.ts';
+import { arrowStep, type KeyTarget } from './rules.js';
+import type { CarouselItem, CarouselState } from './state.js';
 
 /** What of the element a key press came from decides whether it keeps the arrow keys. */
 const keyTarget = (target: EventTarget): KeyTarget | null =>

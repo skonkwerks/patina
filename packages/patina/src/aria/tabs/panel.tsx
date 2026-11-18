@@ -4,7 +4,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.ts';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * A tab's content. One kept mounted while another tab is selected (`shouldForceMount`) is hidden

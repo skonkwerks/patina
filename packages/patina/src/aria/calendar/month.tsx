@@ -10,8 +10,8 @@ import {
   useLocale,
 } from 'react-aria-components';
 
-import { iconButtonStyles } from '../iconbutton/index.ts';
-import type { calendarStyles } from './styles.ts';
+import { iconButtonStyles } from '../iconbutton/index.js';
+import type { calendarStyles } from './styles.js';
 
 export type CalendarMonthProps = {
   /** Which of the visible months this is, from 0. */

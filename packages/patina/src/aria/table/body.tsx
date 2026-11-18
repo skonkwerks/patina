@@ -4,10 +4,10 @@ import {
   type TableBodyProps as AriaTableBodyProps,
 } from 'react-aria-components';
 
-import { EmptyState } from '../../emptystate/index.ts';
-import { PendingStatus } from '../../spinner/index.ts';
-import { tableFrameStyles } from './component.tsx';
-import { BodyStatusContext } from './context.ts';
+import { EmptyState } from '../../emptystate/index.js';
+import { PendingStatus } from '../../spinner/index.js';
+import { tableFrameStyles } from './component.js';
+import { BodyStatusContext } from './context.js';
 
 export type TableBodyProps<T extends object> = Omit<
   AriaTableBodyProps<T>,

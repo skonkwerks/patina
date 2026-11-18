@@ -4,7 +4,7 @@ import {
 } from 'react-aria-components';
 import { tv, type VariantProps } from 'tailwind-variants';
 
-import { colorOverGrid } from './fill.ts';
+import { colorOverGrid } from './fill.js';
 
 /**
  * A swatch: a square of the control scale (`sm` 28px, `md` 32px, `lg` 36px), with an inner edge in

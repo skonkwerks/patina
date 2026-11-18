@@ -4,11 +4,11 @@ import {
   Breadcrumb,
   BreadcrumbLink,
   Breadcrumbs,
-} from '../aria/breadcrumbs/index.ts';
-import { Button } from '../aria/button/index.ts';
-import { LinkButton } from '../aria/link/index.ts';
-import { LoadFailure } from '../composites/loadstatus/index.ts';
-import { Page } from './index.ts';
+} from '../aria/breadcrumbs/index.js';
+import { Button } from '../aria/button/index.js';
+import { LinkButton } from '../aria/link/index.js';
+import { LoadFailure } from '../composites/loadstatus/index.js';
+import { Page } from './index.js';
 
 const trail = (
   <Breadcrumbs aria-label='Breadcrumbs'>

@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { ToggleStyleProps } from './styles.ts';
+import type { ToggleStyleProps } from './styles.js';
 
 /** What a group gives its toggles: that they are segments, and the group's size. */
 export const GroupContext = createContext<{

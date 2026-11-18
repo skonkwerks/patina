@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from '../aria/button/index.ts';
-import { EmptyState } from './index.ts';
+import { Button } from '../aria/button/index.js';
+import { EmptyState } from './index.js';
 
 const meta = {
   title: 'Core/EmptyState',

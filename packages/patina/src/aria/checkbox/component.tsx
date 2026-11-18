@@ -8,10 +8,10 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { checkMarkStyles } from '../../internal/checkmark.ts';
-import { cn } from '../../internal/cn.ts';
-import { choiceControlStyles } from '../../internal/field.ts';
-import { focusRing } from '../../internal/focus.ts';
+import { checkMarkStyles } from '../../internal/checkmark.js';
+import { cn } from '../../internal/cn.js';
+import { choiceControlStyles } from '../../internal/field.js';
+import { focusRing } from '../../internal/focus.js';
 
 /**
  * A checkbox: the shared choice control, whose mark is the shared checkbox mark (`checkMarkStyles`):

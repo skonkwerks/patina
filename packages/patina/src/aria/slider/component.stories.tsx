@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Slider } from './index.ts';
+import { Slider } from './index.js';
 
 const meta = {
   title: 'Aria/Slider',

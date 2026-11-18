@@ -6,7 +6,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { gridListTileStateStyles } from '../gridlist/index.ts';
+import { gridListTileStateStyles } from '../gridlist/index.js';
 
 export const mediaStripItemStyles = tv({
   extend: gridListTileStateStyles,

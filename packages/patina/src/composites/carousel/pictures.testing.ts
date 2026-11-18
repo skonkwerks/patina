@@ -1,5 +1,5 @@
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.ts`).
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.ts`).
  *
  * The placeholder pictures of the carousel's and the media viewer's stories, drawn here as inline
  * SVG: a gradient and the picture's number, in shapes that differ from the frame's, so the bars

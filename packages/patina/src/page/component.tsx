@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Header, type HeaderProps } from '../header/index.ts';
-import { pageStyles } from './styles.ts';
+import { Header, type HeaderProps } from '../header/index.js';
+import { pageStyles } from './styles.js';
 
 type PageFrameProps = {
   /**

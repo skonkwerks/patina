@@ -4,10 +4,10 @@ import {
 } from '@tabler/icons-react';
 import { type ReactNode, useId } from 'react';
 
-import { IconButton } from '../../aria/iconbutton/index.ts';
-import { NavigationTree } from '../../aria/navigationtree/index.ts';
-import { SidebarContext } from './context.ts';
-import { sidebarStyles } from './styles.ts';
+import { IconButton } from '../../aria/iconbutton/index.js';
+import { NavigationTree } from '../../aria/navigationtree/index.js';
+import { SidebarContext } from './context.js';
+import { sidebarStyles } from './styles.js';
 
 export type SidebarProps = {
   /** The navigation's name, such as "Main": the landmark's and the tree's. */

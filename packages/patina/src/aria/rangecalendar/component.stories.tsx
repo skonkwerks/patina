@@ -17,8 +17,8 @@ import {
   monthNames,
   pageButton,
   ringOf,
-} from '../calendar/month.testing.ts';
-import { RangeCalendar, type RangeCalendarProps } from './index.ts';
+} from '../calendar/month.testing.js';
+import { RangeCalendar, type RangeCalendarProps } from './index.js';
 
 const november = {
   start: parseDate('2026-11-10'),

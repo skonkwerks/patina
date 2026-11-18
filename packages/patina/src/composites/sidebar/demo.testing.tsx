@@ -9,18 +9,18 @@ import {
 import { useState } from 'react';
 import { RouterProvider } from 'react-aria-components';
 
-import { Link } from '../../aria/link/index.ts';
-import { ThemeMode, type ThemeModeValue } from '../thememode/index.ts';
+import { Link } from '../../aria/link/index.js';
+import { ThemeMode, type ThemeModeValue } from '../thememode/index.js';
 import {
   Sidebar,
   SidebarGroup,
   SidebarHeader,
   SidebarItem,
   useSidebar,
-} from './index.ts';
+} from './index.js';
 
 /*
- * For stories only; not shipped (`package.json` `files` leaves out `*.testing.tsx`). An app's
+ * For stories only; never built or shipped (`tsconfig.build.json` leaves out `*.testing.tsx`). An app's
  * sidebar contents: the brand, two groups of items (one current, one at work, one with an alert),
  * and a footer with a status and the theme mode. A router that only records the route keeps a
  * pressed item inside the story; the app passes its own route and remembers the collapsed state.

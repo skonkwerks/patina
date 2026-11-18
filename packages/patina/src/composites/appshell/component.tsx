@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { SidePanelProvider } from '../sidepanel/index.ts';
-import ShellLayout from './layout.tsx';
+import { SidePanelProvider } from '../sidepanel/index.js';
+import ShellLayout from './layout.js';
 
 export type AppShellProps = {
   /**

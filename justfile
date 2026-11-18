@@ -26,10 +26,11 @@ setup:
 check-guidelines:
     @test -f .documents/guidelines/general/core/conduct.md || { echo ".documents/guidelines/general is missing or broken: run just setup." >&2; exit 1; }
 
-# The automated half of the full validation pass before every commit (auto-sde is the other), and the gate before a push: type check, both lint passes, format check, and every test (the unit specs and every story in Chromium with its axe check, light theme).
+# The automated half of the full validation pass before every commit (auto-sde is the other), and the gate before a push: type check, both lint passes, format check, every test (the unit specs and every story in Chromium with its axe check, light theme), and the packaging check (the build, packed and installed into a throwaway app).
 ci-local: check-guidelines
     pnpm check
     pnpm lint
     pnpm lint:es
     pnpm format:check
     pnpm test
+    pnpm check:package

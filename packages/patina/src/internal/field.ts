@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { DISABLED } from './disabled.ts';
-import { focusRing } from './focus.ts';
+import { DISABLED } from './disabled.js';
+import { focusRing } from './focus.js';
 
 /**
  * The box of a part beside a field's label, defined once: one label line tall (the label's

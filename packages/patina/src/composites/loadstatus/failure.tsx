@@ -1,5 +1,5 @@
-import { Button } from '../../aria/button/index.ts';
-import { Alert } from '../alert/index.ts';
+import { Button } from '../../aria/button/index.js';
+import { Alert } from '../alert/index.js';
 
 export type LoadFailureProps = {
   /** Why the read failed, in words. */

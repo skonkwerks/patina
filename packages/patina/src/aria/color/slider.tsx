@@ -6,15 +6,15 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { useDescriptionId } from '../../internal/descriptionid.ts';
-import { DISABLED } from '../../internal/disabled.ts';
-import { fieldStyles } from '../../internal/field.ts';
+import { useDescriptionId } from '../../internal/descriptionid.js';
+import { DISABLED } from '../../internal/disabled.js';
+import { fieldStyles } from '../../internal/field.js';
 import {
   FieldHeader,
   type FieldHeaderProps,
-} from '../../internal/fieldheader.tsx';
-import { gradientOverGrid } from './fill.ts';
-import { ColorThumb } from './thumb.tsx';
+} from '../../internal/fieldheader.js';
+import { gradientOverGrid } from './fill.js';
+import { ColorThumb } from './thumb.js';
 
 export const colorSliderStyles = tv({
   slots: {

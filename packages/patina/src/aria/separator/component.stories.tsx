@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 
-import { Button } from '../button/index.ts';
-import { Separator } from './index.ts';
+import { Button } from '../button/index.js';
+import { Separator } from './index.js';
 
 const meta = {
   title: 'Aria/Separator',

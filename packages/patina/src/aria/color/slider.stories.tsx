@@ -8,7 +8,7 @@ import {
 } from 'react-aria-components';
 import { expect } from 'storybook/test';
 
-import { ColorSlider, ColorSwatch } from './index.ts';
+import { ColorSlider, ColorSwatch } from './index.js';
 
 const meta = {
   title: 'Aria/ColorSlider',

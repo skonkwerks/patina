@@ -6,8 +6,8 @@ import { expect, waitFor, within } from 'storybook/test';
 import {
   contrastRatio,
   NON_TEXT_CONTRAST,
-} from '../../internal/contrast.testing.ts';
-import { MultiSelect, type MultiSelectOption } from './index.ts';
+} from '../../internal/contrast.testing.js';
+import { MultiSelect, type MultiSelectOption } from './index.js';
 
 const tags: MultiSelectOption[] = [
   { id: 'design', label: 'Design' },

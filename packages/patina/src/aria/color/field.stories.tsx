@@ -3,16 +3,16 @@ import { useState } from 'react';
 import { type Color, parseColor } from 'react-aria-components';
 import { expect, within } from 'storybook/test';
 
-import { pressTab } from '../../internal/keyboard.testing.ts';
-import { Button } from '../button/index.ts';
-import { Form } from '../form/index.ts';
+import { pressTab } from '../../internal/keyboard.testing.js';
+import { Button } from '../button/index.js';
+import { Form } from '../form/index.js';
 import {
   ColorField,
   ColorPicker,
   ColorSwatch,
   ColorSwatchPicker,
   ColorSwatchPickerItem,
-} from './index.ts';
+} from './index.js';
 
 /** What the stories say of a color too light for white text on it. */
 const TOO_LIGHT = 'Choose a darker color, so white text on it stays readable.';

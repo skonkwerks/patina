@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { rowTileStyles } from './styles.ts';
+import { rowTileStyles } from './styles.js';
 
 export type RowTileProps = {
   /**

@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-import { iconButtonStyles } from '../../aria/iconbutton/index.ts';
-import { focusVisibleRing } from '../../internal/focus.ts';
+import { iconButtonStyles } from '../../aria/iconbutton/index.js';
+import { focusVisibleRing } from '../../internal/focus.js';
 
 /**
  * The details control: a small ghost icon button whose icon is drawn in the state's tone, and keeps
