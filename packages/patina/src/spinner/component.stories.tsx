@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect } from 'storybook/test';
 
-import { PendingStatus, Spinner } from './index.js';
+import { Button } from '../aria/button/index.js';
+import {
+  PendingStatus,
+  Spinner,
+  type SpinnerGlyphProps,
+  SpinnerProvider,
+} from './index.js';
 
 const sizes = ['sm', 'md', 'lg'] as const;
 
@@ -59,4 +66,51 @@ export const Status: Story = {
       className='text-canvas-foreground-muted'
     />
   ),
+};
+
+/** A stand-in for an app's own glyph: four dots on a ring, fading, drawn in the text's color. */
+const DotsGlyph = (props: SpinnerGlyphProps) => (
+  <svg viewBox='0 0 24 24' fill='currentColor' data-glyph='dots' {...props}>
+    <circle cx='12' cy='3' r='2.5' />
+    <circle cx='21' cy='12' r='2.5' opacity='0.75' />
+    <circle cx='12' cy='21' r='2.5' opacity='0.5' />
+    <circle cx='3' cy='12' r='2.5' opacity='0.25' />
+  </svg>
+);
+
+/**
+ * An app's own glyph, given once by `SpinnerProvider` at its root: every spinner under it draws
+ * the app's drawing, a pending button's and `PendingStatus`'s included, with the spinner's sizes,
+ * turning, stillness for less motion, and accessible name or hiding.
+ */
+export const AppGlyph: Story = {
+  render: () => (
+    <SpinnerProvider renderGlyph={(props) => <DotsGlyph {...props} />}>
+      <div className='text-surface-foreground flex items-center gap-4'>
+        <Spinner aria-label='Loading' size='lg' />
+        <PendingStatus text='Saving' />
+        <Button isPending>Save</Button>
+      </div>
+    </SpinnerProvider>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const glyphs = canvasElement.querySelectorAll('svg');
+    await expect(glyphs).toHaveLength(3);
+    for (const glyph of glyphs) {
+      await expect(glyph).toHaveAttribute('data-glyph', 'dots');
+      // The spinner's own classes: it turns, and stands still for less motion.
+      await expect(glyph).toHaveClass(
+        'animate-spin',
+        'motion-reduce:animate-none',
+      );
+    }
+    // Standing on its own, it is an image with its name; beside text, it is hidden decoration.
+    await expect(canvas.getByRole('img', { name: 'Loading' })).toHaveAttribute(
+      'data-glyph',
+      'dots',
+    );
+    await expect(
+      canvasElement.querySelectorAll('svg[aria-hidden="true"]'),
+    ).toHaveLength(2);
+  },
 };

@@ -1,5 +1,7 @@
+import { use } from 'react';
 import type { VariantProps } from 'tailwind-variants';
 
+import { SpinnerGlyphContext, type SpinnerGlyphProps } from './context.js';
 import { spinnerStyles } from './styles.js';
 
 export type SpinnerProps = VariantProps<typeof spinnerStyles> & {
@@ -13,25 +15,9 @@ export type SpinnerProps = VariantProps<typeof spinnerStyles> & {
   className?: string;
 };
 
-/**
- * A spinner, wherever a surface says that work is in progress: a faint ring with a quarter arc
- * turning on it, in the color of the text it stands in. It stands still for a person who asked for
- * less motion.
- */
-export const Spinner = ({
-  'aria-label': ariaLabel,
-  size,
-  className,
-}: SpinnerProps) => (
-  <svg
-    viewBox='0 0 24 24'
-    fill='none'
-    className={spinnerStyles({ size, className })}
-    // Named, it is an image; without a name, decoration hidden from assistive technology.
-    role={ariaLabel === undefined ? undefined : 'img'}
-    aria-label={ariaLabel}
-    aria-hidden={ariaLabel === undefined ? true : undefined}
-  >
+/** Patina's own glyph: a faint ring with a quarter arc on it, in the color of the text it stands in. */
+const renderRing = (props: SpinnerGlyphProps) => (
+  <svg viewBox='0 0 24 24' fill='none' {...props}>
     <circle
       cx='12'
       cy='12'
@@ -48,3 +34,23 @@ export const Spinner = ({
     />
   </svg>
 );
+
+/**
+ * A spinner, wherever a surface says that work is in progress: Patina's ring, or the app's own
+ * glyph given by a `SpinnerProvider`, turning in place in the color of the text it stands in. It
+ * stands still for a person who asked for less motion.
+ */
+export const Spinner = ({
+  'aria-label': ariaLabel,
+  size,
+  className,
+}: SpinnerProps) => {
+  const renderGlyph = use(SpinnerGlyphContext) ?? renderRing;
+  return renderGlyph({
+    className: spinnerStyles({ size, className }),
+    // Named, it is an image; without a name, decoration hidden from assistive technology.
+    role: ariaLabel === undefined ? undefined : 'img',
+    'aria-label': ariaLabel,
+    'aria-hidden': ariaLabel === undefined ? true : undefined,
+  });
+};
