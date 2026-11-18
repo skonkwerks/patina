@@ -8,7 +8,7 @@ The source is sorted into tiers by what a component imports:
 
 ```
 src/
-├─ internal/      helpers every tier uses (cn, focus ring, disabled look, field looks); never a subpath
+├─ internal/      helpers every tier uses (cn, focus ring, disabled look, field looks, field header); never a subpath
 ├─ <family>/      core components: no React Aria, no wrapper inside (spinner/, count/, emptystate/, …)
 ├─ aria/          React Aria wrappers: a component whose root is a React Aria component
 └─ composites/    components that combine several others into one arrangement
@@ -197,11 +197,11 @@ Every button-like component (`Button`, `IconButton`, `LinkButton`, `Toggle`, `Ic
 - **Booleans** start with `is`, `has` or `allows`, as in React Aria: `isPending`, `isDisabled`, `isDismissable`, `hasTooltip`, `hasActionSpace`, `hasValueOutput`, `allowsWrapping`. Never a bare adjective (`small`, `ghost`) or a verb phrase (`holdsWork`).
 - **Pending:** `isPending` plus `pendingText` everywhere. There's no `loadingText` and no string `pending`.
 - **Text:**
-  - Fields: `label`, `description`, `errorMessage`, `placeholder`, and `contextualHelp` for a help control next to the label.
+  - Fields: `label`, `optionalText` (the app's words after the label for a field that may be left empty, such as "(optional)"; drawn only, inside the label), `info` (a control beside the label, outside it, such as an `InfoButton`), `description`, `errorMessage` and `placeholder`. Every field whose label stands above its control draws one header, from the top: the label row (the label, then `info`), the `description`, then the control, with the `errorMessage` under the control.
   - Containers (dialogs, sections, rows, empty states): `title` and `description`.
   - An accessible name with no visible text: `aria-label`.
   - Localized text for an inner control: `{control}Label` (`closeLabel`, `clearLabel`, `searchLabel`).
-- **Slots (ReactNode props)** are named by meaning, and plural for groups: `actions`, `badges`, `media`, `endContent`, `headerContent`, `contextualHelp`.
+- **Slots (ReactNode props)** are named by meaning, and plural for groups: `actions`, `badges`, `media`, `endContent`, `headerContent`, `info` (the info control beside a field's label or a `Header`'s title), `errorText` (a `Form`'s rejected submit).
 - **Errors in a collection:** `error`, a ReactNode the app renders.
 
 ### Styles

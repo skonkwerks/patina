@@ -26,16 +26,16 @@ export type HeaderProps = {
   description?: string;
   /** Artwork before the title and description, in a square as tall as both. */
   media?: ReactNode;
-  /** The help control right beside the title, such as an `InfoButton` that opens the page's help. */
-  contextualHelp?: ReactNode;
-  /** Badges after the help control, such as a state `Chip`. */
+  /** The info control right beside the title, such as an `InfoButton` that opens the page's help. */
+  info?: ReactNode;
+  /** Badges after the info control, such as a state `Chip`. */
   badges?: ReactNode;
   /** The controls that act on the whole page or section, at the right; an overflow menu comes last. */
   actions?: ReactNode;
 };
 
 /**
- * The one header for pages and sections: the title with an optional count, the help control and
+ * The one header for pages and sections: the title with an optional count, the info control and
  * badges beside it, the actions at the right, and a description under the title. A page renders it
  * through `Page`; a section renders it directly with `variant='section'`, and a section inside a
  * section also passes `level={3}`. A page's heading takes the focus when the focus would otherwise
@@ -48,7 +48,7 @@ export const Header = ({
   count,
   description,
   media,
-  contextualHelp,
+  info,
   badges,
   actions,
 }: HeaderProps) => {
@@ -76,10 +76,8 @@ export const Header = ({
                   <Count text={count} className={styles.count()} />
                 )}
               </Heading>
-              {contextualHelp !== undefined && (
-                <span className={styles.contextualHelp()}>
-                  {contextualHelp}
-                </span>
+              {info !== undefined && (
+                <span className={styles.info()}>{info}</span>
               )}
               {badges !== undefined && (
                 <span className={styles.badges()}>{badges}</span>

@@ -1,8 +1,6 @@
 import { type ReactNode, type Ref, useRef } from 'react';
 import {
   FieldError,
-  Label,
-  Text,
   TextArea as AriaTextArea,
   TextField as AriaTextField,
   type TextFieldProps as AriaTextFieldProps,
@@ -10,12 +8,11 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
-
-/** The label row of a text area, which may hold actions at its end beside the label. */
-export const textAreaStyles = tv({
-  slots: { header: 'flex items-center justify-between gap-2' },
-});
 
 /** The text area itself: the shared field box, several lines tall. */
 export const textAreaInputStyles = tv({
@@ -24,19 +21,18 @@ export const textAreaInputStyles = tv({
 });
 
 /** The props `TextArea` and `TextDropArea` share. */
-export type TextAreaFieldProps = Omit<AriaTextFieldProps, 'className'> & {
-  label: string;
-  inputRef?: Ref<HTMLTextAreaElement>;
-  /** Optional help control beside the label, outside the label itself. */
-  contextualHelp?: ReactNode;
-  labelActions?: ReactNode;
-  description?: string;
-  errorMessage?: string;
-  /** An example value, never a label or an instruction. */
-  placeholder?: string;
-  rows?: number;
-  className?: string;
-};
+export type TextAreaFieldProps = Omit<AriaTextFieldProps, 'className'> &
+  FieldHeaderProps & {
+    label: string;
+    inputRef?: Ref<HTMLTextAreaElement>;
+    /** Actions at the end of the label row, such as a link that fills in a template. */
+    labelActions?: ReactNode;
+    errorMessage?: string;
+    /** An example value, never a label or an instruction. */
+    placeholder?: string;
+    rows?: number;
+    className?: string;
+  };
 
 export type TextAreaBaseProps = TextAreaFieldProps & {
   /**
@@ -49,14 +45,15 @@ export type TextAreaBaseProps = TextAreaFieldProps & {
 };
 
 /**
- * The field `TextArea` and `TextDropArea` share, defined once: the label row, the input, the
- * description, and the error, in React Aria's text field anatomy. Each of the two places the input
- * in one element tree of its own.
+ * The field `TextArea` and `TextDropArea` share, defined once, in React Aria's text field anatomy:
+ * the shared field header (with `labelActions` at the end of its label row), the input, and the
+ * error under it. Each of the two places the input in one element tree of its own.
  */
 export const TextAreaBase = ({
   label,
+  optionalText,
+  info,
   inputRef,
-  contextualHelp,
   labelActions,
   description,
   errorMessage,
@@ -69,7 +66,6 @@ export const TextAreaBase = ({
 }: TextAreaBaseProps) => {
   const field = useRef<HTMLDivElement>(null);
   useShownErrorFollowsValue(field, rest.value);
-  const header = textAreaStyles();
   const canEdit = rest.isDisabled !== true && rest.isReadOnly !== true;
   return (
     <AriaTextField
@@ -80,36 +76,31 @@ export const TextAreaBase = ({
       isInvalid={errorMessage === undefined ? rest.isInvalid : true}
       className={fieldStyles().root({ className })}
     >
-      {({ isDisabled }) => {
-        const parts = fieldStyles({ isDisabled });
-        return (
-          <>
-            <div className={header.header()}>
-              <div className={parts.labelRow()}>
-                <Label className={parts.label()}>{label}</Label>
-                {contextualHelp}
-              </div>
-              {labelActions}
-            </div>
-            {renderInput(
-              <AriaTextArea
-                ref={inputRef}
-                rows={rows}
-                placeholder={placeholder}
-                className={(renderProps) => textAreaInputStyles(renderProps)}
-              />,
-              canEdit,
-            )}
-            {inputMessage}
-            {description && (
-              <Text slot='description' className={parts.description()}>
-                {description}
-              </Text>
-            )}
-            <FieldError className={parts.error()}>{errorMessage}</FieldError>
-          </>
-        );
-      }}
+      {({ isDisabled }) => (
+        <>
+          <FieldHeader
+            label={label}
+            optionalText={optionalText}
+            info={info}
+            end={labelActions}
+            description={description}
+            isDisabled={isDisabled}
+          />
+          {renderInput(
+            <AriaTextArea
+              ref={inputRef}
+              rows={rows}
+              placeholder={placeholder}
+              className={(renderProps) => textAreaInputStyles(renderProps)}
+            />,
+            canEdit,
+          )}
+          {inputMessage}
+          <FieldError className={fieldStyles().error()}>
+            {errorMessage}
+          </FieldError>
+        </>
+      )}
     </AriaTextField>
   );
 };

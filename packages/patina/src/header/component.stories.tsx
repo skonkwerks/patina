@@ -16,12 +16,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A page's heading: the title with its count, the help control, a badge, and the page's actions. */
+/** A page's heading: the title with its count, the info control, a badge, and the page's actions. */
 export const PageHeading: Story = {
   args: {
     count: '(12)',
     description: 'Everything the team is working on this quarter.',
-    contextualHelp: <InfoButton aria-label='Help with projects' />,
+    info: <InfoButton aria-label='Help with projects' />,
     badges: <Chip tone='success'>Synced</Chip>,
     actions: (
       <>

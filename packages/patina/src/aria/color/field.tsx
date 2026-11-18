@@ -1,38 +1,38 @@
-import { type ReactNode, useRef } from 'react';
+import { useRef } from 'react';
 import {
   ColorField as AriaColorField,
   ColorFieldContext,
   type ColorFieldProps as AriaColorFieldProps,
   FieldError,
   Input,
-  Label,
-  Text,
   useSlottedContext,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
 import { textFieldInputStyles } from '../textfield/index.ts';
 
 /** The input: `TextField`'s look, one line of the shared field box, extended here for the color field alone. */
 export const colorFieldInputStyles = tv({ extend: textFieldInputStyles });
 
-export type ColorFieldProps = Omit<AriaColorFieldProps, 'className'> & {
-  /**
-   * The visible label. Without one, a field that edits one `channel` is named by React Aria's
-   * localized name of the channel; a hex field needs a label or an `aria-label`.
-   */
-  label?: string;
-  /** Optional help control beside the label, outside the label itself. */
-  contextualHelp?: ReactNode;
-  description?: string;
-  /** The error to show under the field; also marks the field invalid. */
-  errorMessage?: string;
-  /** An example value, never a label or an instruction. */
-  placeholder?: string;
-  className?: string;
-};
+export type ColorFieldProps = Omit<AriaColorFieldProps, 'className'> &
+  FieldHeaderProps & {
+    /**
+     * The visible label. Without one, a field that edits one `channel` is named by React Aria's
+     * localized name of the channel; a hex field needs a label or an `aria-label`.
+     */
+    label?: string;
+    /** The error to show under the field; also marks the field invalid. */
+    errorMessage?: string;
+    /** An example value, never a label or an instruction. */
+    placeholder?: string;
+    className?: string;
+  };
 
 /**
  * A color typed as text: a hex value by default, or the number of one `channel` in `colorSpace`.
@@ -42,7 +42,8 @@ export type ColorFieldProps = Omit<AriaColorFieldProps, 'className'> & {
  */
 export const ColorField = ({
   label,
-  contextualHelp,
+  optionalText,
+  info,
   description,
   errorMessage,
   placeholder,
@@ -68,21 +69,17 @@ export const ColorField = ({
         const parts = fieldStyles({ isDisabled });
         return (
           <>
-            {label && (
-              <div className={parts.labelRow()}>
-                <Label className={parts.label()}>{label}</Label>
-                {contextualHelp}
-              </div>
-            )}
+            <FieldHeader
+              label={label}
+              optionalText={optionalText}
+              info={info}
+              description={description}
+              isDisabled={isDisabled}
+            />
             <Input
               placeholder={placeholder}
               className={(renderProps) => colorFieldInputStyles(renderProps)}
             />
-            {description && (
-              <Text slot='description' className={parts.description()}>
-                {description}
-              </Text>
-            )}
             <FieldError className={parts.error()}>{errorMessage}</FieldError>
           </>
         );

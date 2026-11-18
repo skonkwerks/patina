@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 import {
   Button,
   FieldError,
-  Label,
   ListBox,
   Select as AriaSelect,
   type SelectProps as AriaSelectProps,
@@ -14,9 +13,10 @@ import { tv } from 'tailwind-variants';
 import { Count } from '../../count/index.ts';
 import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
 import {
-  FieldDescription,
-  type FieldPendingProps,
-} from '../form/description.tsx';
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
+import { FieldPending, type FieldPendingProps } from '../form/pending.tsx';
 import { Popover } from '../popover/index.ts';
 
 export const selectStyles = tv({
@@ -48,27 +48,35 @@ export type SelectProps<T extends object> = Omit<
   | 'selectedKey'
   | 'defaultSelectedKey'
   | 'onSelectionChange'
-> & {
-  /** The visible label; a select in a toolbar may carry `aria-label` instead. */
-  label?: string;
-  /** Optional muted count beside the field label, formatted by the caller from the vocabulary. */
-  count?: string;
-  description?: string;
-  errorMessage?: string;
-  items: Iterable<T>;
-  children: (item: T) => ReactNode;
-  className?: string;
-} & FieldPendingProps;
+> &
+  FieldHeaderProps & {
+    /** The visible label; a select in a toolbar may carry `aria-label` instead. */
+    label?: string;
+    /**
+     * A muted count inside the label, after its text and before `optionalText`, so it is read with
+     * the label; formatted by the caller from the vocabulary, such as "(4)".
+     */
+    count?: string;
+    errorMessage?: string;
+    items: Iterable<T>;
+    children: (item: T) => ReactNode;
+    className?: string;
+  } & FieldPendingProps;
 
 /**
- * A labeled single-choice dropdown: a trigger showing the chosen option and a list in a popover.
- * The trigger shows the chosen option's text (its `textValue`, or its children when they are plain
- * text), never its other content: an option with an icon shows its words alone there, and an
- * option whose children are not plain text and that has no `textValue` shows nothing there.
+ * A labeled single-choice dropdown under the shared field header: a trigger showing the chosen
+ * option, its error under it, and a list in a popover. While the choices are read (`isPending`),
+ * the spinner and `pendingText` stand where the description does, in a place that keeps one
+ * height, so the trigger does not move when they come or go. The trigger shows the chosen
+ * option's text (its `textValue`, or its children when they are plain text), never its other
+ * content: an option with an icon shows its words alone there, and an option whose children are
+ * not plain text and that has no `textValue` shows nothing there.
  */
 export const Select = <T extends object>({
   label,
   count,
+  optionalText,
+  info,
   description,
   isPending = false,
   pendingText,
@@ -91,14 +99,24 @@ export const Select = <T extends object>({
         const parts = fieldStyles({ isDisabled });
         return (
           <>
-            {label && (
-              <Label className={parts.label()}>
-                {label}
-                {count !== undefined && (
+            <FieldHeader
+              label={label}
+              count={
+                count === undefined ? undefined : (
                   <Count text={count} className={styles.count()} />
-                )}
-              </Label>
-            )}
+                )
+              }
+              optionalText={optionalText}
+              info={info}
+              description={description}
+              pendingDescription={
+                pendingText === undefined ? undefined : (
+                  <FieldPending pendingText={pendingText} />
+                )
+              }
+              isPending={isPending}
+              isDisabled={isDisabled}
+            />
             <Button
               className={(renderProps) => selectTriggerStyles(renderProps)}
             >
@@ -112,11 +130,6 @@ export const Select = <T extends object>({
               </SelectValue>
               <IconChevronDown className={styles.chevron()} aria-hidden />
             </Button>
-            <FieldDescription
-              description={description}
-              isPending={isPending}
-              pendingText={pendingText}
-            />
             <FieldError className={parts.error()}>{errorMessage}</FieldError>
             <Popover className={styles.popover()}>
               <ListBox items={items} className={styles.listBox()}>

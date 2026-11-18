@@ -6,11 +6,15 @@ import {
   type ColorPickerProps as AriaColorPickerProps,
   Dialog as AriaDialog,
   DialogTrigger,
-  Label,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { useDescriptionId } from '../../internal/descriptionid.ts';
 import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { Popover } from '../popover/index.ts';
 import { ColorArea } from './area.tsx';
 import { ColorField } from './field.tsx';
@@ -69,7 +73,8 @@ export type ColorPickerProps = Omit<AriaColorPickerProps, 'children'> &
          */
         hexFieldLabel: string;
       }
-  ) & {
+  ) &
+  FieldHeaderProps & {
     /** Whether the trigger is locked, such as while a write that uses the color is pending. */
     isDisabled?: boolean;
     /** Placement only. */
@@ -81,12 +86,13 @@ const colorText = (color: Color) =>
   color.toString(color.getChannelValue('alpha') < 1 ? 'hexa' : 'hex');
 
 /**
- * A color field: a trigger that shows the color as a swatch and as hex, opening a popover whose
- * controls all edit that one color (React Aria's `ColorPicker` keeps them in step). The trigger's
- * accessible name is the field's name, then the color in words and its hex ("Fill vibrant cyan blue
- * #1E66F5"), so the color is never told by the swatch alone; a translucent color's hex carries its
- * alpha ("#1E66F580"). Escape or a press outside closes the popover and gives the focus back to the
- * trigger.
+ * A color field under the shared field header: a trigger that shows the color as a swatch and as
+ * hex, opening a popover whose controls all edit that one color (React Aria's `ColorPicker` keeps
+ * them in step). The trigger's accessible name is the field's name, then the color in words and its
+ * hex ("Fill vibrant cyan blue #1E66F5"), so the color is never told by the swatch alone; a
+ * translucent color's hex carries its alpha ("#1E66F580"); its description is the field's
+ * `description`, which the picker wires itself, as React Aria's `ColorPicker` is not a field.
+ * Escape or a press outside closes the popover and gives the focus back to the trigger.
  *
  * A hex field makes the color opaque: React Aria's hex field has no alpha, so a hex typed in it, in
  * the default content or in `children`, drops the alpha. A picker for translucent colors holds a
@@ -95,6 +101,9 @@ const colorText = (color: Color) =>
 export const ColorPicker = ({
   label,
   'aria-label': ariaLabel,
+  optionalText,
+  info,
+  description,
   children,
   hexFieldLabel,
   isDisabled = false,
@@ -104,21 +113,27 @@ export const ColorPicker = ({
   const labelId = useId();
   const nameId = useId();
   const valueId = useId();
+  const { descriptionId, 'aria-describedby': describedBy } =
+    useDescriptionId(description);
   const styles = colorPickerStyles();
-  const parts = fieldStyles({ isDisabled });
   return (
     <AriaColorPicker {...props}>
       {({ color }) => (
-        <div className={parts.root({ className })}>
-          {label !== undefined && (
-            <Label id={labelId} className={parts.label()}>
-              {label}
-            </Label>
-          )}
+        <div className={fieldStyles().root({ className })}>
+          <FieldHeader
+            label={label}
+            labelId={labelId}
+            optionalText={optionalText}
+            info={info}
+            description={description}
+            descriptionId={descriptionId}
+            isDisabled={isDisabled}
+          />
           <DialogTrigger>
             <AriaButton
               isDisabled={isDisabled}
               aria-labelledby={`${label === undefined ? nameId : labelId} ${valueId}`}
+              aria-describedby={describedBy}
               className={(renderProps) => colorPickerTriggerStyles(renderProps)}
             >
               {label === undefined && (

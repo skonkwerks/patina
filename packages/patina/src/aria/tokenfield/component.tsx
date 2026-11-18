@@ -1,7 +1,5 @@
 import type { Ref } from 'react';
 import {
-  Label,
-  Text,
   TokenField as AriaTokenField,
   type TokenFieldProps as AriaTokenFieldProps,
   type TokenFieldValue,
@@ -11,6 +9,10 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 
 /**
  * The editable area: the shared field box, one line tall, or a few lines while it takes line
@@ -28,24 +30,24 @@ export const tokenInputStyles = tv({
 export type TokenFieldProps<V extends TokenFieldValue = TokenFieldValue> = Omit<
   AriaTokenFieldProps<V>,
   'className' | 'children'
-> & {
-  /** The visible label; a field without one carries `aria-label`. */
-  label?: string;
-  description?: string;
-  /** An example value, never a label or an instruction. */
-  placeholder?: string;
-  /** Renders each token of the value, usually as a `Token` holding the segment's text. */
-  children: TokenInputProps<V>['children'];
-  /** React 19 ref prop: the editable area, such as for a popover of suggestions anchored to it. */
-  inputRef?: Ref<HTMLDivElement>;
-  className?: string;
-};
+> &
+  FieldHeaderProps & {
+    /** The visible label; a field without one carries `aria-label`. */
+    label?: string;
+    /** An example value, never a label or an instruction. */
+    placeholder?: string;
+    /** Renders each token of the value, usually as a `Token` holding the segment's text. */
+    children: TokenInputProps<V>['children'];
+    /** React 19 ref prop: the editable area, such as for a popover of suggestions anchored to it. */
+    inputRef?: Ref<HTMLDivElement>;
+    className?: string;
+  };
 
 /**
- * A labeled text field whose value holds tokens inline with the text, such as mentions, hashtags,
- * or a list of tags. The value is a `TokenFieldValue`, which this subpath re-exports with its
- * segment types; a subclass that overrides `tokenize` decides which typed text becomes a token. A
- * token is removed with Backspace or Delete like a character.
+ * A labeled text field under the shared field header whose value holds tokens inline with the
+ * text, such as mentions, hashtags, or a list of tags. The value is a `TokenFieldValue`, which this
+ * subpath re-exports with its segment types; a subclass that overrides `tokenize` decides which
+ * typed text becomes a token. A token is removed with Backspace or Delete like a character.
  *
  * Alpha: React Aria marks TokenField as alpha, and its API has changed in a minor release (1.21.0
  * replaced the value's `caretPosition` with `selectedRange`). Until React Aria marks it stable, this
@@ -56,6 +58,8 @@ export type TokenFieldProps<V extends TokenFieldValue = TokenFieldValue> = Omit<
  */
 export const TokenField = <V extends TokenFieldValue = TokenFieldValue>({
   label,
+  optionalText,
+  info,
   description,
   placeholder,
   inputRef,
@@ -64,33 +68,31 @@ export const TokenField = <V extends TokenFieldValue = TokenFieldValue>({
   ...rest
 }: TokenFieldProps<V>) => (
   <AriaTokenField {...rest} className={fieldStyles().root({ className })}>
-    {({ isDisabled }) => {
-      const parts = fieldStyles({ isDisabled });
-      return (
-        <>
-          {label && <Label className={parts.label()}>{label}</Label>}
-          <TokenInput<V>
-            ref={inputRef}
-            data-placeholder={placeholder}
-            // A text field shows the focus ring whenever it holds the focus, by pointer too, as the
-            // text input wrappers do.
-            className={({ isFocused, isDisabled: isInputDisabled }) =>
-              tokenInputStyles({
-                isFocusVisible: isFocused,
-                isDisabled: isInputDisabled,
-                allowsNewlines: rest.allowsNewlines ?? false,
-              })
-            }
-          >
-            {children}
-          </TokenInput>
-          {description && (
-            <Text slot='description' className={parts.description()}>
-              {description}
-            </Text>
-          )}
-        </>
-      );
-    }}
+    {({ isDisabled }) => (
+      <>
+        <FieldHeader
+          label={label}
+          optionalText={optionalText}
+          info={info}
+          description={description}
+          isDisabled={isDisabled}
+        />
+        <TokenInput<V>
+          ref={inputRef}
+          data-placeholder={placeholder}
+          // A text field shows the focus ring whenever it holds the focus, by pointer too, as the
+          // text input wrappers do.
+          className={({ isFocused, isDisabled: isInputDisabled }) =>
+            tokenInputStyles({
+              isFocusVisible: isFocused,
+              isDisabled: isInputDisabled,
+              allowsNewlines: rest.allowsNewlines ?? false,
+            })
+          }
+        >
+          {children}
+        </TokenInput>
+      </>
+    )}
   </AriaTokenField>
 );

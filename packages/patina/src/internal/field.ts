@@ -4,9 +4,13 @@ import { DISABLED } from './disabled.ts';
 import { focusRing } from './focus.ts';
 
 /**
- * The parts every field draws around its control, defined once: the column, the label (with an
- * optional help control beside it), the description, and the error. Every field wrapper draws
- * them with these slots, so the fields' labels and help text cannot drift apart.
+ * The parts every field draws around its control, defined once, in the column `root` stacks from
+ * the top: the label row (`labelRow`: the `label`, with the `optional` text inside it, the field's
+ * `info` control beside it, and what a field keeps at the row's end, `rowEnd`), the `description`
+ * (in a `descriptionCell` while the field can be pending), the field's control, and the `error`
+ * under the control. `FieldHeader` draws the label row and the description with these slots for
+ * every field whose label stands above its control, and every such field stacks them in `root`'s
+ * column, so the fields' headers cannot drift apart.
  *
  * A disabled field is drawn disabled part by part: its label here, its box in `fieldBoxStyles`. No
  * container is faded, because a faded container around a faded part would compound the two (a
@@ -19,7 +23,21 @@ export const fieldStyles = tv({
     root: 'flex flex-col gap-1',
     labelRow: 'flex items-center gap-1',
     label: 'text-surface-foreground text-sm font-medium',
+    // Inside the label, after its text: quieter than the label, at the label's size.
+    optional: 'text-surface-foreground-muted font-normal',
+    // One label line tall (the label's `text-sm` line, 20px), with the info control centered on
+    // it. The control keeps its whole box, an `InfoButton`'s 28px with its press area and hover
+    // fill, which reaches 4px above and below the row into the column's gap, so a row with an info
+    // control is as tall as one without and the fields beside each other start their controls
+    // level. The box ends where the gap does, short of the description or the control below it;
+    // only its focus ring, 4px outside the box and drawn on top, reaches past the gap, over the
+    // top of the line below, while the control has the keyboard's focus.
+    info: 'flex h-5 shrink-0 items-center',
+    rowEnd: 'ms-auto ps-1',
     description: 'text-surface-foreground-muted text-xs',
+    // The description's place in a field that can be pending: the description and the pending
+    // line share one cell, so the place is as tall as the taller of the two, pending or not.
+    descriptionCell: 'grid *:col-start-1 *:row-start-1',
     error: 'text-error text-xs',
   },
   variants: {
@@ -30,7 +48,9 @@ export const fieldStyles = tv({
 /**
  * The input box, defined once: every field's box extends it with its own height and padding. It
  * carries the shared focus ring, and the invalid and disabled states from React Aria's render
- * state.
+ * state. Its text size is every field's: what is typed or shown inside the box (an input, a date's
+ * segments, a trigger's text) takes it from the box and does not restate it, so a change here
+ * reaches every field.
  */
 export const fieldBoxStyles = tv({
   extend: focusRing,

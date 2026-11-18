@@ -79,7 +79,7 @@ const ProjectsPage = ({ refetchMs }: { refetchMs: number }) => {
         </Breadcrumbs>
       }
       title='Projects'
-      contextualHelp={<ProjectsHelp />}
+      info={<ProjectsHelp />}
       actions={
         // Stands for a removal made elsewhere, which closes a panel showing the removed project.
         <Switch isSelected={isBetaListed} onChange={setIsBetaListed}>

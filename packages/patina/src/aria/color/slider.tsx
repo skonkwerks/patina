@@ -1,29 +1,36 @@
 import {
   ColorSlider as AriaColorSlider,
   type ColorSliderProps as AriaColorSliderProps,
-  Label,
   SliderOutput,
   SliderTrack,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
+import { useDescriptionId } from '../../internal/descriptionid.ts';
 import { DISABLED } from '../../internal/disabled.ts';
 import { fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { gradientOverGrid } from './fill.ts';
 import { ColorThumb } from './thumb.tsx';
 
 export const colorSliderStyles = tv({
   slots: {
-    root: 'flex min-w-0 flex-col gap-2',
-    header: 'flex items-baseline justify-between gap-2',
-    output: 'text-surface-foreground-muted ms-auto text-sm tabular-nums',
+    // The shared field column (`fieldStyles`' `root`) stacks the header and the track.
+    root: 'min-w-0',
+    output: 'text-surface-foreground-muted text-sm tabular-nums',
     // An inner edge in `control-border`, so the track's extent shows where its gradient is as light
     // or as dark as the layer, or clear (an alpha track's end).
     track: 'inset-ring-control-border relative shrink-0 rounded-md inset-ring',
   },
   variants: {
     orientation: {
-      horizontal: { track: 'h-6 w-full' },
+      // 2px above and below the 24px track: room for the thumb, which grows from 20px to 28px
+      // while focused or dragged, so that with its focus ring it stays inside the column's gap,
+      // clear of the description or the label above.
+      horizontal: { track: 'my-0.5 h-6 w-full' },
       vertical: { root: 'items-center', track: 'h-48 w-6' },
     },
     // A disabled color slider is drawn disabled by its track, which holds the thumb, so the thumb
@@ -34,59 +41,76 @@ export const colorSliderStyles = tv({
   },
 });
 
-export type ColorSliderProps = Omit<AriaColorSliderProps, 'className'> & {
-  /**
-   * The visible label. Without one, React Aria's localized name of the channel is shown ("Hue",
-   * "Alpha"). A slider named by `aria-label` or `aria-labelledby` shows no label.
-   */
-  label?: string;
-  /**
-   * Shows the channel's value at the end of the label row (React Aria's `SliderOutput`), formatted
-   * for the channel and the user's locale ("210°", "50%").
-   */
-  hasValueOutput?: boolean;
-  /** Size and placement only. */
-  className?: string;
-};
+export type ColorSliderProps = Omit<AriaColorSliderProps, 'className'> &
+  FieldHeaderProps & {
+    /**
+     * The visible label. Without one, React Aria's localized name of the channel is shown ("Hue",
+     * "Alpha"), with no `optionalText`. A slider named by `aria-label` or `aria-labelledby` shows
+     * no label.
+     */
+    label?: string;
+    /**
+     * Shows the channel's value at the end of the label row (React Aria's `SliderOutput`),
+     * formatted for the channel and the user's locale ("210°", "50%").
+     */
+    hasValueOutput?: boolean;
+    /** Size and placement only. */
+    className?: string;
+  };
 
 /**
  * Adjusts one channel of a color (`channel`, in `colorSpace`) on a track that shows the channel's
- * range. React Aria gives the thumb's input its channel's name and a value said in words: the
- * channel's value and a description of the color ("210°, cyan blue"). The arrow keys step the
- * channel; Page Up and Page Down, or Shift with an arrow key, take larger steps; Home and End go to
- * the ends.
+ * range, under the shared field header. React Aria gives the thumb's input its channel's name and a
+ * value said in words: the channel's value and a description of the color ("210°, cyan blue"). The
+ * arrow keys step the channel; Page Up and Page Down, or Shift with an arrow key, take larger
+ * steps; Home and End go to the ends. React Aria's color slider has no description slot, so the
+ * slider lists its `description` in the thumb's `aria-describedby` itself.
  * Horizontal by default; `orientation='vertical'` stands it upright beside a color area.
  */
 export const ColorSlider = ({
   label,
+  optionalText,
+  info,
+  description,
   hasValueOutput = false,
   className,
   ...props
 }: ColorSliderProps) => {
   const hasVisibleLabel =
     props['aria-label'] === undefined && props['aria-labelledby'] === undefined;
+  const { descriptionId, 'aria-describedby': describedBy } = useDescriptionId(
+    description,
+    props['aria-describedby'],
+  );
   return (
     <AriaColorSlider
       {...props}
+      aria-describedby={describedBy}
       className={({ orientation }) =>
-        colorSliderStyles({ orientation }).root({ className })
+        fieldStyles().root({
+          className: colorSliderStyles({ orientation }).root({ className }),
+        })
       }
     >
       {({ orientation, isDisabled }) => {
         const styles = colorSliderStyles({ orientation, isDisabled });
-        // The label is not faded; see `isDisabled` above.
-        const parts = fieldStyles();
         return (
           <>
-            {(hasVisibleLabel || hasValueOutput) && (
-              <div className={styles.header()}>
-                {/* Without children, React Aria fills the label with the channel's name. */}
-                {hasVisibleLabel && (
-                  <Label className={parts.label()}>{label}</Label>
-                )}
-                {hasValueOutput && <SliderOutput className={styles.output()} />}
-              </div>
-            )}
+            {/* The label is not faded; see `isDisabled` above. Without `label`, React Aria fills it
+              with the channel's name. */}
+            <FieldHeader
+              label={label}
+              hasLabel={hasVisibleLabel}
+              optionalText={optionalText}
+              info={info}
+              end={
+                hasValueOutput ? (
+                  <SliderOutput className={styles.output()} />
+                ) : undefined
+              }
+              description={description}
+              descriptionId={descriptionId}
+            />
             <SliderTrack
               className={styles.track()}
               style={({ defaultStyle }) => ({

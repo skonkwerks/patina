@@ -3,35 +3,40 @@ import {
   CheckboxGroup as AriaCheckboxGroup,
   type CheckboxGroupProps as AriaCheckboxGroupProps,
   FieldError,
-  Label,
-  Text,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 
-/** The group's own spacing between its checkboxes; its label and help are the shared field parts. */
+/** The group's own spacing between its checkboxes; its header and error are the shared parts. */
 export const checkboxGroupStyles = tv({ base: 'gap-2' });
 
 export type CheckboxGroupProps = Omit<
   AriaCheckboxGroupProps,
   'className' | 'children'
-> & {
-  /** The visible label; a group under a heading that names it carries `aria-label` instead. */
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  /** The checkboxes, each with the `value` the group's selection holds. */
-  children: ReactNode;
-  className?: string;
-};
+> &
+  FieldHeaderProps & {
+    /** The visible label; a group under a heading that names it carries `aria-label` instead. */
+    label?: string;
+    errorMessage?: string;
+    /** The checkboxes, each with the `value` the group's selection holds. */
+    children: ReactNode;
+    className?: string;
+  };
 
 /**
- * A labelled set of checkboxes whose selection is the list of the checked values. While the group
- * is disabled, its label and description are drawn disabled, and each checkbox draws its own.
+ * A labelled set of checkboxes whose selection is the list of the checked values, under the shared
+ * field header, with its error under the checkboxes. While the group is disabled, its label is
+ * drawn disabled, and each checkbox draws its own.
  */
 export const CheckboxGroup = ({
   label,
+  optionalText,
+  info,
   description,
   errorMessage,
   children,
@@ -47,20 +52,20 @@ export const CheckboxGroup = ({
       className: checkboxGroupStyles({ className }),
     })}
   >
-    {({ isDisabled }) => {
-      const parts = fieldStyles({ isDisabled });
-      return (
-        <>
-          {label && <Label className={parts.label()}>{label}</Label>}
-          {description && (
-            <Text slot='description' className={parts.description()}>
-              {description}
-            </Text>
-          )}
-          {children}
-          <FieldError className={parts.error()}>{errorMessage}</FieldError>
-        </>
-      );
-    }}
+    {({ isDisabled }) => (
+      <>
+        <FieldHeader
+          label={label}
+          optionalText={optionalText}
+          info={info}
+          description={description}
+          isDisabled={isDisabled}
+        />
+        {children}
+        <FieldError className={fieldStyles().error()}>
+          {errorMessage}
+        </FieldError>
+      </>
+    )}
   </AriaCheckboxGroup>
 );

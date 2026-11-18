@@ -329,7 +329,8 @@ export const Multiple: Story = {
 /** No visible label, as in a toolbar: the combo box carries `aria-label`. */
 /**
  * While the regions are read, the spinner and its words stand where the description does and
- * describe the input; an empty list says the same, not that nothing matches.
+ * describe the input; the description keeps its room, hidden, so the input does not move. An empty
+ * list says the same, not that nothing matches.
  */
 export const Pending: Story = {
   args: {
@@ -342,8 +343,8 @@ export const Pending: Story = {
     const input = canvas.getByRole('combobox', { name: 'Region' });
     await expect(input).toHaveAccessibleDescription('Loading regions…');
     await expect(
-      canvas.queryByText('Where your data is stored.'),
-    ).not.toBeInTheDocument();
+      canvas.getByText('Where your data is stored.'),
+    ).not.toBeVisible();
 
     await userEvent.click(input);
     await userEvent.keyboard('{ArrowDown}');

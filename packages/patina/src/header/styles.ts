@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
 /**
- * The one heading grammar for pages and sections: the title with its count, the help control and
+ * The one heading grammar for pages and sections: the title with its count, the info control and
  * badges beside it, the actions at the right, and one line of description under the title. The
  * `page` and `section` looks differ only here.
  */
@@ -18,7 +18,7 @@ export const headerStyles = tv({
     titleRow: 'flex flex-wrap items-center gap-x-1 gap-y-1',
     title: 'text-canvas-foreground min-w-0 font-semibold break-words',
     count: 'text-canvas-foreground-muted font-normal',
-    contextualHelp: 'flex items-center',
+    info: 'flex items-center',
     badges: 'ms-1 flex shrink-0 items-center gap-1',
     description: 'text-canvas-foreground-muted text-sm',
     actions: 'flex shrink-0 flex-wrap items-center gap-2',

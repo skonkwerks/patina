@@ -40,10 +40,10 @@ export const ReadOnly: Story = {
 
 export const FewerRows: Story = { args: { rows: 3 } };
 
-/** A help control beside the label, and actions at the end of the label row. */
-export const WithContextualHelpAndLabelActions: Story = {
+/** An info control beside the label, and actions at the end of the label row. */
+export const WithInfoAndLabelActions: Story = {
   args: {
-    contextualHelp: <InfoButton aria-label='About descriptions' />,
+    info: <InfoButton aria-label='About descriptions' />,
     labelActions: (
       <Button variant='link' tone='primary'>
         Use template

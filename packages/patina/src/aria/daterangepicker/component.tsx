@@ -1,5 +1,5 @@
 import { IconCalendar } from '@tabler/icons-react';
-import { type ReactNode, useRef } from 'react';
+import { useRef } from 'react';
 import {
   Button as AriaButton,
   DateRangePicker as AriaDateRangePicker,
@@ -8,12 +8,14 @@ import {
   Dialog as AriaDialog,
   FieldError,
   Group,
-  Label,
-  Text,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
 import { CalendarLayerContext } from '../calendar/context.ts';
 import { DateInput } from '../datefield/input.tsx';
@@ -48,16 +50,14 @@ export const dateRangePickerGroupStyles = tv({ extend: datePickerGroupStyles });
 export type DateRangePickerProps<T extends DateValue> = Omit<
   AriaDateRangePickerProps<T>,
   'className' | 'children'
-> & {
-  /** The visible label; a picker in a toolbar may carry `aria-label` instead. */
-  label?: string;
-  /** Optional help control beside the label, outside the label itself. */
-  contextualHelp?: ReactNode;
-  description?: string;
-  /** The error to show under the field; also marks the field invalid. */
-  errorMessage?: string;
-  className?: string;
-};
+> &
+  FieldHeaderProps & {
+    /** The visible label; a picker in a toolbar may carry `aria-label` instead. */
+    label?: string;
+    /** The error to show under the field; also marks the field invalid. */
+    errorMessage?: string;
+    className?: string;
+  };
 
 /**
  * A range of two dates, start and end, each typed segment by segment as in `DateField`, with a
@@ -68,7 +68,8 @@ export type DateRangePickerProps<T extends DateValue> = Omit<
  */
 export const DateRangePicker = <T extends DateValue>({
   label,
-  contextualHelp,
+  optionalText,
+  info,
   description,
   errorMessage,
   className,
@@ -90,12 +91,13 @@ export const DateRangePicker = <T extends DateValue>({
         const parts = fieldStyles({ isDisabled });
         return (
           <>
-            {label && (
-              <div className={parts.labelRow()}>
-                <Label className={parts.label()}>{label}</Label>
-                {contextualHelp}
-              </div>
-            )}
+            <FieldHeader
+              label={label}
+              optionalText={optionalText}
+              info={info}
+              description={description}
+              isDisabled={isDisabled}
+            />
             <Group
               className={(renderProps) =>
                 dateRangePickerGroupStyles(renderProps)
@@ -121,11 +123,6 @@ export const DateRangePicker = <T extends DateValue>({
                 <IconCalendar aria-hidden className={styles.buttonIcon()} />
               </AriaButton>
             </Group>
-            {description && (
-              <Text slot='description' className={parts.description()}>
-                {description}
-              </Text>
-            )}
             <FieldError className={parts.error()}>{errorMessage}</FieldError>
             <Popover className={styles.popover()}>
               {/* React Aria names the dialog from the field's label, through the dialog's context. */}

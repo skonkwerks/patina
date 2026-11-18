@@ -3,7 +3,6 @@ import {
   Button as AriaButton,
   Group,
   Input,
-  Label,
   SearchField as AriaSearchField,
   type SearchFieldProps as AriaSearchFieldProps,
 } from 'react-aria-components';
@@ -14,6 +13,10 @@ import {
   fieldButtonStyles,
   fieldStyles,
 } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 
 export const searchFieldStyles = tv({
   slots: {
@@ -21,7 +24,7 @@ export const searchFieldStyles = tv({
     root: 'group',
     icon: 'text-surface-foreground-muted h-4 w-4 shrink-0',
     input:
-      'placeholder:text-input-placeholder min-w-0 flex-1 bg-transparent text-sm outline-0 [&::-webkit-search-cancel-button]:hidden',
+      'placeholder:text-input-placeholder min-w-0 flex-1 bg-transparent outline-0 [&::-webkit-search-cancel-button]:hidden',
     clearIcon: 'h-3.5 w-3.5',
   },
 });
@@ -41,23 +44,27 @@ export const searchFieldClearStyles = tv({
 export type SearchFieldProps = Omit<
   AriaSearchFieldProps,
   'className' | 'onSubmit'
-> & {
-  /** What Enter does; by default nothing, so a search inside a form never submits the form. */
-  onSubmit?: (value: string) => void;
-  /** The visible label; a field in a toolbar may carry `aria-label` instead. */
-  label?: string;
-  /** An example value, never a label or an instruction. */
-  placeholder?: string;
-  className?: string;
-};
+> &
+  FieldHeaderProps & {
+    /** What Enter does; by default nothing, so a search inside a form never submits the form. */
+    onSubmit?: (value: string) => void;
+    /** The visible label; a field in a toolbar may carry `aria-label` instead. */
+    label?: string;
+    /** An example value, never a label or an instruction. */
+    placeholder?: string;
+    className?: string;
+  };
 
 /**
- * A search box: a magnifying glass at the start, the text, and a clear control once there is text.
- * Escape clears it, as React Aria's search field does. The box is React Aria's `Group`, so it shows
- * the focus ring while the keyboard focus is inside it.
+ * A search box under the shared field header: a magnifying glass at the start, the text, and a
+ * clear control once there is text. Escape clears it, as React Aria's search field does. The box
+ * is React Aria's `Group`, so it shows the focus ring while the keyboard focus is inside it.
  */
 export const SearchField = ({
   label,
+  optionalText,
+  info,
+  description,
   placeholder,
   className,
   onSubmit,
@@ -73,11 +80,13 @@ export const SearchField = ({
     >
       {({ isDisabled, isInvalid }) => (
         <>
-          {label && (
-            <Label className={fieldStyles({ isDisabled }).label()}>
-              {label}
-            </Label>
-          )}
+          <FieldHeader
+            label={label}
+            optionalText={optionalText}
+            info={info}
+            description={description}
+            isDisabled={isDisabled}
+          />
           <Group
             role='presentation'
             isDisabled={isDisabled}

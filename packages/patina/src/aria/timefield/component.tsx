@@ -1,8 +1,6 @@
-import { type ReactNode, useRef } from 'react';
+import { useRef } from 'react';
 import {
   FieldError,
-  Label,
-  Text,
   TimeField as AriaTimeField,
   type TimeFieldProps as AriaTimeFieldProps,
   type TimeValue,
@@ -10,6 +8,10 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
 import { dateFieldInputStyles } from '../datefield/index.ts';
 import { DateInput } from '../datefield/input.tsx';
@@ -20,16 +22,14 @@ export const timeFieldInputStyles = tv({ extend: dateFieldInputStyles });
 export type TimeFieldProps<T extends TimeValue> = Omit<
   AriaTimeFieldProps<T>,
   'className' | 'children'
-> & {
-  /** The visible label; a field in a toolbar may carry `aria-label` instead. */
-  label?: string;
-  /** Optional help control beside the label, outside the label itself. */
-  contextualHelp?: ReactNode;
-  description?: string;
-  /** The error to show under the field; also marks the field invalid. */
-  errorMessage?: string;
-  className?: string;
-};
+> &
+  FieldHeaderProps & {
+    /** The visible label; a field in a toolbar may carry `aria-label` instead. */
+    label?: string;
+    /** The error to show under the field; also marks the field invalid. */
+    errorMessage?: string;
+    className?: string;
+  };
 
 /**
  * A labeled time of day, typed segment by segment as a `DateField` is, in the same box. The locale
@@ -40,7 +40,8 @@ export type TimeFieldProps<T extends TimeValue> = Omit<
  */
 export const TimeField = <T extends TimeValue>({
   label,
-  contextualHelp,
+  optionalText,
+  info,
   description,
   errorMessage,
   className,
@@ -61,20 +62,16 @@ export const TimeField = <T extends TimeValue>({
         const parts = fieldStyles({ isDisabled });
         return (
           <>
-            {label && (
-              <div className={parts.labelRow()}>
-                <Label className={parts.label()}>{label}</Label>
-                {contextualHelp}
-              </div>
-            )}
+            <FieldHeader
+              label={label}
+              optionalText={optionalText}
+              info={info}
+              description={description}
+              isDisabled={isDisabled}
+            />
             <DateInput
               className={(renderProps) => timeFieldInputStyles(renderProps)}
             />
-            {description && (
-              <Text slot='description' className={parts.description()}>
-                {description}
-              </Text>
-            )}
             <FieldError className={parts.error()}>{errorMessage}</FieldError>
           </>
         );

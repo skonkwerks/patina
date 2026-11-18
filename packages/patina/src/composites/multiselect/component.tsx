@@ -5,7 +5,6 @@ import {
   Dialog as AriaDialog,
   DialogTrigger,
   type Key,
-  Label,
   ListBox,
   type Selection,
 } from 'react-aria-components';
@@ -14,7 +13,12 @@ import { Button } from '../../aria/button/index.ts';
 import { listBoxEmptyStyles, ListBoxItem } from '../../aria/listbox/index.ts';
 import { Popover } from '../../aria/popover/index.ts';
 import { SearchField } from '../../aria/searchfield/index.ts';
+import { useDescriptionId } from '../../internal/descriptionid.ts';
 import { fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import {
   multiSelectListBoxStyles,
   multiSelectStyles,
@@ -34,42 +38,48 @@ export type MultiSelectProps = (
       /** The field's name without a visible label, for a field in a toolbar. */
       'aria-label': string;
     }
-) & {
-  /** What the closed trigger shows: the caller's summary of the choice, or of an empty one. */
-  summary: string;
-  /** The accessible name of the search field inside. */
-  searchLabel: string;
-  /** What the list says when the search matches no option. */
-  noMatchesLabel: string;
-  /** The name of the button under the list that empties the choice. */
-  clearLabel: string;
-  /** Why Clear cannot be pressed while nothing is chosen, such as "Nothing is chosen". */
-  clearDisabledReason: string;
-  options: readonly MultiSelectOption[];
-  /**
-   * The chosen options' ids, as React Aria's `Selection`. The object `onSelectionChange` gives is
-   * stored and passed back unchanged, so React Aria keeps its range anchor; arrays for actions or the
-   * summary are derived from it separately. `onSelectionChange` never gives `'all'`: select all
-   * gives an explicit set of every option's id, or, under a search, the earlier choice plus the
-   * options shown, so an option the search hides is never chosen by it. A caller's `'all'` is read as
-   * every option's id.
-   */
-  selectedKeys: Selection;
-  onSelectionChange: (keys: Selection) => void;
-  /** Whether the choice is locked, such as while a write that uses it is pending. */
-  isDisabled?: boolean;
-  className?: string;
-};
+) &
+  FieldHeaderProps & {
+    /** What the closed trigger shows: the caller's summary of the choice, or of an empty one. */
+    summary: string;
+    /** The accessible name of the search field inside. */
+    searchLabel: string;
+    /** What the list says when the search matches no option. */
+    noMatchesLabel: string;
+    /** The name of the button under the list that empties the choice. */
+    clearLabel: string;
+    /** Why Clear cannot be pressed while nothing is chosen, such as "Nothing is chosen". */
+    clearDisabledReason: string;
+    options: readonly MultiSelectOption[];
+    /**
+     * The chosen options' ids, as React Aria's `Selection`. The object `onSelectionChange` gives is
+     * stored and passed back unchanged, so React Aria keeps its range anchor; arrays for actions or
+     * the summary are derived from it separately. `onSelectionChange` never gives `'all'`: select
+     * all gives an explicit set of every option's id, or, under a search, the earlier choice plus
+     * the options shown, so an option the search hides is never chosen by it. A caller's `'all'` is
+     * read as every option's id.
+     */
+    selectedKeys: Selection;
+    onSelectionChange: (keys: Selection) => void;
+    /** Whether the choice is locked, such as while a write that uses it is pending. */
+    isDisabled?: boolean;
+    className?: string;
+  };
 
 /**
- * Choose any number of options from a list that can be searched: a button that says what is chosen,
- * opening a popover with a search field over a multiple-selection list, and Clear under the list,
- * which empties the choice with one press. Clear is always there, so pressing it never takes the
- * focus away: while nothing is chosen, it says why it cannot be pressed. The search only narrows
- * what the list shows; the choice is the caller's, unchanged.
+ * Choose any number of options from a list that can be searched, under the shared field header: a
+ * button that says what is chosen, opening a popover with a search field over a multiple-selection
+ * list, and Clear under the list, which empties the choice with one press. Clear is always there,
+ * so pressing it never takes the focus away: while nothing is chosen, it says why it cannot be
+ * pressed. The search only narrows what the list shows; the choice is the caller's, unchanged. The
+ * button is named by the label and described by the `description`, which the field wires itself, as
+ * it is not one React Aria field.
  */
 export const MultiSelect = ({
   label,
+  optionalText,
+  info,
+  description,
   summary,
   searchLabel,
   noMatchesLabel,
@@ -110,21 +120,27 @@ export const MultiSelect = ({
       new Set<Key>([...chosen, ...added.map((option) => option.id)]),
     );
   };
+  const { descriptionId, 'aria-describedby': describedBy } =
+    useDescriptionId(description);
   const name = label ?? ariaLabel;
   const styles = multiSelectStyles();
-  const parts = fieldStyles({ isDisabled });
   return (
-    <div className={parts.root({ className })}>
-      {label !== undefined && (
-        <Label id={labelId} className={parts.label()}>
-          {label}
-        </Label>
-      )}
+    <div className={fieldStyles().root({ className })}>
+      <FieldHeader
+        label={label}
+        labelId={labelId}
+        optionalText={optionalText}
+        info={info}
+        description={description}
+        descriptionId={descriptionId}
+        isDisabled={isDisabled}
+      />
       <DialogTrigger>
         {/* The trigger's accessible name is the field's name, read first, then the visible summary. */}
         <AriaButton
           isDisabled={isDisabled}
           aria-labelledby={`${label === undefined ? nameId : labelId} ${summaryId}`}
+          aria-describedby={describedBy}
           className={(renderProps) => multiSelectTriggerStyles(renderProps)}
         >
           {label === undefined && (

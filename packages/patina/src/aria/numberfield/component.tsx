@@ -6,20 +6,22 @@ import {
   FieldError,
   Group,
   Input,
-  Label,
   NumberField as AriaNumberField,
   type NumberFieldProps as AriaNumberFieldProps,
-  Text,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { fieldBoxStyles, fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { useShownErrorFollowsValue } from '../../internal/shownerror.ts';
 import { iconButtonStyles } from '../iconbutton/index.ts';
 
 export const numberFieldStyles = tv({
   slots: {
-    input: 'min-w-0 flex-1 bg-transparent px-3 text-sm tabular-nums outline-0',
+    input: 'min-w-0 flex-1 bg-transparent px-3 tabular-nums outline-0',
     stepper: 'border-input-border flex h-full w-6 shrink-0 flex-col border-l',
     increment: 'h-auto min-h-0 w-6 flex-1 rounded-none',
     decrement:
@@ -34,16 +36,21 @@ export const numberFieldGroupStyles = tv({
   base: 'flex h-8 items-center overflow-hidden',
 });
 
-export type NumberFieldProps = Omit<AriaNumberFieldProps, 'className'> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  className?: string;
-};
+export type NumberFieldProps = Omit<AriaNumberFieldProps, 'className'> &
+  FieldHeaderProps & {
+    label?: string;
+    errorMessage?: string;
+    className?: string;
+  };
 
-/** A numeric input with native parsing, bounds, and accessible step controls. */
+/**
+ * A numeric input with native parsing, bounds, and accessible step controls, under the shared
+ * field header, with its error under it.
+ */
 export const NumberField = ({
   label,
+  optionalText,
+  info,
   description,
   errorMessage,
   className,
@@ -62,7 +69,6 @@ export const NumberField = ({
       className={fieldStyles().root({ className })}
     >
       {({ isDisabled }) => {
-        const parts = fieldStyles({ isDisabled });
         // A stepper is faded only for its own reason (a bound reached); inside a disabled field the
         // box is already faded, and a second fade would compound it.
         const stepperStyles = (
@@ -78,7 +84,13 @@ export const NumberField = ({
           });
         return (
           <>
-            {label && <Label className={parts.label()}>{label}</Label>}
+            <FieldHeader
+              label={label}
+              optionalText={optionalText}
+              info={info}
+              description={description}
+              isDisabled={isDisabled}
+            />
             <Group
               className={(renderProps) => numberFieldGroupStyles(renderProps)}
             >
@@ -103,12 +115,9 @@ export const NumberField = ({
                 </AriaButton>
               </div>
             </Group>
-            {description && (
-              <Text slot='description' className={parts.description()}>
-                {description}
-              </Text>
-            )}
-            <FieldError className={parts.error()}>{errorMessage}</FieldError>
+            <FieldError className={fieldStyles().error()}>
+              {errorMessage}
+            </FieldError>
           </>
         );
       }}

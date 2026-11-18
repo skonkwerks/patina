@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import {
-  Label,
   TagGroup as AriaTagGroup,
   type TagGroupProps as AriaTagGroupProps,
   TagList,
@@ -10,6 +9,10 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { fieldStyles } from '../../internal/field.ts';
+import {
+  FieldHeader,
+  type FieldHeaderProps,
+} from '../../internal/fieldheader.tsx';
 import { focusRing } from '../../internal/focus.ts';
 
 /**
@@ -33,10 +36,10 @@ export type TagGroupProps<T extends object> = Omit<
   AriaTagGroupProps,
   'className' | 'children'
 > &
-  Pick<TagListProps<T>, 'items' | 'dependencies'> & {
+  Pick<TagListProps<T>, 'items' | 'dependencies'> &
+  FieldHeaderProps & {
     /** The visible label, such as "Labels", which names the group; a group without one carries `aria-label`. */
     label?: string;
-    description?: string;
     /** An error to show under the tags, such as "Remove a label to add another". */
     errorMessage?: string;
     /** What the group says while it has no tags, such as "No labels yet". */
@@ -48,13 +51,16 @@ export type TagGroupProps<T extends object> = Omit<
   };
 
 /**
- * A labeled group of tags: labels a person can remove, select to filter by, or press. One Tab stop,
- * with the arrow keys between the tags. Give `onRemove` to make the tags removable (with their
- * remove control, Delete, or Backspace), and a `selectionMode` to make them selectable. A label that
- * only states something, with nothing to do, is a `Chip`.
+ * A labeled group of tags under the shared field header, with its error under the tags: labels a
+ * person can remove, select to filter by, or press. One Tab stop, with the arrow keys between the
+ * tags. Give `onRemove` to make the tags removable (with their remove control, Delete, or
+ * Backspace), and a `selectionMode` to make them selectable. A label that only states something,
+ * with nothing to do, is a `Chip`.
  */
 export const TagGroup = <T extends object>({
   label,
+  optionalText,
+  info,
   description,
   errorMessage,
   emptyLabel,
@@ -67,7 +73,12 @@ export const TagGroup = <T extends object>({
   const parts = fieldStyles();
   return (
     <AriaTagGroup {...rest} className={parts.root({ className })}>
-      {label && <Label className={parts.label()}>{label}</Label>}
+      <FieldHeader
+        label={label}
+        optionalText={optionalText}
+        info={info}
+        description={description}
+      />
       <TagList
         items={items}
         dependencies={dependencies}
@@ -80,11 +91,6 @@ export const TagGroup = <T extends object>({
       >
         {children}
       </TagList>
-      {description && (
-        <Text slot='description' className={parts.description()}>
-          {description}
-        </Text>
-      )}
       {errorMessage && (
         <Text slot='errorMessage' className={parts.error()}>
           {errorMessage}

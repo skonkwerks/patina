@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { expect } from 'storybook/test';
 
 import { InfoButton } from '../../composites/infobutton/index.ts';
 import { TextField } from './index.ts';
@@ -17,8 +18,27 @@ export const Default: Story = {};
 
 export const WithValue: Story = { args: { defaultValue: 'Patina' } };
 
+/** The description stands under the label and above the input, and describes the input. */
 export const WithDescription: Story = {
   args: { description: 'Shown to everyone on your team.' },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole('textbox', { name: 'Project name' }),
+    ).toHaveAccessibleDescription('Shown to everyone on your team.');
+  },
+};
+
+/**
+ * A field the person may leave empty: the app's words follow the label, quieter, and are read with
+ * it. The field's validation is unchanged; whether it may be left empty is `isRequired`.
+ */
+export const Optional: Story = {
+  args: { optionalText: '(optional)' },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole('textbox', { name: 'Project name (optional)' }),
+    ).toBeInTheDocument();
+  },
 };
 
 /** A caller's error: the field is marked invalid and the message shows under it. */
@@ -40,10 +60,12 @@ export const ReadOnly: Story = {
   args: { isReadOnly: true, defaultValue: 'Patina' },
 };
 
-/** A help control beside the label, outside the label itself. */
-export const WithContextualHelp: Story = {
+/** An info control beside the label, outside the label itself, such as one that opens the help. */
+export const WithInfo: Story = {
   args: {
-    contextualHelp: <InfoButton aria-label='About project names' />,
+    optionalText: '(optional)',
+    info: <InfoButton aria-label='About project names' />,
+    description: 'Shown to everyone on your team.',
   },
 };
 
