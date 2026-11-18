@@ -2,10 +2,10 @@
 
 Shared React components for the owner's web apps, built on React, [React Aria Components](https://react-spectrum.adobe.com/react-aria/) and Tailwind CSS. Each app installs them as packages and uses its own theme, so a fix made here reaches every app.
 
-| Path              | Package              | What it holds                                                                                                                                                                                                                   |
-| ----------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/patina` | `@skonkwerks/patina` | React Aria Components wrappers, the core pieces they draw, and composite components. No dependencies beyond React, React Aria, Tabler icons, Motion, `cn` and `tailwind-variants`. See its [README](packages/patina/README.md). |
-| `apps/storybook`  | (not published)      | Storybook, for viewing every component's states in light and dark.                                                                                                                                                              |
+| Path              | Package              | What it holds                                                                                                                                                                                                                                        |
+| ----------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/patina` | `@skonkwerks/patina` | React Aria Components wrappers, the core pieces they draw, and composite components. No dependencies beyond React and React DOM, React Aria, Tabler icons, Motion, `cn`, `tailwind-variants` and Immer. See its [README](packages/patina/README.md). |
+| `apps/storybook`  | (not published)      | Storybook, for viewing every component's states in light and dark.                                                                                                                                                                                   |
 
 Composite components live in the same package, in `packages/patina/src/composites/` ([Layout](packages/patina/README.md#layout)).
 

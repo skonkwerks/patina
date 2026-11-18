@@ -15,6 +15,9 @@ storybook-static/
 # OS and editor
 .DS_Store
 
+# Claude Code's local state, including the git worktrees its agents work in.
+/.claude/
+
 # The shared guidelines link (.documents/guidelines/general, made by `just setup`); Patina keeps no other .documents/ content.
 /.documents/
 

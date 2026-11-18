@@ -32,6 +32,7 @@ export const ignores = [
   '.sessions/**',
   '.documents/**',
   '.scratch/**',
+  '.claude/**',
 ];
 
 /** Import patterns that reach into another workspace's source (by package name or by a relative path). A workspace's own `./src` is not matched. */
@@ -126,18 +127,20 @@ export const reactPlugins = {
 };
 
 /**
- * The package's dependency rule: a file imports React, React Aria Components, Tabler icons,
- * Motion, tailwind-variants and the package's own files, and nothing else. `extra` adds the packages one kind of file may also use.
+ * The package's dependency rule: a file imports React, React DOM, React Aria Components, Tabler
+ * icons, Motion, tailwind-variants, Immer and the package's own files, and nothing else. `extra` adds the packages one kind of file may also use.
  * @param {string[]} extra
  * @returns {import('eslint').Linter.RuleEntry}
  */
 const ariaImports = (extra = []) => {
   const allowed = [
     'react',
+    'react-dom',
     'react-aria-components',
     'tailwind-variants',
     '@tabler/icons-react',
     'motion',
+    'immer',
     ...extra,
   ];
   return [
@@ -152,7 +155,7 @@ const ariaImports = (extra = []) => {
           // Any package other than these; relative imports stay inside the package.
           regex: `^(?!\\.)(?!(${allowed.map((name) => name.replace('/', '\\/')).join('|')})(/.*)?$)`,
           message:
-            '@skonkwerks/patina imports only React, React Aria Components, tailwind-variants, Tabler icons, Motion and its own files (cn in internal/cn.ts adds clsx and tailwind-merge). See packages/patina/README.md.',
+            '@skonkwerks/patina imports only React, React DOM, React Aria Components, tailwind-variants, Tabler icons, Motion, Immer and its own files (cn in internal/cn.ts adds clsx and tailwind-merge). See packages/patina/README.md.',
         },
       ],
       paths: [noReactFC],

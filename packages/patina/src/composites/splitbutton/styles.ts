@@ -13,8 +13,10 @@ export const splitButtonStyles = tv({
 
 /**
  * Where a part meets the other: the action's end corners and the menu part's start corners are
- * square, a faint line divides them, and a focused part rises so its whole ring shows. A variant
- * of each part's own look, so it comes after the look's corner radius.
+ * square, a faint line divides them, and a focused part rises so its whole ring shows. These are
+ * compound variants, not variants: tailwind-variants puts an extending style's variants before the
+ * look's `size` and `radius`, so tailwind-merge would drop the square corners as overridden by the
+ * later `rounded-md`, and its compound variants come after every variant.
  */
 const join = {
   action: 'relative rounded-e-none focus-visible:z-10',
@@ -24,11 +26,16 @@ const join = {
 /** The action, and a menu part that shows a value in words: the button look, joined. */
 export const splitButtonPartStyles = tv({
   extend: buttonStyles,
-  variants: { join },
+  variants: { join: { action: '', menu: '' } },
+  compoundVariants: [
+    { join: 'action', class: join.action },
+    { join: 'menu', class: join.menu },
+  ],
 });
 
 /** The menu part that shows only a chevron: the icon button look, joined. */
 export const splitButtonMenuIconStyles = tv({
   extend: iconButtonStyles,
-  variants: { join: { menu: join.menu } },
+  variants: { join: { menu: '' } },
+  compoundVariants: [{ join: 'menu', class: join.menu }],
 });

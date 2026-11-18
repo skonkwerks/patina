@@ -27,9 +27,11 @@ src/
 The package imports only:
 
 - `react` and `react-aria-components` (peer dependencies)
+- `react-dom` (peer dependency), for `createPortal` alone: the side panel renders a page's content into the shell's panel
 - `@tabler/icons-react` (peer dependency), for the icons the components draw, under Tabler's own names (`IconCheck`, `IconX`)
 - `motion` (peer dependency, imported from `motion/react`), for motion that is part of a component's behavior, such as `PanScroll`'s glide
 - `tailwind-variants`
+- `immer` (a dependency, not a peer: an internal detail), for the updates in Patina's reducers, such as the side panel's
 - `cn` from `internal/cn.ts`, which is the only place `clsx` and `tailwind-merge` are used
 - the package's own files
 
@@ -45,7 +47,7 @@ What the wrappers need beyond that is drawn in, not imported:
 
 ## Using it in an app
 
-1. Add the dependency, with its peer dependencies (`react`, `react-aria-components`, `@tabler/icons-react`, `motion`, `tailwindcss`). While the package is private, install it through the workspace or a local link:
+1. Add the dependency, with its peer dependencies (`react`, `react-dom`, `react-aria-components`, `@tabler/icons-react`, `motion`, `tailwindcss`). While the package is private, install it through the workspace or a local link:
 
    ```json
    "@skonkwerks/patina": "link:../patina/packages/patina"
@@ -97,6 +99,60 @@ What the wrappers need beyond that is drawn in, not imported:
    import { GridListRow } from '@skonkwerks/patina/gridlistrow';
    ```
 
+5. Render the app shell once, above every page, and let each page render a `Page`:
+
+   ```tsx
+   import { AppShell } from '@skonkwerks/patina/appshell';
+   import {
+     Sidebar,
+     SidebarGroup,
+     SidebarHeader,
+     SidebarItem,
+   } from '@skonkwerks/patina/sidebar';
+   import { ThemeMode } from '@skonkwerks/patina/thememode';
+   import { ToastRegion } from '@skonkwerks/patina/toast';
+
+   <AppShell
+     sidebar={
+       <Sidebar
+         aria-label='Main'
+         selectedRoute={pathname}
+         isCollapsed={isCollapsed}
+         onCollapsedChange={setIsCollapsed}
+         collapseLabel='Collapse sidebar'
+         expandLabel='Expand sidebar'
+         header={<SidebarHeader brand={<Logo />} mark={<LogoMark />} />}
+         footer={
+           <ThemeMode
+             aria-label='Theme'
+             mode={mode}
+             onModeChange={setMode}
+             {...themeLabels}
+           />
+         }
+       >
+         <SidebarGroup id='workspace' title='Workspace'>
+           <SidebarItem
+             href='/projects'
+             icon={<IconFolder aria-hidden />}
+             label='Projects'
+           />
+         </SidebarGroup>
+       </Sidebar>
+     }
+     panelCloseLabel='Close'
+     notifications={
+       <ToastRegion className='right-[calc(var(--side-panel-offset)+1rem)]' />
+     }
+   >
+     <Outlet />
+   </AppShell>;
+   ```
+
+   The sidebar contents are the `Sidebar` frame (a `nav` with the header, the groups and the footer row, whose last control collapses it to a rail of icons), its `SidebarHeader` (the brand, or its mark on the rail), its `SidebarGroup`s of `SidebarItem`s (an icon and a name, with a count, a spinner or an alert mark; on the rail the name is the item's tooltip), and the footer, which holds the app's controls and Patina's `ThemeMode` (one icon button that moves through system, light and dark; it steps aside on the rail). A control that must change on the rail, such as a status line that hides its words there, reads `useSidebar()`. From the keyboard, the sidebar's items are one Tab stop, as React Aria's navigation tree makes a collection: the arrow keys move between the links, and Tab goes on to the footer. The app holds whether the sidebar is collapsed and the theme mode, and remembers them if it wants to; Patina stores nothing.
+
+   A page shows its help, an item's details, or an edit form in the shell's side panel with `useSidePanel` (`@skonkwerks/patina/sidepanel`), and keeps it open while a write is pending with `useSidePanelHold`. The panel is 24rem wide; an app sets `--side-panel-width` to change it. The panel is not modal; a modal task uses `DialogModal`, centered or, with `placement='right'`, as a sheet at the right edge.
+
 ## Naming spec
 
 Every component follows these rules. Familiar names come first: React Aria's own names, then the vocabulary of shadcn/ui and HeroUI. When a component breaks a rule, that's a bug.
@@ -108,6 +164,7 @@ Every component follows these rules. Familiar names come first: React Aria's own
 - **Actions:** `primary`, `neutral`, `destructive`. Each has `-foreground` and `-hover`; `destructive` also has `-tint`.
 - **Statuses:** `info`, `success`, `warning`, `error`. Each has `-foreground` and `-tint`.
 - **Other:** `focus-ring`, `scrim`.
+- **Text takes the tokens of the layer it stands on.** A component that can stand on any layer either takes the color of where it stands (`Count`, at normal weight) or is given its layer by its caller. A few components stand on the page's background, the canvas, and only there, so they keep the `canvas` tokens: `Header` (a page's heading and a section's), `Breadcrumbs`, the `Tabs` list and its tabs, and `Disclosure`. Put one of them on a surface or an overlay and its text keeps the canvas colors.
 - **`destructive` for actions, `error` for statuses.** `destructive` is an action that will destroy something: the Button `tone`, `MenuItem`'s `isDestructive`, and the `destructive*` tokens they draw. `error` is a status, something that already went wrong: the `StatusTone` of `Chip`, `Gauge` and `Alert` (and the subset `StateDetails` takes; `LoadFailure` draws an error `Alert`), a field's error text and invalid border, and the `error*` tokens they draw. Neither is ever called `danger`.
 - **Disabled is one rule everywhere:** `opacity-50` and `cursor-not-allowed`, defined once as `DISABLED` in `src/internal/disabled.ts` and given as the `true` value of each component's `isDisabled` variant. It is applied to the control and its label, part by part, never to a container around faded parts (two fades would compound). Text that is not the label of a disabled control (a description, an error, a slider's value) keeps its contrast. One exception: a slider's label also keeps its contrast, because it names the thumb's input through `aria-labelledby` rather than `for`, so the automated contrast check cannot tell it belongs to a disabled control; the slider's rail and thumb show that it is disabled. There's no `-disabled` token.
 

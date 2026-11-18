@@ -8,15 +8,16 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { IconButton } from '../iconbutton/index.ts';
-import { DismissDisabledContext } from './context.ts';
+import { DialogPlacementContext, DismissDisabledContext } from './context.ts';
 
 export const dialogStyles = tv({
   slots: {
-    overlay: 'bg-scrim fixed inset-0 z-50 flex items-center justify-center p-4',
+    overlay: 'bg-scrim fixed inset-0 z-50 flex',
     modal:
-      'bg-overlay border-overlay-border text-overlay-foreground max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg border shadow-xl outline-0',
-    dialog: 'flex flex-col gap-4 p-5 outline-0',
-    header: 'flex items-start justify-between gap-3',
+      'bg-overlay border-overlay-border text-overlay-foreground w-full max-w-md border shadow-xl outline-0',
+    dialog: 'flex flex-col outline-0',
+    header: 'flex shrink-0 items-start justify-between gap-3',
+    body: 'flex flex-col gap-4',
     heading: 'min-w-0',
     titleRow: 'flex items-center gap-2',
     title: 'text-overlay-foreground text-lg font-semibold',
@@ -24,6 +25,27 @@ export const dialogStyles = tv({
     headerActions: '-mt-1 -mr-1 flex shrink-0 items-center gap-1',
     closeIcon: 'h-4 w-4',
   },
+  variants: {
+    // Where the modal stands. Centered (the default), as large as its content needs up to 90% of
+    // the window, the whole dialog scrolling past that. The modal drawer: the window's full height
+    // at the right edge, with its title and close control fixed over a body that scrolls.
+    placement: {
+      center: {
+        overlay: 'items-center justify-center p-4',
+        modal: 'max-h-[90vh] overflow-y-auto rounded-lg',
+        dialog: 'gap-4 p-5',
+      },
+      right: {
+        overlay: 'items-stretch justify-end',
+        modal:
+          'flex h-full max-h-full flex-col overflow-hidden border-y-0 border-e-0',
+        dialog: 'min-h-0 flex-1',
+        header: 'border-overlay-border border-b p-5',
+        body: 'min-h-0 flex-1 overflow-y-auto p-5',
+      },
+    },
+  },
+  defaultVariants: { placement: 'center' },
 });
 
 /** Connects a modal to its opener so React Aria owns focus restoration and trigger semantics. */
@@ -55,7 +77,7 @@ export const Dialog = ({
   ...rest
 }: DialogProps) => {
   const isDismissDisabled = use(DismissDisabledContext);
-  const styles = dialogStyles();
+  const styles = dialogStyles({ placement: use(DialogPlacementContext) });
   return (
     <AriaDialog {...rest} className={styles.dialog({ className })}>
       {(renderProps) => (
@@ -85,7 +107,9 @@ export const Dialog = ({
               </IconButton>
             </div>
           </div>
-          {typeof children === 'function' ? children(renderProps) : children}
+          <div className={styles.body()}>
+            {typeof children === 'function' ? children(renderProps) : children}
+          </div>
         </>
       )}
     </AriaDialog>

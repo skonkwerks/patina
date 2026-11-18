@@ -22,8 +22,8 @@ export type IconButtonProps = Omit<ButtonProps, 'aria-label' | 'tooltip'> & {
   'aria-label': string;
   /**
    * Shows its name (`aria-label`) as its tooltip on hover and focus while it has no disabled reason
-   * to show, for a control whose icon alone may not say what pressing it does, such as a theme
-   * switch or a sidebar toggle.
+   * to show, for a control whose icon alone may not say what pressing it does, such as a sidebar
+   * toggle.
    */
   hasTooltip?: boolean;
 };

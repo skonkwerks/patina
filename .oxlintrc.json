@@ -25,7 +25,8 @@
     ".scratch/**",
     "**/*.gen.ts",
     ".sessions/**",
-    ".documents/**"
+    ".documents/**",
+    ".claude/**"
   ],
   "overrides": [
     {

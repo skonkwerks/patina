@@ -2,7 +2,7 @@
   "name": "@skonkwerks/patina",
   "version": "0.1.0",
   "private": true,
-  "description": "Styled wrappers around React Aria Components, themed with Tailwind tokens. Depends only on React, React Aria Components, Tabler icons, Motion, clsx, tailwind-merge and tailwind-variants.",
+  "description": "Styled wrappers around React Aria Components, themed with Tailwind tokens. Depends only on React and React DOM, React Aria Components, Tabler icons, Motion, clsx, tailwind-merge, tailwind-variants and Immer.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -11,6 +11,7 @@
   "exports": {
     "./actionmenu": "./src/composites/actionmenu/index.ts",
     "./alert": "./src/composites/alert/index.ts",
+    "./appshell": "./src/composites/appshell/index.ts",
     "./breadcrumbs": "./src/aria/breadcrumbs/index.ts",
     "./button": "./src/aria/button/index.ts",
     "./checkbox": "./src/aria/checkbox/index.ts",
@@ -28,6 +29,7 @@
     "./gauge": "./src/aria/gauge/index.ts",
     "./gridlist": "./src/aria/gridlist/index.ts",
     "./gridlistrow": "./src/composites/gridlistrow/index.ts",
+    "./header": "./src/header/index.ts",
     "./iconbutton": "./src/aria/iconbutton/index.ts",
     "./iconmark": "./src/iconmark/index.ts",
     "./imageoverlay": "./src/imageoverlay/index.ts",
@@ -40,6 +42,7 @@
     "./multiselect": "./src/composites/multiselect/index.ts",
     "./navigationtree": "./src/aria/navigationtree/index.ts",
     "./numberfield": "./src/aria/numberfield/index.ts",
+    "./page": "./src/page/index.ts",
     "./panscroll": "./src/panscroll/index.ts",
     "./patina.css": "./patina.css",
     "./popover": "./src/aria/popover/index.ts",
@@ -49,6 +52,8 @@
     "./rowtile": "./src/rowtile/index.ts",
     "./searchfield": "./src/aria/searchfield/index.ts",
     "./select": "./src/aria/select/index.ts",
+    "./sidebar": "./src/composites/sidebar/index.ts",
+    "./sidepanel": "./src/composites/sidepanel/index.ts",
     "./slider": "./src/aria/slider/index.ts",
     "./spinner": "./src/spinner/index.ts",
     "./splitbutton": "./src/composites/splitbutton/index.ts",
@@ -60,6 +65,7 @@
     "./textarea": "./src/aria/textarea/index.ts",
     "./textdroparea": "./src/composites/textdroparea/index.ts",
     "./textfield": "./src/aria/textfield/index.ts",
+    "./thememode": "./src/composites/thememode/index.ts",
     "./toast": "./src/aria/toast/index.ts",
     "./togglegroup": "./src/aria/togglegroup/index.ts",
     "./tooltip": "./src/aria/tooltip/index.ts"
@@ -70,7 +76,9 @@
     "README.md",
     "LICENSE",
     "!src/**/*.spec.ts",
-    "!src/**/*.stories.tsx"
+    "!src/**/*.stories.tsx",
+    "!src/**/*.testing.ts",
+    "!src/**/*.testing.tsx"
   ],
   "scripts": {
     "check": "tsgo --noEmit",
@@ -79,6 +87,7 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "immer": "^11.2.10",
     "tailwind-merge": "^3.6.0",
     "tailwind-variants": "^3.3.1"
   },
@@ -87,15 +96,18 @@
     "motion": "^14.14.0",
     "react": "^19.2.0",
     "react-aria-components": "^1.22.1",
+    "react-dom": "^19.2.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.6.7",
     "@tabler/icons-react": "^3.52.0",
     "@types/react": "19.2.8",
+    "@types/react-dom": "19.2.3",
     "motion": "^14.14.0",
     "react": "19.2.8",
     "react-aria-components": "^1.22.1",
+    "react-dom": "19.2.8",
     "storybook": "^10.6.7",
     "tailwindcss": "^4.3.3",
     "vitest": "^5.1.0"

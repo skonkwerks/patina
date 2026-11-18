@@ -11,7 +11,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A muted count after a label; the caller chooses the size relative to it. */
+/** A count after a label, in the label's color at normal weight; the caller chooses the size relative to it. */
 export const AfterLabel: Story = {
   render: (args) => (
     <h2 className='text-canvas-foreground text-lg font-semibold'>

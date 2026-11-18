@@ -2,6 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 
+import {
+  LIVE_ANNOUNCER_CLEAR_MS,
+  LIVE_ANNOUNCER_MESSAGE,
+} from '../../internal/liveannouncer.testing.ts';
 import { LoadFailure, LoadStatus } from './index.ts';
 
 const meta = {
@@ -41,9 +45,6 @@ export const Retrying: Story = {
 
 /** How long the story's pretend read takes. */
 const READ_MS = 1_500;
-
-/** Longer than React Aria's live announcer keeps a message (7 seconds in react-aria 3.53.1). */
-const ANNOUNCER_CLEAR_MS = 10_000;
 
 type Phase = 'failed' | 'retrying' | 'read';
 
@@ -145,21 +146,14 @@ export const RetryThenSuccess: Story = {
       canvas.queryByRole('button', { name: 'Retry' }),
     ).not.toBeInTheDocument();
 
-    // React Aria announced the pending Retry through its live announcer, a transient node labelled
-    // by the Retry that is now gone. The story waits until React Aria removes it, so the axe check
-    // after it, and the next story, meet no label to a removed node. This relies on React Aria's
-    // implementation, not its documented API: the announcer's `[data-live-announcer]` container, its
-    // labelled child, and its 7-second clear (react-aria 3.53.1). Check it again on every React Aria
-    // upgrade: if this wait fails or nears its timeout, the announcer changed.
+    // React Aria announced the pending Retry, now gone (see `LIVE_ANNOUNCER_MESSAGE`).
     await waitFor(
       async () => {
         await expect(
-          canvasElement.ownerDocument.querySelector(
-            '[data-live-announcer] [aria-labelledby]',
-          ),
+          canvasElement.ownerDocument.querySelector(LIVE_ANNOUNCER_MESSAGE),
         ).toBeNull();
       },
-      { timeout: ANNOUNCER_CLEAR_MS },
+      { timeout: LIVE_ANNOUNCER_CLEAR_MS },
     );
   },
 };

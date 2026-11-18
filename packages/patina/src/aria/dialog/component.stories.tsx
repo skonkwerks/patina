@@ -1,9 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
+import { expect, waitFor, within } from 'storybook/test';
 
+import {
+  LIVE_ANNOUNCER_CLEAR_MS,
+  LIVE_ANNOUNCER_MESSAGE,
+} from '../../internal/liveannouncer.testing.ts';
 import { Button } from '../button/index.ts';
 import { IconButton } from '../iconbutton/index.ts';
+import { TextField } from '../textfield/index.ts';
 import {
   Dialog,
   DialogCancel,
@@ -120,4 +126,75 @@ const PendingDialog = (args: DialogProps) => {
 /** While a save is pending nothing dismisses the dialog: not Escape, the scrim, the close control or Cancel. */
 export const DismissDisabledWhilePending: Story = {
   render: (args) => <PendingDialog {...args} />,
+};
+
+const properties = [
+  'Name',
+  'Owner',
+  'Client',
+  'Budget',
+  'Start date',
+  'End date',
+  'Region',
+  'Channel',
+  'Audience',
+  'Goal',
+  'Review lead',
+  'Notes',
+];
+
+/**
+ * The modal drawer: the window's full height at the right edge, for a set of fields about one
+ * thing. Its title and close control stay at the top while its body scrolls.
+ */
+export const ModalDrawer: Story = {
+  args: { title: 'Project properties' },
+  render: (args) => (
+    <DialogTrigger>
+      <Button variant='solid' tone='primary'>
+        Edit properties
+      </Button>
+      <DialogModal placement='right'>
+        <Dialog {...args}>
+          {properties.map((property) => (
+            <TextField key={property} label={property} />
+          ))}
+          <div className='flex justify-end gap-2'>
+            <DialogCancel>Cancel</DialogCancel>
+            <Button variant='solid' tone='primary' slot='close'>
+              Save
+            </Button>
+          </div>
+        </Dialog>
+      </DialogModal>
+    </DialogTrigger>
+  ),
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Edit properties' }),
+    );
+    const dialog = await page.findByRole('dialog', {
+      name: 'Project properties',
+    });
+    const close = within(dialog).getByRole('button', { name: 'Close' });
+    // Scrolled to its last field, the drawer still shows its title and close control.
+    within(dialog).getByRole('textbox', { name: 'Notes' }).scrollIntoView();
+    await waitFor(() =>
+      expect(close.getBoundingClientRect().top).toBeGreaterThanOrEqual(0),
+    );
+    await userEvent.click(close);
+    await waitFor(() =>
+      expect(page.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+    // React Aria announced the dialog by its title, now gone (see `LIVE_ANNOUNCER_MESSAGE`).
+    await waitFor(
+      async () => {
+        await expect(
+          canvasElement.ownerDocument.querySelector(LIVE_ANNOUNCER_MESSAGE),
+        ).toBeNull();
+      },
+      { timeout: LIVE_ANNOUNCER_CLEAR_MS },
+    );
+  },
 };
