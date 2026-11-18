@@ -6,19 +6,26 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { rowStateStyles } from '../../internal/itemstate.js';
+import { itemStateStyles } from '../../internal/itemstate.js';
 import { SelectionCheckbox } from '../../internal/selectioncheckbox.js';
 import { Cell } from './cell.js';
 
 export const tableRowStyles = tv({
-  // The shared row states (`internal/itemstate.ts`), as a `GridList`'s and a `Tree`'s rows have
-  // them: the focus ring inside the row, the hover and selected fills, the selected row's start
-  // bar (so that color is not the only sign), and the disabled look.
-  extend: rowStateStyles,
-  // The line is drawn above each row but the first, and not below each but the last: a paged
-  // table ends with React Aria's load-more row, so no row of the data is ever the last child.
-  base: 'border-surface-border border-t first:border-t-0',
+  // The shared item states (`internal/itemstate.ts`): the focus ring inside the row, the hover and
+  // selected fills, and the disabled look. A selected row's 2px primary bar, so that color is not
+  // the only sign, stands at the start of its first cell, not as the row's start border, as a
+  // `GridList`'s and a `Tree`'s rows draw it (`rowStateStyles`): a table's borders collapse, and
+  // half of a start border would stand outside the columns, so a resizable table, whose columns
+  // React Aria sizes to fill its scroller, would come out a pixel wider and scroll.
+  extend: itemStateStyles,
+  // The line is drawn above each row but the first, and not below each but the last.
+  base: 'border-surface-border border-t first:border-t-0 [&>:first-child]:relative',
   compoundVariants: [
+    {
+      isSelected: true,
+      class:
+        '[&>:first-child]:before:bg-primary [&>:first-child]:before:absolute [&>:first-child]:before:inset-y-0 [&>:first-child]:before:start-0 [&>:first-child]:before:w-0.5 forced-colors:[&>:first-child]:before:bg-[Highlight]',
+    },
     // The hover comes from React Aria, which a row has only where a press does something, so a
     // row that does nothing never lights up. A compound variant rather than a second `isHovered`:
     // an extending style that defines a boolean variant again loses its boolean type in

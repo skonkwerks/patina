@@ -1,14 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { type ReactNode, useState } from 'react';
-import { expect, within } from 'storybook/test';
+import { useState } from 'react';
+import { expect, waitFor, within } from 'storybook/test';
 
 import {
   contrastRatio,
   edgeColor,
   NON_TEXT_CONTRAST,
   paintedColor,
+  surfaceBehind,
 } from '../../internal/contrast.testing.js';
-import { startEdgeOf, TRANSPARENT } from '../../internal/itemstate.testing.js';
+import { TRANSPARENT } from '../../internal/itemstate.testing.js';
+import {
+  LIVE_ANNOUNCER_CLEAR_MS,
+  LIVE_ANNOUNCER_MESSAGE,
+} from '../../internal/liveannouncer.testing.js';
 import { Button } from '../button/index.js';
 import {
   Cell,
@@ -17,7 +22,6 @@ import {
   Table,
   TableBody,
   TableHeader,
-  TableLoadMore,
   type TableProps,
 } from './index.js';
 
@@ -60,6 +64,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * A selected row's bar, as the browser draws it: the first cell's `::before`, 2px of the primary
+ * color (`tableRowStyles`). An unselected row draws none, so its color is transparent.
+ */
+const barOf = (row: HTMLElement) => {
+  const cell = row.firstElementChild;
+  if (cell === null) {
+    throw new Error('The row has no cells.');
+  }
+  const bar = getComputedStyle(cell, '::before');
+  return { width: bar.width, color: bar.backgroundColor };
+};
+
 /** Where an element's text starts on screen. */
 const textStart = (element: Element) => {
   const range = document.createRange();
@@ -90,22 +107,17 @@ const glyphOf = (checkbox: HTMLInputElement) => {
   };
 };
 
-/** The table's columns and the given rows; extra body content (a load-more row) goes last. */
+/** The table's columns, each as wide as its content, and the given rows. */
 const InvoiceTable = ({
   rows,
-  loadMore,
   ...props
-}: TableProps & { rows: readonly Invoice[]; loadMore?: ReactNode }) => (
+}: TableProps & { rows: readonly Invoice[] }) => (
   <Table {...props}>
     <TableHeader>
-      <Column isRowHeader width='xs'>
-        Number
-      </Column>
+      <Column isRowHeader>Number</Column>
       <Column>Customer</Column>
-      <Column width='sm'>Issued</Column>
-      <Column width='md' align='end'>
-        Amount
-      </Column>
+      <Column>Issued</Column>
+      <Column align='end'>Amount</Column>
     </TableHeader>
     <TableBody>
       {rows.map((invoice) => (
@@ -116,7 +128,6 @@ const InvoiceTable = ({
           <Cell align='end'>{invoice.amount}</Cell>
         </Row>
       ))}
-      {loadMore}
     </TableBody>
   </Table>
 );
@@ -131,18 +142,31 @@ const errorNotice = (
 );
 
 /**
- * The table, its columns sharing its width. Every body row keeps a 2px start edge for the selected
- * bar, and the header keeps the same edge, so a column's heading starts where its values do.
+ * The table, each column as wide as its content. A column's heading starts where its values do,
+ * and a heading reached from the keyboard draws the shared focus ring.
  */
 export const Default: Story = {
   render: (args) => <InvoiceTable {...args} rows={invoices} />,
-  play: async ({ canvas }) => {
+  play: async ({ canvas, canvasElement, userEvent }) => {
     await expect(
       textStart(canvas.getByRole('columnheader', { name: 'Number' })),
     ).toBe(textStart(canvas.getByRole('rowheader', { name: '1042' })));
     await expect(
       textStart(canvas.getByRole('columnheader', { name: 'Customer' })),
     ).toBe(textStart(canvas.getByText('Northwind Traders')));
+
+    // A heading reached from the keyboard draws the shared focus ring: Tab to the first row, Right
+    // to its first cell, Up to the cell's heading.
+    await userEvent.keyboard('{Tab}{ArrowRight}{ArrowUp}');
+    const heading = canvas.getByRole('columnheader', { name: 'Number' });
+    await expect(heading).toHaveFocus();
+    const ring = canvasElement.ownerDocument.createElement('div');
+    ring.className = 'outline-focus-ring';
+    canvasElement.append(ring);
+    const style = getComputedStyle(heading);
+    await expect(style.outlineColor).toBe(getComputedStyle(ring).outlineColor);
+    await expect(style.outlineWidth).toBe('2px');
+    ring.remove();
   },
 };
 
@@ -169,8 +193,8 @@ export const WithRowAction: Story = {
 
 /**
  * Rows that select, replacing the selection on a press, marked as a `GridList`'s rows are: a
- * selected row has its tint and, so that color is not the only sign, a 2px primary bar at its start
- * edge; an unselected row keeps the same edge, transparent, so selecting never moves its cells.
+ * selected row has its tint and, so that color is not the only sign, a 2px primary bar at its start,
+ * drawn over its first cell, so selecting never moves its cells.
  */
 export const Selectable: Story = {
   render: (args) => (
@@ -185,23 +209,16 @@ export const Selectable: Story = {
   play: async ({ canvas, userEvent }) => {
     // A row is named by its row header, the invoice's number.
     const row = (name: string) => canvas.getByRole('row', { name });
-    // The table draws no fill of its own: the surface is its frame's, the element around it.
-    const frame = canvas.getByRole('grid').parentElement;
-    if (frame === null) {
-      throw new Error('The table stands in no frame.');
-    }
-    const surface = getComputedStyle(frame).backgroundColor;
+    // The table draws no fill of its own: the surface is its frame's, behind it.
+    const surface = surfaceBehind(canvas.getByRole('grid'));
     const contoso = row('1043');
     const fabrikam = row('1044');
-    const selected = startEdgeOf(contoso);
+    const selected = barOf(contoso);
     await expect(selected.width).toBe('2px');
     await expect(contrastRatio(selected.color, surface)).toBeGreaterThanOrEqual(
       NON_TEXT_CONTRAST,
     );
-    await expect(startEdgeOf(fabrikam)).toEqual({
-      width: '2px',
-      color: TRANSPARENT,
-    });
+    await expect(barOf(fabrikam).color).toBe(TRANSPARENT);
     // The tint: a selected row's fill differs from an unselected one's.
     const unselectedFill = getComputedStyle(fabrikam).backgroundColor;
     await expect(getComputedStyle(contoso).backgroundColor).not.toBe(
@@ -213,8 +230,8 @@ export const Selectable: Story = {
     const left = text.getBoundingClientRect().left;
     await userEvent.click(fabrikam);
     await expect(fabrikam).toHaveAttribute('aria-selected', 'true');
-    await expect(startEdgeOf(fabrikam).color).toBe(selected.color);
-    await expect(startEdgeOf(contoso).color).toBe(TRANSPARENT);
+    await expect(barOf(fabrikam).color).toBe(selected.color);
+    await expect(barOf(contoso).color).toBe(TRANSPARENT);
     await expect(text.getBoundingClientRect().left).toBe(left);
   },
 };
@@ -357,11 +374,7 @@ export const SelectOne: Story = {
     await expect(dotShown('1045')).toBe(false);
     // The chosen mark's edge turns primary and keeps 3:1 on its row's tint, painted over the
     // table's surface, at rest and under the pointer.
-    const frame = canvas.getByRole('grid').parentElement;
-    if (frame === null) {
-      throw new Error('The table stands in no frame.');
-    }
-    const surface = getComputedStyle(frame).backgroundColor;
+    const surface = surfaceBehind(canvas.getByRole('grid'));
     const edgeOnTint = () =>
       contrastRatio(
         edgeColor(markOf(one('1043'))),
@@ -423,30 +436,73 @@ export const RefreshFailed: Story = {
   ),
 };
 
-/** The end of a paged table while the next page is read. */
-export const LoadingMore: Story = {
-  parameters: {
-    a11y: {
-      config: {
-        // Exception to the story axe check (#2): React Aria's TableLoadMoreItem writes aria-level on
-        // its grid row after the wrapper's props, so no wrapper can remove it
-        // (https://github.com/skonkwerks/patina/issues/1). Only this rule, only this story; remove
-        // the override once a React Aria release fixes it.
-        rules: [{ id: 'aria-conditional-attr', enabled: false }],
-      },
-    },
+const moreInvoices: Invoice[] = [
+  { id: '1046', customer: 'Wingtip Toys', issued: 'Nov 14', amount: '$75.00' },
+  {
+    id: '1047',
+    customer: 'Adventure Works',
+    issued: 'Nov 15',
+    amount: '$3,180.40',
   },
-  render: (args) => (
+];
+
+const PagedInvoices = (args: TableProps) => {
+  const [rows, setRows] = useState<readonly Invoice[]>(invoices);
+  const [isReading, setIsReading] = useState(false);
+  const hasMore = rows.length < invoices.length + moreInvoices.length;
+  return (
     <InvoiceTable
       {...args}
-      rows={invoices}
+      rows={rows}
       loadMore={
-        <TableLoadMore
-          isLoading
-          pendingText='Loading more invoices'
-          onLoadMore={() => undefined}
-        />
+        hasMore
+          ? {
+              text: 'Load more invoices',
+              isPending: isReading,
+              onLoadMore: () => {
+                setIsReading(true);
+                // Stands in for the app's read of the next page.
+                setTimeout(() => {
+                  setRows([...invoices, ...moreInvoices]);
+                  setIsReading(false);
+                }, 300);
+              },
+            }
+          : undefined
       }
     />
-  ),
+  );
+};
+
+/**
+ * A paged table: the bar under the rows reads the next page when its button is pressed, as
+ * Cloudscape's tables read more, never on its own as the table's end scrolls into view. While the
+ * page is read the button shows its spinner and ignores presses; once every page is read, the bar
+ * is gone, and the focus its button held moves to the first row the last page read.
+ */
+export const LoadMore: Story = {
+  render: (args) => <PagedInvoices {...args} />,
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const rows = () => canvas.getAllByRole('row').length;
+    // The header row and four invoices: nothing more is read until the button is pressed.
+    await expect(rows()).toBe(5);
+    const button = canvas.getByRole('button', { name: 'Load more invoices' });
+    await userEvent.click(button);
+    await expect(button).toHaveAttribute('data-pending', 'true');
+    await waitFor(() => expect(rows()).toBe(7));
+    await expect(
+      canvas.queryByRole('button', { name: 'Load more invoices' }),
+    ).toBeNull();
+    // The button had the focus as the bar went: it moves to the first row the last page read.
+    await expect(canvas.getByRole('row', { name: '1046' })).toHaveFocus();
+
+    // React Aria announced the pending button, now gone (see `LIVE_ANNOUNCER_MESSAGE`).
+    await waitFor(
+      () =>
+        expect(
+          canvasElement.ownerDocument.querySelector(LIVE_ANNOUNCER_MESSAGE),
+        ).toBeNull(),
+      { timeout: LIVE_ANNOUNCER_CLEAR_MS },
+    );
+  },
 };

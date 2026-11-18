@@ -3,5 +3,5 @@ export * from './cell.js';
 export * from './column.js';
 export * from './component.js';
 export * from './header.js';
-export * from './loadmore.js';
+export { type TableLoadMore, tableLoadMoreStyles } from './loadmore.js';
 export * from './row.js';

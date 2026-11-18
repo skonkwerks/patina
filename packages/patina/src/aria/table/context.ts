@@ -10,3 +10,6 @@ type BodyStatus = Readonly<{
 }>;
 
 export const BodyStatusContext = createContext<BodyStatus | null>(null);
+
+/** Whether the table's columns can be resized, which its columns read to draw their resizers. */
+export const ColumnResizingContext = createContext(false);

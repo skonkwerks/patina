@@ -55,6 +55,25 @@ export const paintedColor = (...layers: string[]) => {
   return `rgb(${String(red)}, ${String(green)}, ${String(blue)})`;
 };
 
+/**
+ * The surface an element stands on: the background of the nearest of it and its ancestors that
+ * paints one, so a story reads what is drawn behind a part that has no fill of its own, such as a
+ * table inside its frame.
+ */
+export const surfaceBehind = (element: Element) => {
+  for (
+    let node: Element | null = element;
+    node !== null;
+    node = node.parentElement
+  ) {
+    const color = getComputedStyle(node).backgroundColor;
+    if (color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') {
+      return color;
+    }
+  }
+  throw new Error('Nothing behind the element paints a background.');
+};
+
 /** The non-text contrast an interface component's edge needs against what it stands on. */
 export const NON_TEXT_CONTRAST = 3;
 

@@ -12,17 +12,14 @@ import { tableColumnStyles } from './column.js';
 import { SelectionColumnName } from './selectioncolumnname.js';
 
 export const tableHeaderStyles = tv({
-  // The 2px start edge every body row keeps for its selected bar (`rowStateStyles`), transparent
-  // here: the table's borders collapse, so a header without it would start its cells 1px before
-  // the body's, and a column's heading would not line up with its values.
-  base: 'bg-neutral text-neutral-foreground border-surface-border border-s-2 border-b border-s-transparent',
+  base: 'bg-neutral text-neutral-foreground border-surface-border border-b',
 });
 
-/** The selection column's heading cell: a column's, as narrow as a mark and a cell's padding. */
-export const tableSelectionColumnStyles = tv({
-  extend: tableColumnStyles,
-  base: 'w-12',
-});
+/**
+ * The selection column's width: a mark and a cell's padding. React Aria lays it out at this width in
+ * a resizable table, which it never resizes; any other table takes it as the heading's CSS.
+ */
+const SELECTION_COLUMN_WIDTH = 48;
 
 export type TableHeaderProps<T extends object> = Omit<
   AriaTableHeaderProps<T>,
@@ -49,7 +46,11 @@ export const TableHeader = <T extends object>({
         <AriaColumn
           focusMode='child'
           allowsArrowNavigation
-          className={(renderProps) => tableSelectionColumnStyles(renderProps)}
+          width={SELECTION_COLUMN_WIDTH}
+          minWidth={SELECTION_COLUMN_WIDTH}
+          maxWidth={SELECTION_COLUMN_WIDTH}
+          style={{ width: SELECTION_COLUMN_WIDTH }}
+          className={(renderProps) => tableColumnStyles(renderProps).base()}
         >
           {selectionMode === 'multiple' ? (
             <SelectionCheckbox mark='check' fadesWhenDisabled isOnNeutral />

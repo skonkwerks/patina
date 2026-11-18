@@ -10,7 +10,8 @@ import { focusRing } from './focus.js';
  * to keep their contrast on them; an app checks its text contrast on these two fills.
  *
  * A fill is never the only sign of selection (`ux/accessibility.md`: color is never the only
- * signal): a row adds `rowStateStyles`' bar, and a tile its wider primary border.
+ * signal): a row adds `rowStateStyles`' bar (a `Table`'s row draws the same bar in its first cell),
+ * and a tile its wider primary border.
  */
 export const itemStateStyles = tv({
   extend: focusRing,
