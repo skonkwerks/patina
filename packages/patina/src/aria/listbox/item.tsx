@@ -6,7 +6,7 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { checkMarkStyles } from '../../internal/checkmark.js';
+import { CheckMark } from '../../internal/checkmark.js';
 import { overlayOptionStyles } from '../popover/index.js';
 import { ListBoxLayerContext } from './layer.js';
 
@@ -86,17 +86,14 @@ export const ListBoxItem = ({ children, ...rest }: ListBoxItemProps) => {
         const styles = listBoxItemStyles({ layer, isSelected });
         const isCheckbox =
           selectionMode === 'multiple' && selectionBehavior === 'toggle';
-        const box = checkMarkStyles({ size: 'sm', isSelected });
         return (
           <>
             {isCheckbox && (
-              <span className={box.box({ className: styles.mark() })}>
-                <IconCheck
-                  aria-hidden
-                  className={box.check()}
-                  strokeWidth={2.5}
-                />
-              </span>
+              <CheckMark
+                size='sm'
+                isSelected={isSelected}
+                className={styles.mark()}
+              />
             )}
             {selectionMode !== 'none' && !isCheckbox && (
               <span className={styles.checkFrame()}>

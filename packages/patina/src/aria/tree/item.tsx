@@ -1,18 +1,15 @@
-import { IconCheck, IconChevronRight } from '@tabler/icons-react';
+import { IconChevronRight } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 import {
   Button,
-  Checkbox,
   TreeItem as AriaTreeItem,
   TreeItemContent,
   type TreeItemProps as AriaTreeItemProps,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { checkMarkStyles } from '../../internal/checkmark.js';
-import { cn } from '../../internal/cn.js';
-import { focusRing } from '../../internal/focus.js';
 import { rowStateStyles } from '../../internal/itemstate.js';
+import { SelectionCheckbox } from '../../internal/selectioncheckbox.js';
 
 /**
  * A row of a `Tree`: 32px high, with the shared row states (`internal/itemstate.ts`) a `GridList`
@@ -28,13 +25,12 @@ export const treeItemStyles = tv({
 /**
  * The parts of a row. The chevron of a row with children, or the empty place of one without, is
  * indented one chevron's width for each level below the first, so the titles of a level line up and
- * the selection checkboxes stay in one column before them. The checkbox itself is the shared mark
- * (`checkMarkStyles`), at a list row's size.
+ * the selection checkboxes stay in one column before them. The checkbox itself is the shared
+ * selection checkbox (`internal/selectioncheckbox.tsx`), at a list row's size.
  */
 export const treeItemContentStyles = tv({
   slots: {
-    // Positioned, so the hidden input React Aria puts inside the label stays over the mark.
-    selection: 'relative me-1 flex shrink-0',
+    selection: 'me-1',
     toggle:
       'ms-[calc((var(--tree-item-level)_-_1)_*_var(--spacing)_*_5)] flex size-5 shrink-0 items-center justify-center rounded',
     chevron:
@@ -76,25 +72,9 @@ export const TreeItem = ({ title, children, ...rest }: TreeItemProps) => (
         return (
           <>
             {selectionMode !== 'none' && selectionBehavior === 'toggle' && (
-              <Checkbox slot='selection' className={styles.selection()}>
-                {/* Right on a row with no children moves the focus into its checkbox, so the
-                  checkbox draws the focus ring then, in the row's place. */}
-                {({ isFocusVisible, isSelected }) => {
-                  // A row's 14px title takes the list row's 16px mark, as MultiSelect's options do.
-                  const mark = checkMarkStyles({ size: 'sm', isSelected });
-                  return (
-                    <span
-                      className={cn(mark.box(), focusRing({ isFocusVisible }))}
-                    >
-                      <IconCheck
-                        aria-hidden
-                        className={mark.check()}
-                        strokeWidth={2.5}
-                      />
-                    </span>
-                  );
-                }}
-              </Checkbox>
+              // Right on a row with no children moves the focus into its checkbox, which then
+              // draws the focus ring in the row's place.
+              <SelectionCheckbox mark='check' className={styles.selection()} />
             )}
             {hasChildItems ? (
               <Button slot='chevron' className={styles.toggle()}>

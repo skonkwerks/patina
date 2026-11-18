@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { expect } from 'storybook/test';
 
 import { Checkbox, CheckboxGroup } from './index.js';
 
@@ -19,6 +20,28 @@ export const Selected: Story = { args: { defaultSelected: true } };
 /** A description under the label, indented to line up with it. */
 export const WithDescription: Story = {
   args: { description: 'Sent every Monday morning.' },
+};
+
+/**
+ * Neither checked nor unchecked, such as a select-all over a partly checked group: the mark is
+ * filled and shows a dash, and assistive technology hears it as mixed. React Aria keeps it
+ * indeterminate whatever is clicked (the state is presentational only); the app clears
+ * `isIndeterminate`, as a select-all does when its group becomes all or none, so a click on this
+ * story changes nothing on screen.
+ */
+export const Indeterminate: Story = {
+  args: { isIndeterminate: true },
+  play: async ({ canvas, canvasElement }) => {
+    const checkbox = canvas.getByRole<HTMLInputElement>('checkbox');
+    await expect(checkbox.indeterminate).toBe(true);
+    // The story's one glyph: the mark's.
+    const glyph = canvasElement.querySelector('svg');
+    if (!glyph) {
+      throw new Error('The checkbox draws no glyph.');
+    }
+    await expect(glyph.classList.contains('tabler-icon-minus')).toBe(true);
+    await expect(getComputedStyle(glyph).opacity).toBe('1');
+  },
 };
 
 export const Disabled: Story = { args: { isDisabled: true } };

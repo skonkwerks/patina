@@ -144,9 +144,6 @@ importers:
 
   packages/patina:
     dependencies:
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       immer:
         specifier: ^11.2.10
         version: 11.2.10

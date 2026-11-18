@@ -1,4 +1,3 @@
-import { IconCheck } from '@tabler/icons-react';
 import {
   CheckboxButton,
   CheckboxField,
@@ -8,14 +7,14 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { checkMarkStyles } from '../../internal/checkmark.js';
-import { cn } from '../../internal/cn.js';
+import { CheckMark } from '../../internal/checkmark.js';
 import { choiceControlStyles } from '../../internal/field.js';
 import { focusRing } from '../../internal/focus.js';
 
 /**
  * A checkbox: the shared choice control, whose mark is the shared checkbox mark (`checkMarkStyles`):
- * a square with a control's edge that fills and shows a check when on.
+ * a square with a control's edge that fills and shows a check when on, or a dash when
+ * indeterminate (`isIndeterminate`, such as a select-all over a partly checked group).
  */
 export const checkboxStyles = tv({ extend: choiceControlStyles });
 
@@ -54,25 +53,18 @@ export const Checkbox = ({
       return (
         <>
           <CheckboxButton className={styles.button()}>
-            {({ isFocusVisible, isSelected }) => {
-              const mark = checkMarkStyles({ isSelected });
-              return (
-                <>
-                  <span
-                    className={styles.mark({
-                      className: cn(mark.box(), focusRing({ isFocusVisible })),
-                    })}
-                  >
-                    <IconCheck
-                      aria-hidden
-                      className={mark.check()}
-                      strokeWidth={2.5}
-                    />
-                  </span>
-                  <span className={styles.label()}>{children}</span>
-                </>
-              );
-            }}
+            {({ isFocusVisible, isSelected, isIndeterminate }) => (
+              <>
+                <CheckMark
+                  isSelected={isSelected}
+                  isIndeterminate={isIndeterminate}
+                  className={styles.mark({
+                    className: focusRing({ isFocusVisible }),
+                  })}
+                />
+                <span className={styles.label()}>{children}</span>
+              </>
+            )}
           </CheckboxButton>
           {description && (
             <Text slot='description' className={styles.description()}>

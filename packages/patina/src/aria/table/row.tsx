@@ -1,28 +1,58 @@
 import {
+  Collection,
   Row as AriaRow,
   type RowProps as AriaRowProps,
+  useTableOptions,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import { focusRing } from '../../internal/focus.js';
+import { rowStateStyles } from '../../internal/itemstate.js';
+import { SelectionCheckbox } from '../../internal/selectioncheckbox.js';
+import { Cell } from './cell.js';
 
 export const tableRowStyles = tv({
-  extend: focusRing,
+  // The shared row states (`internal/itemstate.ts`), as a `GridList`'s and a `Tree`'s rows have
+  // them: the focus ring inside the row, the hover and selected fills, the selected row's start
+  // bar (so that color is not the only sign), and the disabled look.
+  extend: rowStateStyles,
   // The line is drawn above each row but the first, and not below each but the last: a paged
   // table ends with React Aria's load-more row, so no row of the data is ever the last child.
-  base: 'border-surface-border border-t outline-offset-[-2px] first:border-t-0',
-  variants: {
+  base: 'border-surface-border border-t first:border-t-0',
+  compoundVariants: [
     // The hover comes from React Aria, which a row has only where a press does something, so a
-    // row that does nothing never lights up.
-    isHovered: { true: 'bg-surface-hover cursor-pointer' },
-  },
+    // row that does nothing never lights up. A compound variant rather than a second `isHovered`:
+    // an extending style that defines a boolean variant again loses its boolean type in
+    // tailwind-variants 3.3.1.
+    { isHovered: true, class: 'cursor-pointer' },
+  ],
 });
 
 export type RowProps<T extends object> = Omit<AriaRowProps<T>, 'className'>;
 
-export const Row = <T extends object>(props: RowProps<T>) => (
-  <AriaRow
-    {...props}
-    className={(renderProps) => tableRowStyles(renderProps)}
-  />
-);
+/**
+ * One row of a `Table`. In a table whose selection toggles (`selectionMode` with the default
+ * `selectionBehavior`), it leads with its selection mark in the header's selection column: a
+ * checkbox when several rows can be selected, a round mark when one can. A press on its mark adds
+ * the row to the selection or takes it out; a press on the row does the same, except in a table
+ * with a row action and nothing selected, where it runs the action. The focus moves into the mark
+ * from its cell, also when the table moves by Tab.
+ */
+export const Row = <T extends object>({
+  columns,
+  children,
+  ...rest
+}: RowProps<T>) => {
+  const { selectionMode, selectionBehavior } = useTableOptions();
+  return (
+    <AriaRow {...rest} className={(renderProps) => tableRowStyles(renderProps)}>
+      {selectionBehavior === 'toggle' && (
+        <Cell focusMode='child' allowsArrowNavigation>
+          <SelectionCheckbox
+            mark={selectionMode === 'single' ? 'radio' : 'check'}
+          />
+        </Cell>
+      )}
+      <Collection items={columns}>{children}</Collection>
+    </AriaRow>
+  );
+};

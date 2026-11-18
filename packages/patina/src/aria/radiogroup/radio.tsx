@@ -8,15 +8,13 @@ import { tv } from 'tailwind-variants';
 
 import { choiceControlStyles } from '../../internal/field.js';
 import { focusRing } from '../../internal/focus.js';
+import { RadioMark } from '../../internal/radiomark.js';
 
-/** A radio choice: the shared choice control with a round mark that shows a dot when chosen. */
-export const radioStyles = tv({
-  extend: choiceControlStyles,
-  slots: {
-    mark: 'border-control-border w-5 justify-center rounded-full border',
-    dot: 'bg-primary group-selected:opacity-100 h-2.5 w-2.5 rounded-full opacity-0',
-  },
-});
+/**
+ * A radio choice: the shared choice control, whose mark is the shared radio mark (`radioMarkStyles`):
+ * a circle with a control's edge that shows a dot when chosen.
+ */
+export const radioStyles = tv({ extend: choiceControlStyles });
 
 export type RadioProps = Omit<RadioFieldProps, 'className' | 'children'> & {
   /** The choice's name. */
@@ -39,15 +37,14 @@ export const Radio = ({
       return (
         <>
           <RadioButton className={styles.button()}>
-            {({ isFocusVisible }) => (
+            {({ isFocusVisible, isSelected }) => (
               <>
-                <span
+                <RadioMark
+                  isSelected={isSelected}
                   className={styles.mark({
                     className: focusRing({ isFocusVisible }),
                   })}
-                >
-                  <span className={styles.dot()} />
-                </span>
+                />
                 <span className={styles.label()}>{children}</span>
               </>
             )}

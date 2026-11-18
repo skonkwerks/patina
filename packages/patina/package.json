@@ -2,7 +2,7 @@
   "name": "@skonkwerks/patina",
   "version": "0.1.0",
   "private": true,
-  "description": "Styled wrappers around React Aria Components, themed with Tailwind tokens. Depends only on React and React DOM, React Aria Components, Tabler icons, Motion, clsx, tailwind-merge, tailwind-variants and Immer.",
+  "description": "Styled wrappers around React Aria Components, themed with Tailwind tokens. Depends only on React and React DOM, React Aria Components, Tabler icons, Motion, tailwind-variants (with tailwind-merge) and Immer.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -337,7 +337,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
     "immer": "^11.2.10",
     "tailwind-merge": "^3.6.0",
     "tailwind-variants": "^3.3.1"

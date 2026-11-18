@@ -5,7 +5,7 @@ import { focusRing } from './focus.js';
 
 /**
  * The states of an item in a collection on a surface, defined once for a `GridList`'s rows and
- * tiles and a `Tree`'s rows: the focus ring inside its edge, a hover fill, a selected fill, and the
+ * tiles, a `Tree`'s rows and a `Table`'s rows: the focus ring inside its edge, a hover fill, a selected fill, and the
  * disabled look. The selected fills are light enough for the muted text and the chips an item holds
  * to keep their contrast on them; an app checks its text contrast on these two fills.
  *

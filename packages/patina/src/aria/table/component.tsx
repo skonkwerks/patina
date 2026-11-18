@@ -54,6 +54,12 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
  * columns share the table's width, a sized column taking its size and the others the rest, and
  * a cell's text is cut where its column ends: the table never becomes wider than its place, and
  * its frame is no scroller, so the end of a paged table is seen by the page that scrolls it.
+ *
+ * With a `selectionMode`, a selected row has the shared row's tint and start bar. Under the default
+ * `selectionBehavior='toggle'`, the rows lead with a selection column: checkboxes, and a select-all
+ * in the header, when several rows can be selected (`multiple`); a round mark, as a radio's, when
+ * one can (`single`). Under `selectionBehavior='replace'` a press replaces the selection, and there
+ * is no column.
  */
 export const Table = ({
   emptyState,

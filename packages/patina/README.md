@@ -8,7 +8,7 @@ The source is sorted into tiers by what a component imports:
 
 ```
 src/
-├─ internal/      helpers every tier uses (cn, focus ring, disabled look, field looks, field header); never a subpath
+├─ internal/      helpers every tier uses (focus ring, disabled look, field looks, field header, the choice marks); never a subpath
 ├─ <family>/      core components: no React Aria, no wrapper inside (spinner/, count/, emptystate/, …)
 ├─ aria/          React Aria wrappers: a component whose root is a React Aria component
 └─ composites/    components that combine several others into one arrangement
@@ -34,7 +34,6 @@ The package imports only:
 - `motion` (peer dependency, imported from `motion/react`), for motion that is part of a component's behavior, such as `PanScroll`'s glide
 - `tailwind-variants`
 - `immer` (a dependency, not a peer: an internal detail), for the updates in Patina's reducers, such as the side panel's
-- `cn` from `internal/cn.ts`, which is the only place `clsx` and `tailwind-merge` are used
 - the package's own files
 
 Nothing else, including no other icon or animation library. Two things enforce the rule:

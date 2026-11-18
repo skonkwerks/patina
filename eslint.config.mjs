@@ -155,7 +155,7 @@ const ariaImports = (extra = []) => {
           // Any package other than these; relative imports stay inside the package.
           regex: `^(?!\\.)(?!(${allowed.map((name) => name.replace('/', '\\/')).join('|')})(/.*)?$)`,
           message:
-            '@skonkwerks/patina imports only React, React DOM, React Aria Components, tailwind-variants, Tabler icons, Motion, Immer and its own files (cn in internal/cn.ts adds clsx and tailwind-merge). See packages/patina/README.md.',
+            '@skonkwerks/patina imports only React, React DOM, React Aria Components, tailwind-variants, Tabler icons, Motion, Immer and its own files. See packages/patina/README.md.',
         },
       ],
       paths: [noReactFC],
@@ -388,13 +388,6 @@ export default tseslint.config([
   {
     files: ['packages/patina/src/aria/**/*.{ts,tsx}'],
     rules: { 'react-refresh/only-export-components': 'off' },
-  },
-  // internal/cn.ts holds cn, the one place clsx and tailwind-merge are used.
-  {
-    files: ['packages/patina/src/internal/cn.ts'],
-    rules: {
-      'no-restricted-imports': ariaImports(['clsx', 'tailwind-merge']),
-    },
   },
   // Specs are not shipped to apps; they may also use Vitest.
   {

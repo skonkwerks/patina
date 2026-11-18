@@ -37,6 +37,24 @@ export const contrastRatio = (first: string, second: string) => {
   return ((lighter ?? 0) + 0.05) / ((darker ?? 0) + 0.05);
 };
 
+/**
+ * The opaque color the browser paints for computed colors stacked bottom first, such as a selected
+ * row's translucent tint over the surface under it: a canvas paints them, so any color syntax the
+ * browser computes (`oklab()` from Tailwind's opacity modifier included) is composited as drawn.
+ */
+export const paintedColor = (...layers: string[]) => {
+  const context = document.createElement('canvas').getContext('2d');
+  if (context === null) {
+    throw new Error('No 2D canvas to paint the colors on.');
+  }
+  for (const layer of layers) {
+    context.fillStyle = layer;
+    context.fillRect(0, 0, 1, 1);
+  }
+  const [red, green, blue] = context.getImageData(0, 0, 1, 1).data;
+  return `rgb(${String(red)}, ${String(green)}, ${String(blue)})`;
+};
+
 /** The non-text contrast an interface component's edge needs against what it stands on. */
 export const NON_TEXT_CONTRAST = 3;
 
