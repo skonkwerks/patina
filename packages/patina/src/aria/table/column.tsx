@@ -1,8 +1,14 @@
+import {
+  IconCaretDown,
+  IconCaretDownFilled,
+  IconCaretUpFilled,
+} from '@tabler/icons-react';
 import { use } from 'react';
 import {
   Column as AriaColumn,
   type ColumnProps as AriaColumnProps,
   ColumnResizer,
+  type SortDirection,
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
@@ -22,8 +28,17 @@ export const tableColumnStyles = tv({
   slots: {
     // Cut where the column ends, which a resizable column can be dragged narrower than its text.
     title: 'block truncate',
+    // At the heading's end whatever the column's alignment, as Cloudscape's, clear of the resizer.
+    sortMark:
+      'pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2',
   },
-  variants: { align },
+  variants: {
+    align,
+    // A sortable heading is pressed to sort: it keeps room at its end for the sort mark, and takes
+    // the neutral fill's hover, as a neutral button does.
+    allowsSorting: { true: 'cursor-pointer pe-9' },
+    isHovered: { true: 'bg-neutral-hover' },
+  },
   defaultVariants: { align: 'start' },
 });
 
@@ -52,6 +67,21 @@ const cssSize = (size: AriaColumnProps['width'] | undefined) => {
   return size.endsWith('%') ? size : `${size}px`;
 };
 
+/**
+ * The mark at a sortable heading's end, as Cloudscape's: an outlined caret while the column is not
+ * the one sorted, a filled caret pointing up while it is sorted ascending, and down while
+ * descending. The heading's `aria-sort` states the same to assistive technology.
+ */
+const sortMark = (direction: SortDirection | undefined, className: string) => {
+  if (direction === 'ascending') {
+    return <IconCaretUpFilled className={className} aria-hidden />;
+  }
+  if (direction === 'descending') {
+    return <IconCaretDownFilled className={className} aria-hidden />;
+  }
+  return <IconCaretDown className={className} aria-hidden />;
+};
+
 export type ColumnProps = Omit<
   AriaColumnProps,
   'className' | 'children' | 'style'
@@ -72,6 +102,12 @@ export type ColumnProps = Omit<
  * says) or wider than its `maxWidth`; `defaultWidth` is where it starts while React Aria holds the
  * widths, `width` holds it in the app (with the table's `onResize`), and a column with neither
  * shares what the others leave, as an `fr` width does, so the last such column fills the frame.
+ *
+ * `allowsSorting` makes the heading a control that sorts by its column: pressed, or Enter or Space
+ * while it has the focus. The first press sorts ascending and the next ones turn the direction
+ * over, as Cloudscape's; the table's `sortDescriptor` and `onSortChange` hold the sort, and the app
+ * sorts the rows. A sortable heading takes the focus itself, so in a resizable table Enter sorts
+ * and the Right arrow moves into its resizer.
  */
 export const Column = ({
   children,
@@ -87,6 +123,9 @@ export const Column = ({
   return (
     <AriaColumn
       {...rest}
+      // React Aria focuses a heading's first control by default, which in a resizable table is the
+      // resizer; a sortable heading is itself the control, so it takes the focus as a cell.
+      focusMode={rest.focusMode ?? (rest.allowsSorting ? 'cell' : undefined)}
       textValue={rest.textValue ?? children}
       width={width}
       defaultWidth={defaultWidth}
@@ -107,11 +146,16 @@ export const Column = ({
         tableColumnStyles({ ...renderProps, align }).base()
       }
     >
-      <span className={styles.title()}>{children}</span>
-      {isResizable && (
-        <ColumnResizer
-          className={(renderProps) => columnResizerStyles(renderProps)}
-        />
+      {({ allowsSorting, sortDirection }) => (
+        <>
+          <span className={styles.title()}>{children}</span>
+          {allowsSorting && sortMark(sortDirection, styles.sortMark())}
+          {isResizable && (
+            <ColumnResizer
+              className={(renderProps) => columnResizerStyles(renderProps)}
+            />
+          )}
+        </>
       )}
     </AriaColumn>
   );

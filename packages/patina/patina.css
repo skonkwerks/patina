@@ -16,6 +16,10 @@
  * Naming: a fill is `{name}`; text drawn on it is `{name}-foreground`; quieter text on it is
  * `{name}-foreground-muted`.
  *
+ * A fill's text, `{name}-foreground` and `{name}-foreground-muted`, must reach 4.5:1 against the
+ * fill and, where the fill has one, against its `{name}-hover`, in every mode: a button's text
+ * under the pointer, a hovered row's, a sortable table heading's.
+ *
  *   Layers, back to front
  *   canvas   canvas-foreground   canvas-foreground-muted   canvas-border
  *   surface  surface-foreground  surface-foreground-muted  surface-border  surface-hover

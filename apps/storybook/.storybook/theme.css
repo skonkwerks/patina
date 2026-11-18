@@ -69,7 +69,13 @@
   --patina-clr-primary-hover: var(--cat-latte-blue-darker);
   --patina-clr-neutral: var(--cat-latte-surface0);
   --patina-clr-neutral-foreground: var(--cat-latte-text);
-  --patina-clr-neutral-hover: var(--cat-latte-surface1);
+  /* Halfway between surface0 and surface1, so neutral text holds 4.77:1 on it; surface1 itself
+     gave 4.39:1. */
+  --patina-clr-neutral-hover: color-mix(
+    in srgb,
+    var(--cat-latte-surface0),
+    var(--cat-latte-surface1)
+  );
   --patina-clr-destructive: var(--cat-latte-red-dark);
   --patina-clr-destructive-foreground: var(--cat-latte-base);
   --patina-clr-destructive-hover: color-mix(

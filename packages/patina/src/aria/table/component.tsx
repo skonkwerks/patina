@@ -101,6 +101,10 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
  * A paged table reads its next page from the button in the bar under its rows (`loadMore`), never
  * on its own as its end scrolls into view.
  *
+ * A table sorts by one column at a time, as Cloudscape's does: a column with `allowsSorting` is
+ * pressed to sort by it, `sortDescriptor` (React Aria's) says which column and in which direction,
+ * and `onSortChange` gives the new one. The app sorts the rows; the table only draws the sort.
+ *
  * With a `selectionMode`, a selected row has the shared row's tint and start bar. Under the default
  * `selectionBehavior='toggle'`, the rows lead with a selection column: checkboxes, and a select-all
  * in the header, when several rows can be selected (`multiple`); a round mark, as a radio's, when

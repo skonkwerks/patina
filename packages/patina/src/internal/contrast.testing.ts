@@ -77,6 +77,9 @@ export const surfaceBehind = (element: Element) => {
 /** The non-text contrast an interface component's edge needs against what it stands on. */
 export const NON_TEXT_CONTRAST = 3;
 
+/** The contrast text of a normal size needs against what it is drawn on. */
+export const TEXT_CONTRAST = 4.5;
+
 /** A computed color in one shadow layer, such as `rgb(1, 2, 3)` or `rgba(0, 0, 0, 0)`. */
 const SHADOW_COLOR = /rgba?\([^)]*\)/;
 
