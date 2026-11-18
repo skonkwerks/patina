@@ -163,6 +163,62 @@ const ariaImports = (extra = []) => {
   ];
 };
 
+/** A conditional spread, in an object, a list, a call, or a component's props. */
+const conditionalSpread = String.raw`:matches(SpreadElement, JSXSpreadAttribute):has(> ConditionalExpression)`;
+
+/** A relative specifier with no extension (a name holding a dot reads as having one; review). */
+const extensionless = String.raw`[source.value=/^\.{1,2}\/(.*\/)?[^./]+$/]`;
+
+/**
+ * The `no-restricted-syntax` selectors, one list that every block setting the rule includes: in a flat
+ * configuration a later block's options for a rule replace an earlier block's for the same files.
+ */
+const restrictedSyntax = [
+  {
+    selector: 'FunctionDeclaration',
+    message: 'Use arrow functions or const function expressions instead.',
+  },
+  {
+    selector: 'TSEnumDeclaration',
+    message: 'Use a string literal union instead of an enum.',
+  },
+  {
+    selector:
+      'TSInterfaceDeclaration:not(TSModuleDeclaration TSInterfaceDeclaration)',
+    message: 'Use a type alias; an interface is only for module augmentation.',
+  },
+  {
+    // React Aria first: an interactive widget role on a plain element is a hand-rolled control.
+    // A component (a capitalized name, such as React Aria's `Dialog`, whose `role` prop takes
+    // `alertdialog`) is not a plain element; a plain element under a member name (`motion.div`) is.
+    selector: `JSXOpeningElement:not([name.type='JSXIdentifier'][name.name=/^[A-Z]/]) > JSXAttribute[name.name='role'][value.value=/^(${handRolledRoles.join('|')})$/]`,
+    message:
+      "Use the React Aria component for this control; a hand-rolled control needs the owner's approval.",
+  },
+  {
+    // typescript/style.md, Objects built under conditions: at most two conditional spreads.
+    selector: `${conditionalSpread} ~ ${conditionalSpread} ~ ${conditionalSpread}`,
+    message:
+      "At most two conditional spreads in one object, list, call, or set of props: give a prop its own value, list a list's parts and filter out the absent ones, or build an object with Immer's produce.",
+  },
+  {
+    selector: String.raw`:matches(SpreadElement, JSXSpreadAttribute):has(> LogicalExpression[operator=/^(&&|\|\|)$/])`,
+    message:
+      'Do not spread an && or || expression: give the value its own condition.',
+  },
+  ...[
+    'ImportDeclaration',
+    'ExportNamedDeclaration',
+    'ExportAllDeclaration',
+    'ImportExpression',
+  ].map((node) => ({
+    // typescript/style.md, Imports: a relative import names the file that runs.
+    selector: `${node}${extensionless}`,
+    message:
+      'A relative import names the file it loads, extension included (.js for a TypeScript module).',
+  })),
+];
+
 /** The rules every file holds, the root's scripts included. */
 /** @type {import('eslint').Linter.RulesRecord} */
 const baseRules = {
@@ -212,31 +268,7 @@ const baseRules = {
   'no-console': ['error', { allow: ['warn', 'error'] }],
   // A workspace imports another by its package name, never by a relative path into it.
   'import-x/no-relative-packages': 'error',
-  'no-restricted-syntax': [
-    'error',
-    {
-      selector: 'FunctionDeclaration',
-      message: 'Use arrow functions or const function expressions instead.',
-    },
-    {
-      selector: 'TSEnumDeclaration',
-      message: 'Use a string literal union instead of an enum.',
-    },
-    {
-      selector:
-        'TSInterfaceDeclaration:not(TSModuleDeclaration TSInterfaceDeclaration)',
-      message:
-        'Use a type alias; an interface is only for module augmentation.',
-    },
-    {
-      // React Aria first: an interactive widget role on a plain element is a hand-rolled control.
-      // A component (a capitalized name, such as React Aria's `Dialog`, whose `role` prop takes
-      // `alertdialog`) is not a plain element; a plain element under a member name (`motion.div`) is.
-      selector: `JSXOpeningElement:not([name.type='JSXIdentifier'][name.name=/^[A-Z]/]) > JSXAttribute[name.name='role'][value.value=/^(${handRolledRoles.join('|')})$/]`,
-      message:
-        "Use the React Aria component for this control; a hand-rolled control needs the owner's approval.",
-    },
-  ],
+  'no-restricted-syntax': ['error', ...restrictedSyntax],
   'simple-import-sort/imports': ['error', { groups: importSortGroups }],
   'simple-import-sort/exports': 'error',
 };
