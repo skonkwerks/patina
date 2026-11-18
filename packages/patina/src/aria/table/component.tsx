@@ -1,4 +1,4 @@
-import { type ReactNode, useRef } from 'react';
+import { type ReactNode, useCallback, useRef, useState } from 'react';
 import {
   ResizableTableContainer,
   type ResizableTableContainerProps,
@@ -11,6 +11,7 @@ import type { EmptyStateProps } from '../../emptystate/index.js';
 import { focusRing } from '../../internal/focus.js';
 import { BodyStatusContext, ColumnResizingContext } from './context.js';
 import { LoadMoreBar, type TableLoadMore } from './loadmore.js';
+import { TableScrollbar } from './scrollbar.js';
 
 /** The frame around the table: where the error notice stands, the bordered box, the scroller inside it, the pending status. */
 export const tableFrameStyles = tv({
@@ -21,8 +22,10 @@ export const tableFrameStyles = tv({
     // The table scrolls sideways inside its frame when its columns are wider than the frame, as
     // Cloudscape's does. A scroller is the scroll root React Aria's load-more row would watch, and
     // as it grows with the rows, that row would always count as in view and read every page by
-    // itself; so a paged table reads its next page from the bar's button instead.
-    scroller: 'overflow-x-auto',
+    // itself; so a paged table reads its next page from the bar's button instead. Its own scrollbar
+    // is hidden: the table's sticky scrollbar under it takes its place (`tableScrollbarStyles`).
+    scroller:
+      '[scrollbar-width:none] overflow-x-auto [&::-webkit-scrollbar]:hidden',
     pending: 'text-surface-foreground-muted p-4',
   },
 });
@@ -94,7 +97,9 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
  *
  * Each column is as wide as its content within the sizes it sets (`Column`'s `width`, `minWidth`
  * and `maxWidth`), and a cell's text stays on one line unless the cell allows wrapping. When the
- * columns are wider than the frame, the table scrolls sideways inside it. With
+ * columns are wider than the frame, the table scrolls sideways inside it, and its scrollbar sticks
+ * to the bottom of the window while the table runs past it, as Cloudscape's does, so the person
+ * scrolls sideways without scrolling down to the last row. With
  * `allowsColumnResizing`, each heading has a resizer instead, and a column without a width shares
  * what the others leave, so the last one fills the frame.
  *
@@ -126,10 +131,24 @@ export const Table = ({
 }: TableProps) => {
   const frame = tableFrameStyles();
   const tableRef = useRef<HTMLTableElement>(null);
+  // The table and its scroller as elements, for the scrollbar, which watches them: switching
+  // `allowsColumnResizing` replaces both.
+  const [tableElement, setTableElement] = useState<HTMLTableElement | null>(
+    null,
+  );
+  const [scroller, setScroller] = useState<HTMLDivElement | null>(null);
+  // One callback ref sets both: `tableRef` for `LoadMoreBar`, which reads the table after a commit,
+  // from its cleanup, and needs the element then rather than one a render captured; and the state
+  // for the scrollbar. Memoized, so React does not call a new ref with null and then the element on
+  // every render, setting the state each time.
+  const setTable = useCallback((element: HTMLTableElement | null) => {
+    tableRef.current = element;
+    setTableElement(element);
+  }, []);
   const table = (
     <AriaTable
       {...rest}
-      ref={tableRef}
+      ref={setTable}
       className={(renderProps) =>
         tableStyles({ ...renderProps, allowsColumnResizing })
       }
@@ -153,6 +172,7 @@ export const Table = ({
         <ColumnResizingContext value={allowsColumnResizing}>
           {allowsColumnResizing ? (
             <ResizableTableContainer
+              ref={setScroller}
               onResizeStart={onResizeStart}
               onResize={onResize}
               onResizeEnd={onResizeEnd}
@@ -161,9 +181,12 @@ export const Table = ({
               {table}
             </ResizableTableContainer>
           ) : (
-            <div className={frame.scroller()}>{table}</div>
+            <div ref={setScroller} className={frame.scroller()}>
+              {table}
+            </div>
           )}
         </ColumnResizingContext>
+        <TableScrollbar scroller={scroller} table={tableElement} />
         {loadMore && <LoadMoreBar loadMore={loadMore} tableRef={tableRef} />}
       </div>
     </div>

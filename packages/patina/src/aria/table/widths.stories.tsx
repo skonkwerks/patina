@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import type { ResizableTableContainerProps } from 'react-aria-components';
-import { expect, within } from 'storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
 
+import { Button } from '../button/index.js';
 import {
   Cell,
   Column,
@@ -66,11 +67,13 @@ type Widths = Parameters<
   NonNullable<ResizableTableContainerProps['onResize']>
 >[0];
 
-/** The columns, each given the sizes the story passes for its id. */
+/** The columns, each given the sizes the story passes for its id, and the given rows. */
 const DeploymentTable = ({
   sizes = {},
+  rows = deployments,
   ...props
 }: TableProps & {
+  rows?: readonly Deployment[];
   sizes?: Partial<
     Record<
       keyof Deployment,
@@ -96,7 +99,7 @@ const DeploymentTable = ({
         Started
       </Column>
     </TableHeader>
-    <TableBody items={deployments}>
+    <TableBody items={rows}>
       {(deployment) => (
         <Row id={deployment.id}>
           <Cell>{deployment.service}</Cell>
@@ -121,6 +124,19 @@ const scrollerOf = (table: HTMLElement) => {
 
 const widthOf = (element: Element) => element.getBoundingClientRect().width;
 
+/** The table's sticky sideways scrollbar: the element after its scroller, in its frame. */
+const scrollbarOf = (table: HTMLElement) => {
+  const bar = scrollerOf(table).nextElementSibling;
+  if (!(bar instanceof HTMLElement)) {
+    throw new Error('The table has no scrollbar after its scroller.');
+  }
+  return bar;
+};
+
+/** How far an element scrolls sideways: its whole width less what it shows. */
+const rangeOf = (element: HTMLElement) =>
+  element.scrollWidth - element.clientWidth;
+
 /**
  * The keys that reach a column's resizer as a person's do: Tab into the table, Right along the
  * first row to the column's cell, and Up to its heading, where the focus moves into the resizer.
@@ -131,7 +147,9 @@ const toResizer = (column: number) =>
 /**
  * Each column is as wide as its content, and a cell's text stays whole on one line. In a place
  * narrower than the columns, the table scrolls sideways inside its frame, as Cloudscape's does,
- * and the frame keeps to its place.
+ * and the frame keeps to its place. The scrollbar is the table's own, under the rows: as wide as
+ * the frame, with the table's range, and scrolled with the table both ways; the scroller draws
+ * none of its own.
  */
 export const WiderThanItsPlace: Story = {
   render: (args) => (
@@ -152,6 +170,148 @@ export const WiderThanItsPlace: Story = {
     // The longest text is whole: its cell is not cut.
     const owner = canvas.getByText('Payments platform team');
     await expect(owner.scrollWidth).toBeLessThanOrEqual(owner.clientWidth);
+
+    const bar = scrollbarOf(table);
+    await expect(bar).toBeVisible();
+    await expect(widthOf(bar)).toBeCloseTo(widthOf(scroller), 0);
+    await expect(rangeOf(bar)).toBe(rangeOf(scroller));
+    // The scroller draws no scrollbar of its own. (Measured as the property: the test browser runs
+    // with scrollbars hidden, so no scrollbar takes room to measure here.)
+    await expect(getComputedStyle(scroller).scrollbarWidth).toBe('none');
+    // With no room taken by its scrollbar, as an overlay scrollbar takes none, the bar keeps 16px
+    // for one to appear in, under the table, where it covers no row: the last row's bottom edge
+    // is the row's, to press.
+    await expect(bar.offsetHeight).toBe(16);
+    await expect(bar.getBoundingClientRect().top).toBeCloseTo(
+      scroller.getBoundingClientRect().bottom,
+      0,
+    );
+    const lastRow = canvas.getAllByRole('row').at(-1);
+    if (lastRow === undefined) {
+      throw new Error('The table has no rows.');
+    }
+    const { left, bottom } = lastRow.getBoundingClientRect();
+    await expect(
+      lastRow.contains(
+        canvasElement.ownerDocument.elementFromPoint(left + 24, bottom - 2),
+      ),
+    ).toBe(true);
+    // Out of the Tab order: the keyboard scrolls the table by moving through its cells.
+    await expect(bar).toHaveAttribute('tabindex', '-1');
+    // Either one moves the other.
+    bar.scrollLeft = 60;
+    await waitFor(() => expect(scroller.scrollLeft).toBeCloseTo(60, 0));
+    scroller.scrollLeft = rangeOf(scroller);
+    await waitFor(() => expect(bar.scrollLeft).toBeCloseTo(rangeOf(bar), 0));
+  },
+};
+
+const manyDeployments = Array.from({ length: 24 }, (_, index) => {
+  const deployment = deployments[index % deployments.length];
+  if (deployment === undefined) {
+    throw new Error('No deployments to repeat.');
+  }
+  return { ...deployment, id: `d-${String(index + 1)}` };
+});
+
+/**
+ * A table longer than the area the page scrolls in, here a box 320px tall: its scrollbar sticks to
+ * the area's bottom while the rows run past it, so the person scrolls sideways where they are
+ * reading, and settles under the last row once the table's end is in view.
+ */
+export const ScrollbarStaysInView: Story = {
+  render: (args) => (
+    <div data-testid='page' className='h-80 max-w-md overflow-y-auto'>
+      <DeploymentTable {...args} rows={manyDeployments} />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const page = canvas.getByTestId('page');
+    const table = canvas.getByRole('grid');
+    const scroller = scrollerOf(table);
+    const bar = scrollbarOf(table);
+    const pageBottom = () => page.getBoundingClientRect().bottom;
+    await expect(scroller.getBoundingClientRect().bottom).toBeGreaterThan(
+      pageBottom(),
+    );
+    await expect(bar.getBoundingClientRect().bottom).toBeCloseTo(
+      pageBottom(),
+      0,
+    );
+
+    // At the table's end, the bar settles at the bottom of the frame, inside its 1px border.
+    page.scrollTop = page.scrollHeight;
+    const frame = scroller.parentElement;
+    if (frame === null) {
+      throw new Error('The scroller stands in no frame.');
+    }
+    await waitFor(() =>
+      expect(bar.getBoundingClientRect().bottom).toBeCloseTo(
+        frame.getBoundingClientRect().bottom - 1,
+        0,
+      ),
+    );
+  },
+};
+
+/**
+ * A resizable table that fits its frame has no scrollbar; widened past the frame by resizing a
+ * column, it has one, with the table's new range.
+ */
+export const WidenedPastTheFrame: Story = {
+  args: { allowsColumnResizing: true },
+  render: (args) => (
+    <div className='w-[40rem]'>
+      <DeploymentTable {...args} />
+    </div>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    const table = canvas.getByRole('grid');
+    const scroller = scrollerOf(table);
+    const bar = scrollbarOf(table);
+    await expect(bar).not.toBeVisible();
+    // Service is the first cell along; each Right widens it 10px, past what the others can give.
+    await userEvent.keyboard(toResizer(1));
+    await userEvent.keyboard(`{Enter}${'{ArrowRight}'.repeat(8)}{Enter}`);
+    await waitFor(() => expect(bar).toBeVisible());
+    await expect(rangeOf(scroller)).toBeGreaterThan(0);
+    await expect(rangeOf(bar)).toBe(rangeOf(scroller));
+  },
+};
+
+const SwitchingTable = (args: TableProps) => {
+  const [isResizable, setIsResizable] = useState(true);
+  return (
+    <div className='flex max-w-md flex-col gap-3'>
+      <Button className='self-start' onPress={() => setIsResizable(false)}>
+        Size columns to their content
+      </Button>
+      {isResizable ? (
+        <DeploymentTable {...args} allowsColumnResizing />
+      ) : (
+        <DeploymentTable {...args} />
+      )}
+    </div>
+  );
+};
+
+/**
+ * A table switched from resizable columns to columns sized to their content stands in a new
+ * scroller: the scrollbar follows it, and shows once the content is wider than the frame.
+ */
+export const SwitchedOffResizing: Story = {
+  render: (args) => <SwitchingTable {...args} />,
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Size columns to their content' }),
+    );
+    const table = canvas.getByRole('grid');
+    const scroller = scrollerOf(table);
+    const bar = scrollbarOf(table);
+    await waitFor(() => expect(bar).toBeVisible());
+    await expect(rangeOf(bar)).toBe(rangeOf(scroller));
+    bar.scrollLeft = 40;
+    await waitFor(() => expect(scroller.scrollLeft).toBeCloseTo(40, 0));
   },
 };
 
@@ -197,8 +357,9 @@ export const Resizable: Story = {
     // A resizer for every column but the selection column's.
     await expect(canvas.getAllByRole('slider')).toHaveLength(5);
     await expect(widthOf(heading('Owner'))).toBeCloseTo(240, 0);
-    // The columns fill the frame.
+    // The columns fill the frame, so there is nothing to scroll and no scrollbar.
     await expect(widthOf(table)).toBeCloseTo(scrollerOf(table).clientWidth, 0);
+    await expect(scrollbarOf(table)).not.toBeVisible();
 
     // Region is the third cell along: after the selection checkbox and Service.
     const before = widthOf(heading('Region'));

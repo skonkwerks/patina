@@ -45,11 +45,13 @@ export const tableColumnStyles = tv({
 /**
  * The resizer at the end edge of a resizable column's heading: a line in the header's text color,
  * which turns primary and wider while it is hovered or dragged. It stands half over the next
- * heading, so the pointer finds it on either side of the line, and takes no touch scrolling.
+ * heading, so the pointer finds it on either side of the line, and takes no touch scrolling. The
+ * last column's stands inside the table, 2px in from its end, so it adds nothing to the table's
+ * width to scroll, and its focus ring ends at the frame's edge.
  */
 export const columnResizerStyles = tv({
   extend: focusRing,
-  base: 'before:bg-neutral-foreground absolute inset-y-0 -end-1 z-10 flex w-2 cursor-col-resize touch-none justify-center outline-offset-0 before:my-2.5 before:w-px',
+  base: 'before:bg-neutral-foreground absolute inset-y-0 -end-1 z-10 flex w-2 cursor-col-resize touch-none justify-center outline-offset-0 before:my-2.5 before:w-px in-[th:last-child]:end-0.5',
   variants: {
     isHovered: { true: 'before:bg-primary before:w-0.5' },
     isResizing: { true: 'before:bg-primary before:w-0.5' },

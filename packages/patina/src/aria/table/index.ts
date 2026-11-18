@@ -5,3 +5,4 @@ export * from './component.js';
 export * from './header.js';
 export { type TableLoadMore, tableLoadMoreStyles } from './loadmore.js';
 export * from './row.js';
+export { tableScrollbarStyles } from './scrollbar.js';
