@@ -166,8 +166,11 @@ const ariaImports = (extra = []) => {
 /** A conditional spread, in an object, a list, a call, or a component's props. */
 const conditionalSpread = String.raw`:matches(SpreadElement, JSXSpreadAttribute):has(> ConditionalExpression)`;
 
-/** A relative specifier with no extension (a name holding a dot reads as having one; review). */
-const extensionless = String.raw`[source.value=/^\.{1,2}\/(.*\/)?[^./]+$/]`;
+/**
+ * A relative specifier with no extension, a directory's included (`.`, `..`, `./`, `./foo/`); a name
+ * holding a dot reads as having one and is left to review.
+ */
+const extensionless = String.raw`[source.value=/^\.{1,2}(\/(.*\/)?([^./]*|\.{1,2}))?$/]`;
 
 /**
  * The `no-restricted-syntax` selectors, one list that every block setting the rule includes: in a flat
