@@ -49,6 +49,10 @@
       "types": "./dist/chip/index.d.ts",
       "default": "./dist/chip/index.js"
     },
+    "./collection": {
+      "types": "./dist/composites/collection/index.d.ts",
+      "default": "./dist/composites/collection/index.js"
+    },
     "./color": {
       "types": "./dist/aria/color/index.d.ts",
       "default": "./dist/aria/color/index.js"

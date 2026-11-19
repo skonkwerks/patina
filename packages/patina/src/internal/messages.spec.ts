@@ -26,6 +26,21 @@ describe('overrideMessages', () => {
     expect(words.pagination.nextLabel).toBe('Next page');
   });
 
+  it('counts matches in English, its digits grouped', () => {
+    expect(englishMessages.collection.countText(1)).toBe('1 match');
+    expect(englishMessages.collection.countText(0)).toBe('0 matches');
+    expect(englishMessages.collection.countText(1234)).toBe('1,234 matches');
+  });
+
+  it('gives each group its own words', () => {
+    const words = overrideMessages(englishMessages, {
+      collection: { countText: (count) => `${count} Treffer` },
+    });
+    expect(words.collection.countText(3)).toBe('3 Treffer');
+    expect(words.collection.noMatchTitle).toBe('No matches');
+    expect(words.pagination).toEqual(englishMessages.pagination);
+  });
+
   it('builds on the words above it, as a provider inside another does', () => {
     const outer = overrideMessages(englishMessages, {
       pagination: { previousLabel: 'Vorherige Seite' },

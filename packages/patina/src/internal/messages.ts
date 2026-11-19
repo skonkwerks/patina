@@ -7,6 +7,17 @@ import { createContext, use } from 'react';
  * function of it, so the app words it as its language needs.
  */
 export type Messages = {
+  /** `useCollection`, for the table, its `TextFilter` and its `Pagination`. */
+  collection: {
+    /** The no-match state's title, when a search matches no row: "No matches". */
+    noMatchTitle: string;
+    /** The no-match state's line: "Nothing matches the search." */
+    noMatchDescription: string;
+    /** The no-match state's button, which empties the search: "Clear search". */
+    clearSearchLabel: string;
+    /** How many rows a search matches, after the search box: "3 matches", "1,234 matches". */
+    countText: (count: number) => string;
+  };
   /** `Pagination`. */
   pagination: {
     /** The arrow to the page before: "Previous page". */
@@ -29,6 +40,15 @@ export type MessagesOverrides = {
 
 /** Patina's own words, in English. */
 export const englishMessages: Messages = {
+  collection: {
+    noMatchTitle: 'No matches',
+    noMatchDescription: 'Nothing matches the search.',
+    clearSearchLabel: 'Clear search',
+    countText: (count) =>
+      count === 1
+        ? '1 match'
+        : `${new Intl.NumberFormat('en-US').format(count)} matches`,
+  },
   pagination: {
     previousLabel: 'Previous page',
     nextLabel: 'Next page',
@@ -65,5 +85,6 @@ export const overrideMessages = (
   base: Messages,
   given: MessagesOverrides | undefined,
 ): Messages => ({
+  collection: overrideGroup(base.collection, given?.collection),
   pagination: overrideGroup(base.pagination, given?.pagination),
 });
