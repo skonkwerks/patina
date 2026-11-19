@@ -19,5 +19,21 @@ type BodyStatus = Readonly<{
 
 export const BodyStatusContext = createContext<BodyStatus | null>(null);
 
+/** How the table is drawn, which its rows, cells and headings read. */
+type TableLook = Readonly<{
+  /** Whether a cell wraps its text unless it says otherwise. */
+  allowsWrapping: boolean;
+  /** Whether every other row is drawn on a faint fill. */
+  isStriped: boolean;
+  /** Whether the rows stand closer together, with less room above and below their text. */
+  isCompact: boolean;
+}>;
+
+export const TableLookContext = createContext<TableLook>({
+  allowsWrapping: false,
+  isStriped: false,
+  isCompact: false,
+});
+
 /** Whether the table's columns can be resized, which its columns read to draw their resizers. */
 export const ColumnResizingContext = createContext(false);

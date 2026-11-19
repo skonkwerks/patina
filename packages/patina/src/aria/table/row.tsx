@@ -1,3 +1,4 @@
+import { use } from 'react';
 import {
   Collection,
   Row as AriaRow,
@@ -9,6 +10,7 @@ import { tv } from 'tailwind-variants';
 import { itemStateStyles } from '../../internal/itemstate.js';
 import { SelectionCheckbox } from '../../internal/selectioncheckbox.js';
 import { Cell } from './cell.js';
+import { TableLookContext } from './context.js';
 
 export const tableRowStyles = tv({
   // The shared item states (`internal/itemstate.ts`): the focus ring inside the row, the hover and
@@ -20,7 +22,16 @@ export const tableRowStyles = tv({
   extend: itemStateStyles,
   // The line is drawn above each row but the first, and not below each but the last.
   base: 'border-surface-border border-t first:border-t-0 [&>:first-child]:relative',
+  variants: { isStriped: { true: '', false: '' } },
   compoundVariants: [
+    // A striped table draws every other row on a faint fill, half its hover's, so the rows' lines
+    // are easier to follow across. A row the person hovers or has selected shows that instead.
+    {
+      isStriped: true,
+      isHovered: false,
+      isSelected: false,
+      class: 'even:bg-surface-hover/50',
+    },
     {
       isSelected: true,
       class:
@@ -50,8 +61,12 @@ export const Row = <T extends object>({
   ...rest
 }: RowProps<T>) => {
   const { selectionMode, selectionBehavior } = useTableOptions();
+  const { isStriped } = use(TableLookContext);
   return (
-    <AriaRow {...rest} className={(renderProps) => tableRowStyles(renderProps)}>
+    <AriaRow
+      {...rest}
+      className={(renderProps) => tableRowStyles({ ...renderProps, isStriped })}
+    >
       {selectionBehavior === 'toggle' && (
         <Cell focusMode='child' allowsArrowNavigation>
           <SelectionCheckbox

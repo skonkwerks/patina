@@ -14,7 +14,7 @@ import { tv } from 'tailwind-variants';
 
 import { focusRing } from '../../internal/focus.js';
 import { type Align, align } from './align.js';
-import { ColumnResizingContext } from './context.js';
+import { ColumnResizingContext, TableLookContext } from './context.js';
 
 /** The narrowest a column of a resizable table gets unless it says otherwise: Cloudscape's 120px. */
 const RESIZABLE_MIN_WIDTH = 120;
@@ -24,7 +24,7 @@ export const tableColumnStyles = tv({
   // 3.3.1 a slot named `base` would drop `focusRing`'s base, and with it the shared ring's color.
   extend: focusRing,
   // Positioned, for the resizer at its end edge.
-  base: 'relative px-4 py-3 align-middle text-xs font-medium whitespace-nowrap',
+  base: 'relative px-4 align-middle text-xs font-medium whitespace-nowrap',
   slots: {
     // Cut where the column ends, which a resizable column can be dragged narrower than its text.
     title: 'block truncate',
@@ -38,8 +38,10 @@ export const tableColumnStyles = tv({
     // the neutral fill's hover, as a neutral button does.
     allowsSorting: { true: 'cursor-pointer pe-9' },
     isHovered: { true: 'bg-neutral-hover' },
+    // The headings stand as close together as the rows.
+    isCompact: { false: 'py-3', true: 'py-1.5' },
   },
-  defaultVariants: { align: 'start' },
+  defaultVariants: { align: 'start', isCompact: false },
 });
 
 /**
@@ -121,6 +123,7 @@ export const Column = ({
   ...rest
 }: ColumnProps) => {
   const isResizable = use(ColumnResizingContext);
+  const { isCompact } = use(TableLookContext);
   const styles = tableColumnStyles({ align });
   return (
     <AriaColumn
@@ -145,7 +148,7 @@ export const Column = ({
             }
       }
       className={(renderProps) =>
-        tableColumnStyles({ ...renderProps, align }).base()
+        tableColumnStyles({ ...renderProps, align, isCompact }).base()
       }
     >
       {({ allowsSorting, sortDirection }) => (

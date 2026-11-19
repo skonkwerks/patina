@@ -188,7 +188,7 @@ Every component follows these rules. Familiar names come first: React Aria's own
 ### Color tokens
 
 - A fill is `{name}`. Text on it is `{name}-foreground`, and quieter text on it is `{name}-foreground-muted`.
-- **Layers:** `canvas`, `surface`, `overlay`, `input`. Each has `-foreground`, `-foreground-muted` (or `input-placeholder`) and `-border`. A layer's `-border` is a faint line that divides its rows, panels or a field's inner parts. `surface` and `overlay` also have `-hover`, the highlight of a hovered or focused row or item on that layer.
+- **Layers:** `canvas`, `surface`, `overlay`, `input`. Each has `-foreground`, `-foreground-muted` (or `input-placeholder`) and `-border`. A layer's `-border` is a faint line that divides its rows, panels or a field's inner parts. `surface` and `overlay` also have `-hover`, the highlight of a hovered or focused row or item on that layer; `surface-hover` at half strength also draws a striped table's alternate rows (`Table`'s `isStriped`), which a hovered or selected row replaces with its own fill.
 - **Actions:** `primary`, `neutral`, `destructive`. Each has `-foreground` and `-hover`; `destructive` also has `-tint`.
 - **Statuses:** `info`, `success`, `warning`, `error`. Each has `-foreground` and `-tint`.
 - **Controls:** `control-border`, the edge of a control: a field's box, a checkbox's or radio's mark, a switch's off track, a slider's rail, a color swatch, a color slider's track, a color area, a color wheel's track. It reaches 3:1 against every layer and hover fill it stands on (canvas, surface, surface-hover, overlay, overlay-hover, input), in every mode, as an interface component must.

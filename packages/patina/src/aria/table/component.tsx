@@ -12,6 +12,7 @@ import {
   BodyStatusContext,
   ColumnResizingContext,
   type TableEmptyState,
+  TableLookContext,
 } from './context.js';
 import { LoadMoreBar, type TableLoadMore } from './loadmore.js';
 import { TableScrollbar } from './scrollbar.js';
@@ -25,12 +26,17 @@ export const tableFrameStyles = tv({
     root: 'flex min-h-0 flex-col gap-3',
     // Cloudscape's tools row: the filter at the start, growing to fill the row (from its content's
     // width where the browser takes `fit-content` as a flex basis, as Cloudscape guards it); the
-    // pagination at the end. Where the row is narrower than Cloudscape's small breakpoint (688px),
-    // the filter takes a row of its own and the pagination wraps under it.
+    // pagination and the preferences' control at the end. Where the row is narrower than
+    // Cloudscape's small breakpoint (688px), the filter takes a row of its own and the end wraps
+    // under it.
     tools: '@container flex flex-wrap items-end gap-x-5 gap-y-2',
     filter:
       'max-w-full flex-[1_1_auto] supports-[flex-basis:fit-content]:flex-[1_1_fit-content] @max-[43rem]:basis-full',
-    pagination: 'ms-auto flex',
+    // The row's end: the pagination, then the preferences' control, with a line between them.
+    end: 'ms-auto flex items-center',
+    pagination: 'flex',
+    preferences:
+      'not-first:border-surface-border flex not-first:ms-2 not-first:border-s not-first:ps-2',
     frame:
       'bg-surface border-surface-border w-full overflow-clip rounded-lg border',
     // The table scrolls sideways inside its frame when its columns are wider than the frame, as
@@ -63,6 +69,23 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
    * props, or any content, drawn centered where the empty state stands.
    */
   emptyState: TableEmptyState;
+  /**
+   * The control that opens the table's preferences, such as Patina's `CollectionPreferences`: at
+   * the end of the row above the table, after the pagination, as Cloudscape's.
+   */
+  preferences?: ReactNode;
+  /**
+   * Whether a cell wraps its text inside its column, as Cloudscape's "wrap lines"; a `Cell`'s own
+   * `allowsWrapping` wins. Left out, every cell is one line, cut where its column ends.
+   */
+  allowsWrapping?: boolean;
+  /** Every other row on a faint fill, so a row is easier to follow across, as Cloudscape's. */
+  isStriped?: boolean;
+  /**
+   * The rows stand closer together, with less room above and below each row's text and each
+   * heading, so more rows are in view, as Cloudscape's compact mode.
+   */
+  isCompact?: boolean;
   /**
    * A failed read or refresh, shown above the table: a node, because a wrapper cannot import a
    * composite, so the app passes the notice, such as `LoadFailure` from
@@ -136,7 +159,8 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
  * frame never changes.
  *
  * Each column is as wide as its content within the sizes it sets (`Column`'s `width`, `minWidth`
- * and `maxWidth`), and a cell's text stays on one line unless the cell allows wrapping. When the
+ * and `maxWidth`), and a cell's text stays on one line unless the table or the cell allows
+ * wrapping (`allowsWrapping`, the cell's own winning). When the
  * columns are wider than the frame, the table scrolls sideways inside it, and its scrollbar sticks
  * to the bottom of the window while the table runs past it, as Cloudscape's does, so the person
  * scrolls sideways without scrolling down to the last row. With
@@ -148,7 +172,10 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
  *
  * A table that holds every row can take a search box (`filter`) and a pages' control (`pagination`)
  * in the row above it, as Cloudscape's: the filter at the start, the pagination at the end. Both
- * work on the rows in the browser; a paged table takes neither.
+ * work on the rows in the browser; a paged table takes neither. Any table can take the control
+ * that opens its preferences (`preferences`), at the row's end, after the pagination. The looks
+ * the preferences set are the table's: every other row on a faint fill (`isStriped`), the rows
+ * closer together (`isCompact`), and its cells wrapping their text (`allowsWrapping`).
  *
  * A table sorts by one column at a time, as Cloudscape's does: a column with `allowsSorting` is
  * pressed to sort by it, `sortDescriptor` (React Aria's) says which column and in which direction,
@@ -165,6 +192,10 @@ export const Table = ({
   error,
   filter,
   pagination,
+  preferences,
+  allowsWrapping = false,
+  isStriped = false,
+  isCompact = false,
   loadMore,
   isPending = false,
   pendingText,
@@ -199,19 +230,26 @@ export const Table = ({
         tableStyles({ ...renderProps, allowsColumnResizing })
       }
     >
-      <BodyStatusContext
-        value={{
-          emptyState,
-          // The props give the text whenever the table is pending; destructuring loses that pairing.
-          pendingText: isPending ? pendingText : undefined,
-          hasFailed: Boolean(error),
-        }}
-      >
-        {children}
-      </BodyStatusContext>
+      <TableLookContext value={{ allowsWrapping, isStriped, isCompact }}>
+        <BodyStatusContext
+          value={{
+            emptyState,
+            // The props give the text whenever the table is pending; destructuring loses that
+            // pairing.
+            pendingText: isPending ? pendingText : undefined,
+            hasFailed: Boolean(error),
+          }}
+        >
+          {children}
+        </BodyStatusContext>
+      </TableLookContext>
     </AriaTable>
   );
-  const hasTools = filter !== undefined || pagination !== undefined;
+  const hasTools =
+    filter !== undefined ||
+    pagination !== undefined ||
+    preferences !== undefined;
+  const hasEnd = pagination !== undefined || preferences !== undefined;
   return (
     <div className={frame.root()}>
       {hasTools && (
@@ -219,8 +257,15 @@ export const Table = ({
           {filter !== undefined && (
             <div className={frame.filter()}>{filter}</div>
           )}
-          {pagination !== undefined && (
-            <div className={frame.pagination()}>{pagination}</div>
+          {hasEnd && (
+            <div className={frame.end()}>
+              {pagination !== undefined && (
+                <div className={frame.pagination()}>{pagination}</div>
+              )}
+              {preferences !== undefined && (
+                <div className={frame.preferences()}>{preferences}</div>
+              )}
+            </div>
           )}
         </div>
       )}
