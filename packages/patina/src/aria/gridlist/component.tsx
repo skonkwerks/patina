@@ -78,9 +78,8 @@ export type GridListProps<T extends object> = Omit<
   emptyState: EmptyStateProps;
   /**
    * A failed load or refresh, shown above the list: a node, because a wrapper cannot import a
-   * composite, so the app passes the notice, such as `LoadFailure` from
-   * `@skonkwerks/patina/loadstatus`. With no items the body stays
-   * empty instead of claiming there is nothing; with cached items they stay on screen.
+   * composite, so the app passes the notice, such as Patina's `LoadFailure`. With no items the body
+   * stays empty instead of claiming there is nothing; with cached items they stay on screen.
    */
   error?: ReactNode;
   /** React 19 ref prop: the grid element, such as for a caller that scrolls it. */

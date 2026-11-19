@@ -5,8 +5,7 @@ import ShellLayout from './layout.js';
 
 export type AppShellProps = {
   /**
-   * The sidebar contents at the left: a `Sidebar` with its header, groups of items and footer
-   * (`@skonkwerks/patina/sidebar`).
+   * The sidebar contents at the left: a `Sidebar` with its header, groups of items and footer.
    */
   sidebar: ReactNode;
   /** The page, rendered in the scrolling main area, such as the router's outlet. */

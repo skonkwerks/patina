@@ -73,7 +73,7 @@ type Props = {
  * spinner and `pendingText` while they are read, and the spinner's square and the words' place,
  * empty, while they are not. `Select` and `ComboBox` give it to their header (`pending`) whenever
  * they are given `pendingText`, and describe their control with the words (`id`) while pending.
- * Not a public subpath: they import it by its path.
+ * Not exported from the package: they import it by its path.
  */
 export const FieldPending = ({ id, isPending, pendingText }: Props) => {
   const styles = fieldPendingStyles();

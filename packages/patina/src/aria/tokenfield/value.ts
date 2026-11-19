@@ -2,7 +2,7 @@ import { TokenFieldValue } from 'react-aria-components';
 
 /**
  * A token field's value, React Aria's `TokenFieldValue`, re-exported so an app's whole use of the
- * token field, the value it builds and subclasses included, comes through this subpath.
+ * token field, the value it builds and subclasses included, comes through Patina.
  */
 export { TokenFieldValue };
 

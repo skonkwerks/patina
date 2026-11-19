@@ -32,8 +32,8 @@ export type DateInputProps = Omit<AriaDateInputProps, 'children'>;
 /**
  * The editable segments of a date or time, shared by `DateField`, `TimeField`, `DatePicker` and
  * `DateRangePicker`, so every date is typed and drawn the same way. The caller gives the box: a
- * field draws it on this element, a picker on the group around it and its calendar button. Not a
- * public subpath.
+ * field draws it on this element, a picker on the group around it and its calendar button. Not
+ * exported from the package.
  */
 export const DateInput = (props: DateInputProps) => (
   <AriaDateInput {...props}>

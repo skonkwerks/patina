@@ -7,7 +7,7 @@ import type { ComponentProps } from 'react';
  * not the root that holds the month's name; marking the root says it of the whole widget, and lets
  * the month's name and the weekday row take the shared disabled look like the days. React Aria
  * hides both from assistive technology, so without the mark the contrast check could not tell they
- * belong to a disabled control. Not a public subpath.
+ * belong to a disabled control. Not exported from the package.
  */
 export const renderCalendarRoot = (
   props: ComponentProps<'div'>,

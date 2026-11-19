@@ -45,16 +45,16 @@ export type TokenFieldProps<V extends TokenFieldValue = TokenFieldValue> = Omit<
 
 /**
  * A labeled text field under the shared field header whose value holds tokens inline with the
- * text, such as mentions, hashtags, or a list of tags. The value is a `TokenFieldValue`, which this
- * subpath re-exports with its segment types; a subclass that overrides `tokenize` decides which
+ * text, such as mentions, hashtags, or a list of tags. The value is a `TokenFieldValue`, which
+ * Patina re-exports with its segment types; a subclass that overrides `tokenize` decides which
  * typed text becomes a token. A token is removed with Backspace or Delete like a character.
  *
  * Alpha: React Aria marks TokenField as alpha, and its API has changed in a minor release (1.21.0
- * replaced the value's `caretPosition` with `selectedRange`). Until React Aria marks it stable, this
- * subpath, the component and the value an app builds alike, may change with any React Aria minor
- * version that Patina's peer range allows. An app takes the value and its types from this subpath,
- * so a change reaches it through Patina's changelog. It has no validation and no form value of its
- * own yet, so the wrapper takes no `errorMessage`.
+ * replaced the value's `caretPosition` with `selectedRange`). Until React Aria marks it stable, the
+ * component and the value an app builds alike may change with any React Aria minor version that
+ * Patina's peer range allows. An app takes the value and its types from Patina, so a change reaches
+ * it through Patina's changelog. It has no validation and no form value of its own yet, so the
+ * wrapper takes no `errorMessage`.
  */
 export const TokenField = <V extends TokenFieldValue = TokenFieldValue>({
   label,

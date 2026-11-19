@@ -12,9 +12,10 @@
 //    folder, outside the workspace so that nothing resolves through it, at the versions the
 //    workspace has installed, from the pnpm store where it holds them and the registry otherwise
 //    (as an app installs it: an offline install fails whenever a dependency of a peer resolves to
-//    a version the store lacks). In that app it imports every subpath in
-//    plain Node (no bundler), checks that each peer dependency resolves to the app's one copy from
-//    inside the package, and type-checks a file that imports every subpath under a strict
+//    a version the store lacks). In that app it imports the package's entry in plain Node (no
+//    bundler), checks that a path into the package (a family's folder name, or a file in dist/) is
+//    refused, checks that each peer dependency resolves to the app's one copy from inside the
+//    package, and type-checks a file that imports the entry under a strict
 //    configuration (skipLibCheck off), with tsc and with tsgo (which the apps type-check with),
 //    each once with moduleResolution bundler and once with nodenext.
 // The temporary folder is removed when every check passes and kept, with its path printed, when one
@@ -295,32 +296,47 @@ if (!installed.ok) {
 }
 pass(`the app installed the tarball with ${peerNames.join(', ')}`);
 
-const subpaths = Object.keys(isRecord(exportsMap) ? exportsMap : {})
+const entries = Object.keys(isRecord(exportsMap) ? exportsMap : {})
   .filter((key) => !key.endsWith('.css'))
   .map((key) => path.posix.join(PACKAGE_NAME, key));
+/** Paths into the package that the exports map must refuse: a family's name, and a built file. */
+const refused = [`${PACKAGE_NAME}/button`, `${PACKAGE_NAME}/dist/index.js`];
 
-// Plain Node: every subpath imports, and every peer is the app's one copy.
+// Plain Node: every entry imports, a path into the package is refused, and every peer is the app's
+// one copy.
 writeFileSync(
   path.join(appDir, 'node.mjs'),
   `import { realpathSync } from 'node:fs';
 import { findPackageJSON } from 'node:module';
 
-const subpaths = ${JSON.stringify(subpaths)};
+const entries = ${JSON.stringify(entries)};
+const refused = ${JSON.stringify(refused)};
 const peers = ${JSON.stringify(peerNames)};
 const failures = [];
 
-for (const subpath of subpaths) {
+for (const entry of entries) {
   try {
-    const module = await import(subpath);
+    const module = await import(entry);
     if (Object.keys(module).length === 0) {
-      failures.push(\`\${subpath} exports nothing\`);
+      failures.push(\`\${entry} exports nothing\`);
     }
   } catch (error) {
-    failures.push(\`\${subpath} does not import: \${error.message}\`);
+    failures.push(\`\${entry} does not import: \${error.message}\`);
   }
 }
 
-const insidePackage = import.meta.resolve(subpaths[0]);
+for (const path of refused) {
+  try {
+    await import(path);
+    failures.push(\`\${path} imports, but the package offers no path into it\`);
+  } catch (error) {
+    if (error.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED') {
+      failures.push(\`\${path} fails with \${error.code ?? error.message}, not as a path the package doesn't export\`);
+    }
+  }
+}
+
+const insidePackage = import.meta.resolve(entries[0]);
 for (const peer of peers) {
   const fromApp = realpathSync(findPackageJSON(peer, import.meta.url));
   const fromPackage = realpathSync(findPackageJSON(peer, insidePackage));
@@ -337,7 +353,9 @@ if (failures.length > 0) {
 );
 const node = run(process.execPath, ['node.mjs'], appDir);
 if (node.ok) {
-  pass(`plain Node imports all ${subpaths.length} subpaths`);
+  pass(
+    `plain Node imports ${entries.join(', ')}, and refuses ${refused.join(' and ')}`,
+  );
   pass(
     `${peerNames.join(', ')} each resolve to the app's one copy from inside the package`,
   );
@@ -348,9 +366,9 @@ if (node.ok) {
 // The type check, under a strict app configuration with each module resolution.
 writeFileSync(
   path.join(appDir, 'types.ts'),
-  `${subpaths.map((subpath, index) => `import * as subpath${index} from '${subpath}';`).join('\n')}
+  `${entries.map((entry, index) => `import * as entry${index} from '${entry}';`).join('\n')}
 
-export const modules = [${subpaths.map((_subpath, index) => `subpath${index}`).join(', ')}];
+export const modules = [${entries.map((_entry, index) => `entry${index}`).join(', ')}];
 `,
 );
 const require = createRequire(import.meta.url);
@@ -404,7 +422,7 @@ for (const [resolution, module] of [
     const typed = run(process.execPath, [checker.bin, '-p', config], appDir);
     if (typed.ok) {
       pass(
-        `${checker.name} type-checks every subpath with moduleResolution ${resolution}, skipLibCheck off`,
+        `${checker.name} type-checks ${entries.join(', ')} with moduleResolution ${resolution}, skipLibCheck off`,
       );
     } else {
       fail(

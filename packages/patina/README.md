@@ -8,21 +8,21 @@ The source is sorted into tiers by what a component imports:
 
 ```
 src/
-├─ internal/      helpers every tier uses (focus ring, disabled look, field looks, field header, the choice marks); never a subpath
+├─ internal/      helpers every tier uses (focus ring, disabled look, field looks, field header, the choice marks); never exported
 ├─ <family>/      core components: no React Aria, no wrapper inside (spinner/, count/, emptystate/, …)
 ├─ aria/          React Aria wrappers: a component whose root is a React Aria component
 └─ composites/    components that combine several others into one arrangement
 ```
 
 - **What belongs in Patina:** a component belongs in Patina only if it is generally useful across applications; one specific to a single application stays in that application.
-- **`internal/` is never a subpath.** A family re-exports an internal type its props use, such as `StatusTone` (from `chip`, `gauge`, `meter` and `alert`) and `DropFailureReason` (from `draganddrop` and `dropzone`).
+- **`internal/` is never exported.** A family re-exports an internal type its props use, such as `StatusTone` (from `chip`, `gauge`, `meter` and `alert`) and `DropFailureReason` (from `draganddrop` and `dropzone`).
 - **Sorting a component:** if its root is a React Aria component (directly or through a base in its family), it goes in `aria/`. If it holds no React Aria component and no wrapper, it's a core family at the root of `src/`. If it combines several components into one arrangement, it goes in `composites/`.
 - **A tier never imports from one above it:** `internal/` imports only `internal/`; a core family adds the other core families; `aria/` adds `aria/`; `composites/` may import anything in the package. ESLint enforces it (`import-x/no-restricted-paths`, `import-x/no-cycle`).
 - **A family is a folder:** `index.ts` (its public surface), `component.tsx` (the main component), one file per further component (`table/column.tsx`, `table/row.tsx`), and the family's stories. Core components and composites keep their styles in the family's `styles.ts`; a React Aria wrapper exports its `{component}Styles` from its own file, or from its family's `styles.ts` when several of the family's components share the look (`button/styles.ts` for `Button`, `IconButton` and `LinkButton`; `togglegroup/styles.ts` for `Toggle` and `IconToggle`).
-- **A custom button look builds on `ButtonBase`** (`aria/button/base.tsx`), the button family's internal base: React Aria's press handling, a disabled reason that keeps the button focusable, an optional tooltip, and a pending spinner, with the look left to the caller's `styles` function. `IconButton` and the composites with a button of their own look (`Stepper`'s steps, `StateDetails`' control, `SplitButton`'s parts) use it, so a button's state rules hold everywhere and no wrapper is restyled through `className`. It is not a public subpath.
-- **An alpha subpath:** `@skonkwerks/patina/tokenfield` wraps React Aria's TokenField, which React Aria marks alpha. Until React Aria marks it stable, the subpath (the component, and the `TokenFieldValue` and segment types it re-exports for an app to build its value from) may change with any React Aria minor version that Patina's peer range allows, and the changelog says how.
-- **One subpath per family.** An app imports `@skonkwerks/patina/<family>` and never sees the tier. `pnpm exports` writes the `exports` map from the folders, each subpath pointing at its family's build in `dist/` (`index.d.ts` for the types, `index.js` for the code); `pnpm check` fails when it is out of date.
-- **The build.** `pnpm build` compiles `src/` with `tsc` into `dist/`: one ES module, type definition and source map per file, without the stories, specs and story helpers. The package ships `dist/`, `patina.css`, this README and the license, never the source files (the source maps carry their text, for debugging). `pnpm check:package` packs the package, checks what the tarball holds, and installs it into a throwaway app to import every subpath in Node and type-check it with `tsc` and `tsgo`.
+- **A custom button look builds on `ButtonBase`** (`aria/button/base.tsx`), the button family's internal base: React Aria's press handling, a disabled reason that keeps the button focusable, an optional tooltip, and a pending spinner, with the look left to the caller's `styles` function. `IconButton` and the composites with a button of their own look (`Stepper`'s steps, `StateDetails`' control, `SplitButton`'s parts) use it, so a button's state rules hold everywhere and no wrapper is restyled through `className`. It is not exported.
+- **An alpha component:** `TokenField` wraps React Aria's TokenField, which React Aria marks alpha. Until React Aria marks it stable, `TokenField` and the `TokenFieldValue` and segment types it re-exports for an app to build its value from may change with any React Aria minor version that Patina's peer range allows, and the changelog says how. Its own doc says so where an app reads it.
+- **One entry.** An app imports everything from `@skonkwerks/patina`, as it imports React Aria Components from `react-aria-components`, and never sees how the package is laid out: the `exports` map offers the entry and `patina.css` alone, so a path into the package, a family's included, is refused. `pnpm exports` writes, from the folders, `src/index.ts`, which re-exports every family, and the map, whose entry points at its build in `dist/` (`index.d.ts` for the types, `index.js` for the code); `pnpm check` fails when either is out of date. A bundler keeps only what an app uses, since `sideEffects` names the stylesheet alone.
+- **The build.** `pnpm build` compiles `src/` with `tsc` into `dist/`: one ES module, type definition and source map per file, without the stories, specs and story helpers. The package ships `dist/`, `patina.css`, this README and the license, never the source files (the source maps carry their text, for debugging). `pnpm check:package` packs the package, checks what the tarball holds, and installs it into a throwaway app to import the entry in Node, check that a path into the package is refused, and type-check the entry with `tsc` and `tsgo`.
 
 ## The hard rule: no outside dependencies
 
@@ -44,7 +44,7 @@ Nothing else, including no other icon or animation library. Two things enforce t
 What the wrappers need beyond that is drawn in, not imported:
 
 - **Spinner:** `Spinner` and `PendingStatus` (`src/spinner/`) are plain SVG.
-- **Error notices:** `Table` and `GridList` take `error` as a `ReactNode`, because a wrapper cannot import a composite. The app passes Patina's `LoadFailure` (from `@skonkwerks/patina/loadstatus`), with its Retry.
+- **Error notices:** `Table` and `GridList` take `error` as a `ReactNode`, because a wrapper cannot import a composite. The app passes Patina's `LoadFailure`, with its Retry.
 
 ## Using it in an app
 
@@ -95,27 +95,29 @@ What the wrappers need beyond that is drawn in, not imported:
    }
    ```
 
-4. Import each component from its own path:
+4. Import every component from the package:
 
    ```tsx
-   import { Button } from '@skonkwerks/patina/button';
-   import { TextField } from '@skonkwerks/patina/textfield';
-   import { GridList } from '@skonkwerks/patina/gridlist';
-   import { GridListRow } from '@skonkwerks/patina/gridlistrow';
+   import {
+     Button,
+     GridList,
+     GridListRow,
+     TextField,
+   } from '@skonkwerks/patina';
    ```
 
 5. Render the app shell once, above every page, and let each page render a `Page`:
 
    ```tsx
-   import { AppShell } from '@skonkwerks/patina/appshell';
    import {
+     AppShell,
      Sidebar,
      SidebarGroup,
      SidebarHeader,
      SidebarItem,
-   } from '@skonkwerks/patina/sidebar';
-   import { ThemeMode } from '@skonkwerks/patina/thememode';
-   import { ToastRegion } from '@skonkwerks/patina/toast';
+     ThemeMode,
+     ToastRegion,
+   } from '@skonkwerks/patina';
 
    <AppShell
      sidebar={
@@ -156,12 +158,12 @@ What the wrappers need beyond that is drawn in, not imported:
 
    The sidebar contents are the `Sidebar` frame (a `nav` with the header, the groups and the footer row, whose last control collapses it to a rail of icons), its `SidebarHeader` (the brand, or its mark on the rail), its `SidebarGroup`s of `SidebarItem`s (an icon and a name, with a count, a spinner or an alert mark; on the rail the name is the item's tooltip), and the footer, which holds the app's controls and Patina's `ThemeMode` (one icon button that moves through system, light and dark; it steps aside on the rail). A control that must change on the rail, such as a status line that hides its words there, reads `useSidebar()`. From the keyboard, the sidebar's items are one Tab stop, as React Aria's navigation tree makes a collection: the arrow keys move between the links, and Tab goes on to the footer. The app holds whether the sidebar is collapsed and the theme mode, and remembers them if it wants to; Patina stores nothing.
 
-   A page shows its help, an item's details, or an edit form in the shell's side panel with `useSidePanel` (`@skonkwerks/patina/sidepanel`), and keeps it open while a write is pending with `useSidePanelHold`. The panel is 24rem wide; an app sets `--side-panel-width` to change it. The panel is not modal; a modal task uses `DialogModal`, centered or, with `placement='right'`, as a sheet at the right edge.
+   A page shows its help, an item's details, or an edit form in the shell's side panel with `useSidePanel`, and keeps it open while a write is pending with `useSidePanelHold`. The panel is 24rem wide; an app sets `--side-panel-width` to change it. The panel is not modal; a modal task uses `DialogModal`, centered or, with `placement='right'`, as a sheet at the right edge.
 
 6. An app in a language other than English renders `I18nProvider` once, at its root. Its `locale` goes on to React Aria's own provider (React Aria's words, its dates and numbers, and the reading direction), and its `messages` give the words Patina's components show when the app gives none, such as a pagination's "Next page", in place of Patina's English. For one use, a component's own prop wins where it has one, and otherwise another `I18nProvider` around that component gives the words that differ, such as a table's preferences in another wording. An app in English needs no provider.
 
    ```tsx
-   import { I18nProvider } from '@skonkwerks/patina/i18n';
+   import { I18nProvider } from '@skonkwerks/patina';
 
    <I18nProvider
      locale='de-DE'
@@ -179,7 +181,7 @@ What the wrappers need beyond that is drawn in, not imported:
    </I18nProvider>;
    ```
 
-   A word that depends on a number is a function of it, so the app words it as its language needs. `Messages` (from the same path) types a whole set of the app's words.
+   A word that depends on a number is a function of it, so the app words it as its language needs. `Messages`, also from `@skonkwerks/patina`, types a whole set of the app's words.
 
 ## Naming spec
 

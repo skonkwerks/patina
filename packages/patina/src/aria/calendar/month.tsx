@@ -28,8 +28,8 @@ export type CalendarMonthProps = {
  * One month of `Calendar` or `RangeCalendar`: its header and its grid of days, which the calendar
  * around it fills from its own state. React Aria names Previous and Next and its grid, and disables
  * Previous and Next at `minValue` and `maxValue`, moving the focus into the grid when the button
- * that held it is disabled. In a right-to-left locale the chevrons point the other way. Not a
- * public subpath.
+ * that held it is disabled. In a right-to-left locale the chevrons point the other way. Not
+ * exported from the package.
  */
 export const CalendarMonth = ({
   offset,

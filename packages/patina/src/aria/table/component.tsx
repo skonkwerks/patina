@@ -88,9 +88,8 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
   isCompact?: boolean;
   /**
    * A failed read or refresh, shown above the table: a node, because a wrapper cannot import a
-   * composite, so the app passes the notice, such as `LoadFailure` from
-   * `@skonkwerks/patina/loadstatus`. With no rows the body stays
-   * empty instead of claiming there is nothing; with rows already read they stay on screen.
+   * composite, so the app passes the notice, such as Patina's `LoadFailure`. With no rows the body
+   * stays empty instead of claiming there is nothing; with rows already read they stay on screen.
    */
   error?: ReactNode;
 } & (
