@@ -147,7 +147,7 @@ What the wrappers need beyond that is drawn in, not imported:
      }
      panelCloseLabel='Close'
      notifications={
-       <ToastRegion className='right-[calc(var(--side-panel-offset)+1rem)]' />
+       <ToastRegion className='right-[calc(var(--side-panel-offset,0px)+1rem)]' />
      }
    >
      <Outlet />

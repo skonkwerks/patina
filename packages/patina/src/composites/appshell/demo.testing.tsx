@@ -144,7 +144,7 @@ export const Shell = ({ refetchMs = 0 }: { refetchMs?: number }) => (
       sidebar={<DemoSidebar />}
       panelCloseLabel='Close'
       notifications={
-        <ToastRegion className='right-[calc(var(--side-panel-offset)+1rem)]' />
+        <ToastRegion className='right-[calc(var(--side-panel-offset,0px)+1rem)]' />
       }
     >
       <ProjectsPage refetchMs={refetchMs} />

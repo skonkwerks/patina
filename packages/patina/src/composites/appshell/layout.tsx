@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { SidePanel, useSidePanelState } from '../sidepanel/index.js';
+import { SidePanel } from '../sidepanel/index.js';
 import { appShellStyles } from './styles.js';
 
 type ShellLayoutProps = {
@@ -10,18 +10,14 @@ type ShellLayoutProps = {
   notifications?: ReactNode;
 };
 
-/**
- * The shell's layout, inside the side panel's provider, where it can read whether the panel is
- * open and set `--side-panel-offset` for what stands at the right edge.
- */
+/** The shell's layout, inside the side panel's provider. */
 const C = ({
   sidebar,
   children,
   panelCloseLabel,
   notifications,
 }: ShellLayoutProps) => {
-  const { isOpen } = useSidePanelState();
-  const styles = appShellStyles({ isPanelOpen: isOpen });
+  const styles = appShellStyles();
   return (
     <div className={styles.root()}>
       {sidebar}

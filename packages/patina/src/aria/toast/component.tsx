@@ -54,9 +54,11 @@ export type ToastRegionProps = {
 
 /**
  * The app's notification area, bottom right: the toasts in the queue, newest on top, each
- * closable. An app with a panel at the right edge moves the area beside it through `className`
- * (for example `right-[calc(var(--side-panel-width)+1rem)]`), so a toast never covers the panel's
- * buttons.
+ * closable. Inside `AppShell`, the area stands clear of the side panel through `className`:
+ * `right-[calc(var(--side-panel-offset,0px)+1rem)]`, the room the panel takes, which the panel
+ * sets on the document's root element, where it reaches the area React Aria renders into the
+ * document's body; outside the shell the fallback keeps it at the right edge. So a toast never
+ * covers the panel's buttons.
  */
 export const ToastRegion = ({ className }: ToastRegionProps) => {
   return (

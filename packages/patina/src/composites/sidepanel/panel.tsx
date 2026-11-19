@@ -9,6 +9,9 @@ import {
 } from './context.js';
 import { sidePanelStyles } from './styles.js';
 
+/** The custom property that says how much room the side panel takes at the right edge. */
+const SIDE_PANEL_OFFSET = '--side-panel-offset';
+
 export type SidePanelProps = {
   /** The name of the panel's close control, such as "Close". */
   closeLabel: string;
@@ -21,6 +24,8 @@ export type SidePanelProps = {
  * anywhere in it closes it and returns the focus to the control that opened it, except while a
  * write started from its content is pending. An opener's content is rendered into its body from the
  * page (`useSidePanel`), so it keeps that page's state and providers. `AppShell` renders it.
+ * While it is mounted it sets `--side-panel-offset` on the document's root element to the room it
+ * takes, so what stands at the right edge can stand clear of it.
  */
 export const SidePanel = ({ closeLabel }: SidePanelProps) => {
   const { isOpen, title, isHeld } = useSidePanelState();
@@ -32,7 +37,8 @@ export const SidePanel = ({ closeLabel }: SidePanelProps) => {
   // panel uses (a search field clearing its text, a list clearing its selection) is stopped there and
   // never arrives, and an unused one arrives with its target inside the panel. Content rendered here
   // from another part of the React tree is inside the panel's element all the same. A modal opened
-  // from the content stands outside it, so its Escape closes the modal alone.
+  // from the content stands outside it, so its Escape closes the modal alone. Memoized on `close`,
+  // so the panel's ref (below) stays the same from one render to the next.
   const escapeCloses = useCallback(
     (panel: HTMLElement | null) => {
       if (!panel) {
@@ -54,12 +60,47 @@ export const SidePanel = ({ closeLabel }: SidePanelProps) => {
     },
     [close],
   );
+  // The room the panel takes at the right edge, its width as drawn (none while closed, and each
+  // step of its opening and closing), set as `--side-panel-offset` on the document's root element:
+  // the one place it is held, which reaches what React Aria renders into the document's body, such
+  // as the toast region, as well as the page. Memoized, so the panel's ref stays the same.
+  const publishesOffset = useCallback((panel: HTMLElement | null) => {
+    if (!panel) {
+      return undefined;
+    }
+    const root = panel.ownerDocument.documentElement;
+    const observer = new ResizeObserver(() => {
+      root.style.setProperty(
+        SIDE_PANEL_OFFSET,
+        `${panel.getBoundingClientRect().width}px`,
+      );
+    });
+    observer.observe(panel);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty(SIDE_PANEL_OFFSET);
+    };
+  }, []);
+  // One ref for both, memoized on them: a new ref at each render would have React run both
+  // cleanups and set both up again on every render, unsetting the offset and the Escape listener
+  // between them.
+  const panelRef = useCallback(
+    (panel: HTMLElement | null) => {
+      const stopEscape = escapeCloses(panel);
+      const stopOffset = publishesOffset(panel);
+      return () => {
+        stopEscape?.();
+        stopOffset?.();
+      };
+    },
+    [escapeCloses, publishesOffset],
+  );
   const styles = sidePanelStyles({ isOpen });
 
   return (
     <aside
       id={panelId}
-      ref={escapeCloses}
+      ref={panelRef}
       aria-labelledby={isOpen ? titleId : undefined}
       // Closed, the panel is an empty column of no width, with nothing to reach: it is only kept
       // from being announced as a landmark.

@@ -14,9 +14,10 @@ export type AppShellProps = {
   /** The name of the side panel's close control, such as "Close". */
   panelCloseLabel: string;
   /**
-   * The notification area, such as a `ToastRegion`. While the side panel is open the shell sets
-   * `--side-panel-offset` to its width, so the area can stand clear of it:
-   * `className='right-[calc(var(--side-panel-offset)+1rem)]'`.
+   * The notification area, such as a `ToastRegion`. The side panel sets `--side-panel-offset` on
+   * the document's root element to the room it takes (none while closed), where it reaches the
+   * toast region React Aria renders into the document's body, so the area can stand clear of it:
+   * `className='right-[calc(var(--side-panel-offset,0px)+1rem)]'`.
    */
   notifications?: ReactNode;
 };

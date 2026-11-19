@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, waitFor, within } from 'storybook/test';
 
+import { showToast, toastQueue } from '../../aria/toast/index.js';
 import {
   LIVE_ANNOUNCER_CLEAR_MS,
   LIVE_ANNOUNCER_MESSAGE,
@@ -252,5 +253,59 @@ export const RemoveLandsLater: Story = {
     );
     await expect(heading).toHaveFocus();
     await announcerCleared(canvasElement.ownerDocument);
+  },
+};
+
+/** The toast region's distance from the window's right edge, in pixels. */
+const rightGap = (region: Element) =>
+  Math.round(
+    region.ownerDocument.documentElement.clientWidth -
+      region.getBoundingClientRect().right,
+  );
+
+/**
+ * A notification stands at the right edge, clear of the side panel while it is open, as the
+ * shell's `notifications` slot says: React Aria renders the toast region into the document's body,
+ * and the panel sets the offset where it can read it. It follows the panel's width as it changes
+ * while open, as an app's `--side-panel-width` may at another window size.
+ */
+export const NotificationsClearThePanel: Story = {
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const body = within(canvasElement.ownerDocument.body);
+    const key = showToast({ title: 'Project saved' });
+    try {
+      const region = (await body.findByText('Project saved')).closest(
+        '[role="region"]',
+      );
+      if (region === null) {
+        throw new Error('The toast has no region.');
+      }
+      await expect(region.parentElement).toBe(canvasElement.ownerDocument.body);
+      await expect(rightGap(region)).toBe(16);
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Edit Alpha' }));
+      const panel = await canvas.findByRole('complementary', {
+        name: 'Edit Alpha',
+      });
+      await waitFor(() =>
+        expect(rightGap(region)).toBe(
+          Math.round(panel.getBoundingClientRect().width) + 16,
+        ),
+      );
+
+      // The app's panel width changes while the panel is open: 18rem, 288px.
+      const page = canvasElement.ownerDocument.documentElement;
+      page.style.setProperty('--side-panel-width', '18rem');
+      try {
+        await waitFor(() => expect(rightGap(region)).toBe(288 + 16));
+      } finally {
+        page.style.removeProperty('--side-panel-width');
+      }
+
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => expect(rightGap(region)).toBe(16));
+    } finally {
+      toastQueue.close(key);
+    }
   },
 };
