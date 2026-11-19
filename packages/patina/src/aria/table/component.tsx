@@ -7,16 +7,30 @@ import {
 } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
-import type { EmptyStateProps } from '../../emptystate/index.js';
 import { focusRing } from '../../internal/focus.js';
-import { BodyStatusContext, ColumnResizingContext } from './context.js';
+import {
+  BodyStatusContext,
+  ColumnResizingContext,
+  type TableEmptyState,
+} from './context.js';
 import { LoadMoreBar, type TableLoadMore } from './loadmore.js';
 import { TableScrollbar } from './scrollbar.js';
 
-/** The frame around the table: where the error notice stands, the bordered box, the scroller inside it, the pending status. */
+/**
+ * The frame around the table: the tools row above it, where the error notice stands, the bordered
+ * box, the scroller inside it, the pending status.
+ */
 export const tableFrameStyles = tv({
   slots: {
     root: 'flex min-h-0 flex-col gap-3',
+    // Cloudscape's tools row: the filter at the start, growing to fill the row (from its content's
+    // width where the browser takes `fit-content` as a flex basis, as Cloudscape guards it); the
+    // pagination at the end. Where the row is narrower than Cloudscape's small breakpoint (688px),
+    // the filter takes a row of its own and the pagination wraps under it.
+    tools: '@container flex flex-wrap items-end gap-x-5 gap-y-2',
+    filter:
+      'max-w-full flex-[1_1_auto] supports-[flex-basis:fit-content]:flex-[1_1_fit-content] @max-[43rem]:basis-full',
+    pagination: 'ms-auto flex',
     frame:
       'bg-surface border-surface-border w-full overflow-clip rounded-lg border',
     // The table scrolls sideways inside its frame when its columns are wider than the frame, as
@@ -44,8 +58,11 @@ export const tableStyles = tv({
 export type TableProps = Omit<AriaTableProps, 'className'> & {
   /** What the table holds; every table has an accessible name. */
   'aria-label': string;
-  /** What the table shows when its read succeeded and it has no rows: the `EmptyState` control's props. */
-  emptyState: EmptyStateProps;
+  /**
+   * What the table shows when its read succeeded and it has no rows: the `EmptyState` control's
+   * props, or any content, drawn centered where the empty state stands.
+   */
+  emptyState: TableEmptyState;
   /**
    * A failed read or refresh, shown above the table: a node, because a wrapper cannot import a
    * composite, so the app passes the notice, such as `LoadFailure` from
@@ -53,12 +70,35 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
    * empty instead of claiming there is nothing; with rows already read they stay on screen.
    */
   error?: ReactNode;
-  /**
-   * For a paged table while a next page may be read: the bar under the rows with its button, as
-   * Cloudscape's tables read more. Left out once every page is read.
-   */
-  loadMore?: TableLoadMore;
 } & (
+    | {
+        /**
+         * The search box over the rows, such as Patina's `TextFilter`: at the start of the row above
+         * the table, growing to fill it, as Cloudscape's. It searches every row the app holds.
+         */
+        filter?: ReactNode;
+        /**
+         * The pages' control, such as Patina's `Pagination`: at the end of the row above the table,
+         * as Cloudscape's. It pages every row the app holds.
+         */
+        pagination?: ReactNode;
+        loadMore?: undefined;
+      }
+    | {
+        /**
+         * For a paged table while a next page may be read: the bar under the rows with its button,
+         * as Cloudscape's tables read more. Left out once every page is read.
+         *
+         * A table that reads its rows a page at a time holds only some of them, so it takes neither
+         * `filter` nor `pagination`: a search of the rows read so far would say nothing matches
+         * while matches wait on pages not read yet.
+         */
+        loadMore?: TableLoadMore;
+        filter?: undefined;
+        pagination?: undefined;
+      }
+  ) &
+  (
     | { isPending?: false; pendingText?: undefined }
     | {
         /** While the first read is on its way, the body shows `pendingText` instead of the empty state. */
@@ -106,6 +146,10 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
  * A paged table reads its next page from the button in the bar under its rows (`loadMore`), never
  * on its own as its end scrolls into view.
  *
+ * A table that holds every row can take a search box (`filter`) and a pages' control (`pagination`)
+ * in the row above it, as Cloudscape's: the filter at the start, the pagination at the end. Both
+ * work on the rows in the browser; a paged table takes neither.
+ *
  * A table sorts by one column at a time, as Cloudscape's does: a column with `allowsSorting` is
  * pressed to sort by it, `sortDescriptor` (React Aria's) says which column and in which direction,
  * and `onSortChange` gives the new one. The app sorts the rows; the table only draws the sort.
@@ -119,6 +163,8 @@ export type TableProps = Omit<AriaTableProps, 'className'> & {
 export const Table = ({
   emptyState,
   error,
+  filter,
+  pagination,
   loadMore,
   isPending = false,
   pendingText,
@@ -165,8 +211,19 @@ export const Table = ({
       </BodyStatusContext>
     </AriaTable>
   );
+  const hasTools = filter !== undefined || pagination !== undefined;
   return (
     <div className={frame.root()}>
+      {hasTools && (
+        <div className={frame.tools()}>
+          {filter !== undefined && (
+            <div className={frame.filter()}>{filter}</div>
+          )}
+          {pagination !== undefined && (
+            <div className={frame.pagination()}>{pagination}</div>
+          )}
+        </div>
+      )}
       {error}
       <div className={frame.frame()}>
         <ColumnResizingContext value={allowsColumnResizing}>

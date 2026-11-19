@@ -1,4 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconReceipt,
+} from '@tabler/icons-react';
 import { useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
@@ -15,6 +20,8 @@ import {
   LIVE_ANNOUNCER_MESSAGE,
 } from '../../internal/liveannouncer.testing.js';
 import { Button } from '../button/index.js';
+import { IconButton } from '../iconbutton/index.js';
+import { SearchField } from '../searchfield/index.js';
 import {
   Cell,
   Column,
@@ -412,6 +419,135 @@ export const Empty: Story = {
   render: (args) => <InvoiceTable {...args} rows={[]} />,
 };
 
+/**
+ * The read succeeded with no rows, and the app gives content of its own in place of the
+ * `EmptyState` control's props, such as a picture beside the words: drawn centered where the empty
+ * state stands, in the table's one empty row.
+ */
+export const EmptyWithContent: Story = {
+  args: {
+    emptyState: (
+      <>
+        <IconReceipt
+          aria-hidden
+          className='text-surface-foreground-muted size-8'
+        />
+        <p className='text-surface-foreground text-sm font-medium'>
+          No invoices yet
+        </p>
+        <p className='text-surface-foreground-muted text-sm'>
+          Invoices appear here once the first one is issued.
+        </p>
+      </>
+    ),
+  },
+  render: (args) => <InvoiceTable {...args} rows={[]} />,
+  play: async ({ canvas }) => {
+    const table = canvas.getByRole('grid', { name: 'Invoices' });
+    const title = canvas.getByText('No invoices yet');
+    await expect(table.querySelector('tbody')?.contains(title)).toBe(true);
+    const tableBox = table.getBoundingClientRect();
+    const titleBox = title.getBoundingClientRect();
+    await expect(
+      Math.abs(
+        (titleBox.left + titleBox.right) / 2 -
+          (tableBox.left + tableBox.right) / 2,
+      ),
+    ).toBeLessThan(1);
+  },
+};
+
+/**
+ * Stands in for Patina's `Pagination`, which takes this place once it is built: the pages' control
+ * at the end of the tools row.
+ */
+const pagesStandIn = (
+  <div className='flex items-center gap-1 text-sm'>
+    <IconButton
+      aria-label='Previous page'
+      disabledReason='This is the first page'
+    >
+      <IconChevronLeft aria-hidden className='size-4' />
+    </IconButton>
+    <span aria-current='page'>1</span>
+    <IconButton aria-label='Next page'>
+      <IconChevronRight aria-hidden className='size-4' />
+    </IconButton>
+  </div>
+);
+
+/** The tools row's boxes: the row, its filter's slot and its pagination's slot. */
+const toolsOf = (table: HTMLElement) => {
+  // The table stands in its scroller, in its frame, in the table's root, whose first child is the
+  // tools row.
+  const row =
+    table.parentElement?.parentElement?.parentElement?.firstElementChild;
+  const [filter, pages] = row ? Array.from(row.children) : [];
+  if (!row || !filter || !pages) {
+    throw new Error('The table has no tools row with two slots.');
+  }
+  return {
+    row: row.getBoundingClientRect(),
+    filter: filter.getBoundingClientRect(),
+    pages: pages.getBoundingClientRect(),
+  };
+};
+
+// A table with a tools row has no Load more bar, so it is given only the table's name and empty state.
+const FindableInvoices = (
+  args: Pick<TableProps, 'aria-label' | 'emptyState'>,
+) => (
+  <InvoiceTable
+    {...args}
+    rows={invoices}
+    filter={<SearchField aria-label='Find invoices' placeholder='Northwind' />}
+    pagination={pagesStandIn}
+  />
+);
+
+/**
+ * A table that holds every row, with a search box (`filter`) and a pages' control (`pagination`) in
+ * the row above it, as Cloudscape's: the filter at the start, growing to fill the row, and the
+ * pagination at the end, both above the table's frame.
+ */
+export const ToolsRow: Story = {
+  render: (args) => <FindableInvoices {...args} />,
+  play: async ({ canvas }) => {
+    const table = canvas.getByRole('grid', { name: 'Invoices' });
+    const { row, filter, pages } = toolsOf(table);
+    await expect(filter.left).toBe(row.left);
+    await expect(pages.right).toBe(row.right);
+    // One row: the filter grows up to the 20px gap before the pagination.
+    await expect(filter.bottom).toBe(pages.bottom);
+    await expect(pages.left - filter.right).toBe(20);
+    // Above the table's frame.
+    await expect(row.bottom).toBeLessThanOrEqual(
+      table.getBoundingClientRect().top,
+    );
+  },
+};
+
+/**
+ * The same table where the row is narrower than Cloudscape's small breakpoint (688px): the filter
+ * takes the whole row, and the pagination wraps under it, still at the end.
+ */
+export const ToolsRowNarrow: Story = {
+  render: (args) => (
+    <div className='w-[30rem]'>
+      <FindableInvoices {...args} />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const { row, filter, pages } = toolsOf(
+      canvas.getByRole('grid', { name: 'Invoices' }),
+    );
+    await expect(filter.left).toBe(row.left);
+    await expect(filter.right).toBe(row.right);
+    await expect(pages.top).toBeGreaterThanOrEqual(filter.bottom);
+    await expect(pages.right).toBe(row.right);
+  },
+};
+
 /** The first read is on its way. */
 export const Pending: Story = {
   render: (args) => (
@@ -446,7 +582,8 @@ const moreInvoices: Invoice[] = [
   },
 ];
 
-const PagedInvoices = (args: TableProps) => {
+// A paged table takes no filter and no pagination, so it is given only the table's name and empty state.
+const PagedInvoices = (args: Pick<TableProps, 'aria-label' | 'emptyState'>) => {
   const [rows, setRows] = useState<readonly Invoice[]>(invoices);
   const [isReading, setIsReading] = useState(false);
   const hasMore = rows.length < invoices.length + moreInvoices.length;
