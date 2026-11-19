@@ -38,11 +38,12 @@ export type RadioGroupProps = Omit<
 
 /**
  * A labelled choice of exactly one among a few that exclude one another, each said in full: its
- * name and, with `Radio`'s `description`, what choosing it means. It is what a yes or no becomes
- * when both answers need explaining; a yes or no that explains itself is a `Checkbox` in a form
- * and a `Switch` where it takes effect at once. The choices stand under the shared field header,
- * with the group's error under them. While the group is disabled, its label is drawn disabled, and
- * each choice draws its own.
+ * name, and what choosing it means, with `Radio`'s `description` where the name doesn't already
+ * say it (a page size's "20 rows" needs none). It is what a yes or no becomes when both answers
+ * need explaining; a yes or no that explains itself is a `Checkbox` in a form and a `Switch` where
+ * it takes effect at once. The choices stand under the shared field header, with the group's error
+ * under them. While the group is disabled, its label is drawn disabled, and each choice draws its
+ * own.
  */
 export const RadioGroup = ({
   label,

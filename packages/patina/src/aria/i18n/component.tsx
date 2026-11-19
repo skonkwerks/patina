@@ -27,9 +27,10 @@ export type I18nProviderProps = {
 /**
  * The language of everything under it, given once at the app's root, as Cloudscape's and React
  * Aria's are: React Aria's locale, and the words Patina's components show when the app gives none,
- * such as a pagination's "Next page". An app in English needs none. A component's own prop still
- * wins for that use. One inside another changes only what it is given: the rest of the words, and
- * the locale when it gives none, stay those of the one above.
+ * such as a pagination's "Next page". An app in English needs none. For one use, a component's own
+ * prop wins where it has one, and otherwise one around that component gives its words. One inside
+ * another changes only what it is given: the rest of the words, and the locale when it gives none,
+ * stay those of the one above.
  */
 export const I18nProvider = ({
   locale,

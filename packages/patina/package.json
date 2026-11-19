@@ -53,6 +53,10 @@
       "types": "./dist/composites/collection/index.d.ts",
       "default": "./dist/composites/collection/index.js"
     },
+    "./collectionpreferences": {
+      "types": "./dist/composites/collectionpreferences/index.d.ts",
+      "default": "./dist/composites/collectionpreferences/index.js"
+    },
     "./color": {
       "types": "./dist/aria/color/index.d.ts",
       "default": "./dist/aria/color/index.js"

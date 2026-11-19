@@ -32,6 +32,13 @@ describe('overrideMessages', () => {
     expect(englishMessages.collection.countText(1234)).toBe('1,234 matches');
   });
 
+  it('names a page size in rows in English, one row singular and digits grouped', () => {
+    const { pageSizeOptionLabel } = englishMessages.collectionPreferences;
+    expect(pageSizeOptionLabel(1)).toBe('1 row');
+    expect(pageSizeOptionLabel(20)).toBe('20 rows');
+    expect(pageSizeOptionLabel(1000)).toBe('1,000 rows');
+  });
+
   it('gives each group its own words', () => {
     const words = overrideMessages(englishMessages, {
       collection: { countText: (count) => `${count} Treffer` },

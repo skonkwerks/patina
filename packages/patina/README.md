@@ -158,7 +158,7 @@ What the wrappers need beyond that is drawn in, not imported:
 
    A page shows its help, an item's details, or an edit form in the shell's side panel with `useSidePanel` (`@skonkwerks/patina/sidepanel`), and keeps it open while a write is pending with `useSidePanelHold`. The panel is 24rem wide; an app sets `--side-panel-width` to change it. The panel is not modal; a modal task uses `DialogModal`, centered or, with `placement='right'`, as a sheet at the right edge.
 
-6. An app in a language other than English renders `I18nProvider` once, at its root. Its `locale` goes on to React Aria's own provider (React Aria's words, its dates and numbers, and the reading direction), and its `messages` give the words Patina's components show when the app gives none, such as a pagination's "Next page", in place of Patina's English. A component's own prop still wins for that use. An app in English needs no provider.
+6. An app in a language other than English renders `I18nProvider` once, at its root. Its `locale` goes on to React Aria's own provider (React Aria's words, its dates and numbers, and the reading direction), and its `messages` give the words Patina's components show when the app gives none, such as a pagination's "Next page", in place of Patina's English. For one use, a component's own prop wins where it has one, and otherwise another `I18nProvider` around that component gives the words that differ, such as a table's preferences in another wording. An app in English needs no provider.
 
    ```tsx
    import { I18nProvider } from '@skonkwerks/patina/i18n';
@@ -227,7 +227,7 @@ Every button-like component (`Button`, `IconButton`, `LinkButton`, `Toggle`, `Ic
   - The app's words for what a component says about its state or its contents, such as that it is pending or optional, or how many match: `{what}Text` (`pendingText`, `optionalText`, `countText`, `emptyText`).
   - An accessible name with no visible text: `aria-label`.
   - Localized text for an inner control: `{control}Label` (`closeLabel`, `clearLabel`, `searchLabel`, `nextLabel`), and the reason it cannot be pressed: `{when}Reason` (`firstPageReason`).
-  - Words that are the same in every app have an English default in `Messages`, replaced app-wide through `I18nProvider` and per use through the prop (`Pagination`'s labels and reasons). Words about the app's own data, such as an empty state's title, have none.
+  - Words that are the same in every app have an English default in `Messages`, replaced app-wide through `I18nProvider`, and per use through the component's own prop where it has one (`Pagination`'s labels and reasons, `CollectionPreferences`' name and title) or another `I18nProvider` around it. Words about the app's own data, such as an empty state's title, have none.
 - **Slots (ReactNode props)** are named by meaning, and plural for groups: `actions`, `badges`, `media`, `endContent`, `headerContent`, `info` (the info control beside a field's label or a `Header`'s title), `errorText` (the outcome of the last write, directly above the action row: its failure, or that a request whose answer was lost is kept; in a `Form`, a `Confirmation` and an `AlertDialog`).
 - **Errors in a collection:** `error`, a ReactNode the app renders.
 

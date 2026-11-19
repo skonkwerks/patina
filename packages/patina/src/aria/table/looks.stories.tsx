@@ -201,7 +201,10 @@ export const OneLine: Story = {
   },
 };
 
-/** Stands in for Patina's `CollectionPreferences`, which takes this place once it is built. */
+/**
+ * A gear in the place `CollectionPreferences` takes, which needs the app shell's side panel to open
+ * in; these stories show the table's row alone (the real one: `Composites/CollectionPreferences`).
+ */
 const gearStandIn = (
   <IconButton aria-label='Preferences' hasTooltip>
     <IconSettings aria-hidden className='size-4' />
