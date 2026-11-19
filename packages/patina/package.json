@@ -298,6 +298,10 @@
       "types": "./dist/aria/textfield/index.d.ts",
       "default": "./dist/aria/textfield/index.js"
     },
+    "./textfilter": {
+      "types": "./dist/composites/textfilter/index.d.ts",
+      "default": "./dist/composites/textfilter/index.js"
+    },
     "./thememode": {
       "types": "./dist/composites/thememode/index.d.ts",
       "default": "./dist/composites/thememode/index.js"

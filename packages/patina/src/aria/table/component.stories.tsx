@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
 import { Pagination } from '../../composites/pagination/index.js';
+import { TextFilter } from '../../composites/textfilter/index.js';
 import {
   contrastRatio,
   edgeColor,
@@ -17,7 +18,6 @@ import {
   LIVE_ANNOUNCER_MESSAGE,
 } from '../../internal/liveannouncer.testing.js';
 import { Button } from '../button/index.js';
-import { SearchField } from '../searchfield/index.js';
 import {
   Cell,
   Column,
@@ -470,17 +470,28 @@ const toolsOf = (table: HTMLElement) => {
   };
 };
 
-// A table with a tools row has no Load more bar, so it is given only the table's name and empty state.
+// A table with a tools row has no Load more bar, so it is given only the table's name and empty
+// state. It holds the filter's text; matching and paging the rows are `useCollection`'s.
 const FindableInvoices = (
   args: Pick<TableProps, 'aria-label' | 'emptyState'>,
-) => (
-  <InvoiceTable
-    {...args}
-    rows={invoices}
-    filter={<SearchField aria-label='Find invoices' placeholder='Northwind' />}
-    pagination={<Pagination aria-label='Invoice pages' pageCount={3} />}
-  />
-);
+) => {
+  const [text, setText] = useState('');
+  return (
+    <InvoiceTable
+      {...args}
+      rows={invoices}
+      filter={
+        <TextFilter
+          label='Find invoices'
+          placeholder='Northwind'
+          value={text}
+          onChange={setText}
+        />
+      }
+      pagination={<Pagination aria-label='Invoice pages' pageCount={3} />}
+    />
+  );
+};
 
 /**
  * A table that holds every row, with a search box (`filter`) and a pages' control (`pagination`) in
