@@ -174,7 +174,9 @@ export const WiderThanItsPlace: Story = {
     const bar = scrollbarOf(table);
     await expect(bar).toBeVisible();
     await expect(widthOf(bar)).toBeCloseTo(widthOf(scroller), 0);
-    await expect(rangeOf(bar)).toBe(rangeOf(scroller));
+    // The bar's range is measured from the table by a resize observer, which runs after the table
+    // changes size.
+    await waitFor(() => expect(rangeOf(bar)).toBe(rangeOf(scroller)));
     // The scroller draws no scrollbar of its own. (Measured as the property: the test browser runs
     // with scrollbars hidden, so no scrollbar takes room to measure here.)
     await expect(getComputedStyle(scroller).scrollbarWidth).toBe('none');
@@ -275,7 +277,9 @@ export const WidenedPastTheFrame: Story = {
     await userEvent.keyboard(`{Enter}${'{ArrowRight}'.repeat(8)}{Enter}`);
     await waitFor(() => expect(bar).toBeVisible());
     await expect(rangeOf(scroller)).toBeGreaterThan(0);
-    await expect(rangeOf(bar)).toBe(rangeOf(scroller));
+    // The bar's range is measured from the table by a resize observer, which runs after the table
+    // changes size.
+    await waitFor(() => expect(rangeOf(bar)).toBe(rangeOf(scroller)));
   },
 };
 
@@ -309,7 +313,9 @@ export const SwitchedOffResizing: Story = {
     const scroller = scrollerOf(table);
     const bar = scrollbarOf(table);
     await waitFor(() => expect(bar).toBeVisible());
-    await expect(rangeOf(bar)).toBe(rangeOf(scroller));
+    // The bar's range is measured from the table by a resize observer, which runs after the table
+    // changes size.
+    await waitFor(() => expect(rangeOf(bar)).toBe(rangeOf(scroller)));
     bar.scrollLeft = 40;
     await waitFor(() => expect(scroller.scrollLeft).toBeCloseTo(40, 0));
   },
