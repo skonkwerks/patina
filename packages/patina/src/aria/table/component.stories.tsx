@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import {
-  IconChevronLeft,
-  IconChevronRight,
-  IconReceipt,
-} from '@tabler/icons-react';
+import { IconReceipt } from '@tabler/icons-react';
 import { useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 
+import { Pagination } from '../../composites/pagination/index.js';
 import {
   contrastRatio,
   edgeColor,
@@ -20,7 +17,6 @@ import {
   LIVE_ANNOUNCER_MESSAGE,
 } from '../../internal/liveannouncer.testing.js';
 import { Button } from '../button/index.js';
-import { IconButton } from '../iconbutton/index.js';
 import { SearchField } from '../searchfield/index.js';
 import {
   Cell,
@@ -457,25 +453,6 @@ export const EmptyWithContent: Story = {
   },
 };
 
-/**
- * Stands in for Patina's `Pagination`, which takes this place once it is built: the pages' control
- * at the end of the tools row.
- */
-const pagesStandIn = (
-  <div className='flex items-center gap-1 text-sm'>
-    <IconButton
-      aria-label='Previous page'
-      disabledReason='This is the first page'
-    >
-      <IconChevronLeft aria-hidden className='size-4' />
-    </IconButton>
-    <span aria-current='page'>1</span>
-    <IconButton aria-label='Next page'>
-      <IconChevronRight aria-hidden className='size-4' />
-    </IconButton>
-  </div>
-);
-
 /** The tools row's boxes: the row, its filter's slot and its pagination's slot. */
 const toolsOf = (table: HTMLElement) => {
   // The table stands in its scroller, in its frame, in the table's root, whose first child is the
@@ -501,7 +478,7 @@ const FindableInvoices = (
     {...args}
     rows={invoices}
     filter={<SearchField aria-label='Find invoices' placeholder='Northwind' />}
-    pagination={pagesStandIn}
+    pagination={<Pagination aria-label='Invoice pages' pageCount={3} />}
   />
 );
 

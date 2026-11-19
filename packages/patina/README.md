@@ -158,6 +158,29 @@ What the wrappers need beyond that is drawn in, not imported:
 
    A page shows its help, an item's details, or an edit form in the shell's side panel with `useSidePanel` (`@skonkwerks/patina/sidepanel`), and keeps it open while a write is pending with `useSidePanelHold`. The panel is 24rem wide; an app sets `--side-panel-width` to change it. The panel is not modal; a modal task uses `DialogModal`, centered or, with `placement='right'`, as a sheet at the right edge.
 
+6. An app in a language other than English renders `I18nProvider` once, at its root. Its `locale` goes on to React Aria's own provider (React Aria's words, its dates and numbers, and the reading direction), and its `messages` give the words Patina's components show when the app gives none, such as a pagination's "Next page", in place of Patina's English. A component's own prop still wins for that use. An app in English needs no provider.
+
+   ```tsx
+   import { I18nProvider } from '@skonkwerks/patina/i18n';
+
+   <I18nProvider
+     locale='de-DE'
+     messages={{
+       pagination: {
+         previousLabel: 'Vorherige Seite',
+         nextLabel: 'Nächste Seite',
+         pageLabel: (page) => `Seite ${page}`,
+         firstPageReason: 'Dies ist die erste Seite',
+         lastPageReason: 'Dies ist die letzte Seite',
+       },
+     }}
+   >
+     <App />
+   </I18nProvider>;
+   ```
+
+   A word that depends on a number is a function of it, so the app words it as its language needs. `Messages` (from the same path) types a whole set of the app's words.
+
 ## Naming spec
 
 Every component follows these rules. Familiar names come first: React Aria's own names, then the vocabulary of shadcn/ui and HeroUI. When a component breaks a rule, that's a bug.
@@ -202,7 +225,8 @@ Every button-like component (`Button`, `IconButton`, `LinkButton`, `Toggle`, `Ic
   - Fields: `label`, `optionalText` (the app's words after the label for a field that may be left empty, such as "(optional)"; drawn only, inside the label), `info` (a control beside the label, outside it, such as an `InfoButton`; none on a field in a dialog, the modal drawer or a side-panel form, where the help panel it opens lies behind a modal or would replace the form), `description`, `errorMessage` and `placeholder`. Every field whose label stands above its control draws one header, from the top: the label row (the label, then `info`), the `description`, then the control, with the `errorMessage` under the control. A label too long for its row wraps, and `info` follows its last word, on whatever line it ends. While a `Select` or a `ComboBox` reads its choices (`isPending`), the spinner and `pendingText` stand at the end of the label row, so nothing moves when the reading starts or ends.
   - Containers (dialogs, sections, rows, empty states): `title` and `description`.
   - An accessible name with no visible text: `aria-label`.
-  - Localized text for an inner control: `{control}Label` (`closeLabel`, `clearLabel`, `searchLabel`).
+  - Localized text for an inner control: `{control}Label` (`closeLabel`, `clearLabel`, `searchLabel`, `nextLabel`), and the reason it cannot be pressed: `{when}Reason` (`firstPageReason`).
+  - Words that are the same in every app have an English default in `Messages`, replaced app-wide through `I18nProvider` and per use through the prop (`Pagination`'s labels and reasons). Words about the app's own data, such as an empty state's title, have none.
 - **Slots (ReactNode props)** are named by meaning, and plural for groups: `actions`, `badges`, `media`, `endContent`, `headerContent`, `info` (the info control beside a field's label or a `Header`'s title), `errorText` (the outcome of the last write, directly above the action row: its failure, or that a request whose answer was lost is kept; in a `Form`, a `Confirmation` and an `AlertDialog`).
 - **Errors in a collection:** `error`, a ReactNode the app renders.
 

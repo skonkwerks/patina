@@ -129,6 +129,10 @@
       "types": "./dist/header/index.d.ts",
       "default": "./dist/header/index.js"
     },
+    "./i18n": {
+      "types": "./dist/aria/i18n/index.d.ts",
+      "default": "./dist/aria/i18n/index.js"
+    },
     "./iconbutton": {
       "types": "./dist/aria/iconbutton/index.d.ts",
       "default": "./dist/aria/iconbutton/index.js"
@@ -192,6 +196,10 @@
     "./page": {
       "types": "./dist/page/index.d.ts",
       "default": "./dist/page/index.js"
+    },
+    "./pagination": {
+      "types": "./dist/composites/pagination/index.d.ts",
+      "default": "./dist/composites/pagination/index.js"
     },
     "./panscroll": {
       "types": "./dist/panscroll/index.d.ts",
